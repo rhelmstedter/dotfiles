@@ -15,36 +15,38 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 \| endif
 
 call plug#begin()
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-repeat'
-    Plug 'morhetz/gruvbox'
-    Plug 'preservim/nerdtree'
+    Plug 'arcseldon/vim-dragvisuals'
     Plug 'dhruvasagar/vim-table-mode'
-    Plug 'vimwiki/vimwiki'
+    Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+    Plug 'greghor/vim-pyShell'
+    Plug 'honza/vim-snippets'
+    Plug 'hrsh7th/nvim-compe'
+    Plug 'joshdick/onedark.vim'
+    Plug 'julienr/vim-cellmode'
     Plug 'junegunn/fzf'
     Plug 'junegunn/fzf.vim'
     Plug 'junegunn/goyo.vim'
-    Plug 'michal-h21/vim-zettel'
-    Plug 'arcseldon/vim-dragvisuals'
-    Plug 'tpope/vim-fugitive'
-    Plug 'reedes/vim-pencil'
-    Plug 'markonm/traces.vim'
-    Plug 'vim-airline/vim-airline'
-    Plug 'rhysd/vim-grammarous'
     Plug 'junegunn/vim-peekaboo'
-    Plug 'preservim/vimux'
-    Plug 'greghor/vim-pyShell'
-    Plug 'julienr/vim-cellmode'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'shime/vim-livedown'
-    Plug 'vim-python/python-syntax'
-    Plug 'joshdick/onedark.vim'
-    Plug 'romgrk/doom-one.vim'
-    Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-    Plug 'nvim-lua/popup.nvim'
+    Plug 'markonm/traces.vim'
+    Plug 'michal-h21/vim-zettel'
+    Plug 'morhetz/gruvbox'
+    Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'preservim/nerdtree'
+    Plug 'preservim/vimux'
+    Plug 'reedes/vim-pencil'
+    Plug 'rhysd/vim-grammarous'
+    Plug 'romgrk/doom-one.vim'
+    Plug 'shime/vim-livedown'
+    Plug 'SirVer/ultisnips'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-surround'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vimwiki/vimwiki'
 call plug#end()
 
 
@@ -94,8 +96,60 @@ augroup END
 set incsearch
 set scrolloff=8
 set noswapfile
-set nohlsearch
+set smartcase
+set ignorecase
+set hidden
 
+"=====[ Autocomplete ]====================
+
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" " Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+
+" " Avoid showing message extra message when using completion
+set shortmess+=c
+
+lua require'lspconfig'.pyright.setup{}
+lua require'lspconfig'.tailwindcss.setup{}
+
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.autocomplete = v:true
+let g:compe.debug = v:false
+let g:compe.min_length = 1
+let g:compe.preselect = 'enable'
+let g:compe.throttle_time = 80
+let g:compe.source_timeout = 200
+let g:compe.resolve_timeout = 800
+let g:compe.incomplete_delay = 400
+let g:compe.max_abbr_width = 100
+let g:compe.max_kind_width = 100
+let g:compe.max_menu_width = 100
+let g:compe.documentation = v:true
+
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+let g:compe.source.vsnip = v:true
+let g:compe.source.ultisnips = v:true
+let g:compe.source.luasnip = v:true
+let g:compe.source.emoji = v:true
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 "=====[ Word Processing ]====================
 
@@ -140,8 +194,10 @@ set nocompatible
 filetype plugin on
 let g:zettel_format = "%Y%m%d%H%M"
 let g:vimwiki_list = [{'path': '~/Zettelkasten/zettel', 'syntax': 'markdown', 'ext': '.md'},
-                     \{'path': '~/Coding-in-Math-Class', 'syntax': 'markdown', 'ext': '.md'}]
+                     \{'path': '~/coding/Coding-in-Math-Class', 'syntax': 'markdown', 'ext': '.md'},
+                     \{'path': '~/coding/Coding', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_markdown_link_ext = 1
+let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 let g:nv_search_paths = ['/Zettelkasten']
 let g:zettel_options = [{"front_matter" : [["tags", ""], ["citation", ""]]}]
@@ -161,9 +217,10 @@ function! AddTags()
 endfunction
 nnoremap <leader>at :call AddTags()<cr>
 
-nnoremap <leader>r :Rg<CR>
-nnoremap <C-p> :Files<CR>
 nnoremap <C-e> :Buffers<CR>
+nnoremap <leader>md :set filetype=markdown
+nnoremap <leader>vw :set filetype=vimwiki
+
 
 "=====[ Telescope ]====================
 
@@ -245,177 +302,6 @@ nnoremap <leader>sl  :call PyShellSendLine()<CR>
 noremap <silent> <C-n> :call RunTmuxPythonCell(0)<CR>
 noremap <leader>ra :call RunTmuxPythonAllCellsAbove()<CR>
 
-
-"=====[ Autocomplete ]====================
-
-"set internal encoding of vim, not needed on neovim, since coc.nvim using some
-"unicode characters in the file autoload/float.vim
-set encoding=utf-8
-
-"textEdit might fail if hidden is not set.
-set hidden
-
-"some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-"give more space for displaying messages.
-set cmdheight=2
-
-"having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-"delays and poor user experience.
-set updatetime=50
-
-"don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-"always show the signcolumn, otherwise it would shift the text each time
-"diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  "recently vim can merge signcolumn and number colmn into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-"use tab for trigger completion with characters ahead and navigate.
-"NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-"other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>"
-      \ <SID>check_back_space() ? "\<TAB>"
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-"use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-"make <CR> auto-select the first completion item and notify coc.nvim to
-"format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-"use `[g` and `]g` to navigate diagnostics
-"use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-"goTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-"use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " expand('<cword>')
-  endif
-endfunction
-
-"highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-"symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-"formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  "setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  autocmd FileType markdown let b:coc_suggest_disable = 1
-  "update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-"applying codeAction to the selected region.
-"example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-"remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-"apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-"map function and class text objects
-"NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-"remap <C-f> and <C-b> for scroll float windows/popups.
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
-
-"use CTRL-S for selections ranges.
-"requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
-"add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-"add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-"add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-"add (Neo)Vim's native statusline support.
-"NOTE: Please see `:h coc-status` for integrations with external plugins that
-"provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-"mappings for CoCList
-"show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-"manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-"show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-"find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-"search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-"no default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-"no default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-"resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
-
 "=====[ Firevim ]===================
 
 let g:firenvim_config = { 
@@ -431,7 +317,7 @@ let g:firenvim_config = {
 \ }
 
 
-"=====[ Random ]====================
+"=====[ Usefull Remappings ]====================
 
 "quickly edit ~/.vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
@@ -462,9 +348,21 @@ nnoremap <leader>zk :vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>
 nnoremap <leader>p "*p
 vnoremap <leader>y "*y
 
+"delete without yanking
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
 "copy link to mark.show presentation
 nnoremap <leader>ms :!curl -F file=@% https://mark.show\|pbcopy<cr>
 
 "insert datetime
 nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+
+"clear search highlighting
+nnoremap <esc> :noh<return><esc>
+inoremap <esc> <esc>:noh<return><esc>
+
+"search files
+nnoremap <leader>r :Rg<CR>
+nnoremap <C-p> :Files<CR>
