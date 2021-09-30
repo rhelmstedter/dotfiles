@@ -35,6 +35,7 @@ call plug#begin()
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'preservim/nerdtree'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'preservim/vimux'
     Plug 'reedes/vim-pencil'
     Plug 'rhysd/vim-grammarous'
@@ -114,6 +115,7 @@ set shortmess+=c
 
 lua require'lspconfig'.pyright.setup{}
 lua require'lspconfig'.tailwindcss.setup{}
+lua require'lspconfig'.bashls.setup{}
 
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
@@ -218,8 +220,12 @@ endfunction
 nnoremap <leader>at :call AddTags()<cr>
 
 nnoremap <C-e> :Buffers<CR>
-nnoremap <leader>md :set filetype=markdown
-nnoremap <leader>vw :set filetype=vimwiki
+"toggle file type between md and vimwiki
+nnoremap <leader>md :set filetype=markdown<CR>
+nnoremap <leader>vw :set filetype=vimwiki<CR>
+
+"open zettelkasten to search notes
+nnoremap <leader>zk :vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>
 
 
 "=====[ Telescope ]====================
@@ -341,8 +347,6 @@ let g:DVB_TrimWS = 1
 "change directory to current file
 nnoremap <leader>cd :cd %:p:h<CR>
 
-"open zettelkasten to search notes
-nnoremap <leader>zk :vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>
 
 "copy to clipboard on mac
 nnoremap <leader>p "*p
