@@ -15,6 +15,7 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 \| endif
 
 call plug#begin()
+    Plug 'SirVer/ultisnips'
     Plug 'arcseldon/vim-dragvisuals'
     Plug 'dhruvasagar/vim-table-mode'
     Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
@@ -34,14 +35,13 @@ call plug#begin()
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-telescope/telescope.nvim'
-    Plug 'preservim/nerdtree'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'preservim/nerdtree'
     Plug 'preservim/vimux'
     Plug 'reedes/vim-pencil'
     Plug 'rhysd/vim-grammarous'
     Plug 'romgrk/doom-one.vim'
     Plug 'shime/vim-livedown'
-    Plug 'SirVer/ultisnips'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-repeat'
@@ -347,14 +347,16 @@ let g:DVB_TrimWS = 1
 "change directory to current file
 nnoremap <leader>cd :cd %:p:h<CR>
 
-
 "copy to clipboard on mac
-nnoremap <leader>p "*p
-vnoremap <leader>y "*y
+nnoremap <leader>p "+p
+vnoremap <leader>y "+y
 
 "delete without yanking
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
+
+"make Y behave
+nnoremap Y yg_
 
 "copy link to mark.show presentation
 nnoremap <leader>ms :!curl -F file=@% https://mark.show\|pbcopy<cr>
@@ -370,3 +372,11 @@ inoremap <esc> <esc>:noh<return><esc>
 "search files
 nnoremap <leader>r :Rg<CR>
 nnoremap <C-p> :Files<CR>
+
+"center searches
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+"move visuals lines
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
