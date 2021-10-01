@@ -87,6 +87,11 @@ set showmatch
 "flashes when you make an error. No beep.
 set visualbell
 
+"highlight yanked region
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
+augroup END
 "highlights recommended line length
 augroup columnLenHighlight
   autocmd!
