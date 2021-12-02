@@ -1,0 +1,5 @@
+import rlcompleter, readline
+readline.parse_and_bind('tab:complete')
+
+from rich import pretty
+pretty.install()

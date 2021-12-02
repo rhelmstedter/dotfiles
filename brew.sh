@@ -3,9 +3,11 @@
 brew update && brew upgrade
 
 # Install Brew Packages
+echo "Installing Brew Python..."
 brew install python
 
 # Install MacOS Applications
+echo "Installing MacOS Applications..."
 brew install --cask amazon-music
 brew install --cask brave-browser
 brew install --cask google-chrome
@@ -18,6 +20,7 @@ brew install --cask zoom
 brew install --cask zotero
 
 # Install packages
+echo "Installing packages..."
 brew install exa
 brew install exercism
 brew install fd
@@ -40,6 +43,7 @@ brew install tree
 brew install zsh
 
 # Install Source Code Pro Font
+echo "Installing fonts..."
 brew tap homebrew/cask-fonts
 brew cask install font-source-code-pro
 brew cask install font-fantasque-sans-mono

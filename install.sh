@@ -25,12 +25,4 @@ echo "...done"
 for file in ${files}; do
     echo "Creating symlink to $file in home directory."
     ln -s {dotfiledir}/${file} ${homedir}/.${file}
-done$
-
-# install ohmyzsh
--c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# install homebrew
--c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-./brew.sh
+done
