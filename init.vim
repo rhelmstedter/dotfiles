@@ -73,8 +73,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 Plug 'williamboman/nvim-lsp-installer'
+Plug 'folke/zen-mode.nvim'
+Plug 'jonstoler/werewolf.vim'
+Plug 'ishan9299/nvim-solarized-lua'
+Plug 'Th3Whit3Wolf/Dusk-til-Dawn.nvim'
 call plug#end()
 
 "}}}
@@ -83,11 +88,15 @@ call plug#end()
 "theme
 set termguicolors
 syntax on
-set background=dark
-colorscheme doom-one
-let g:airline_theme='onedark'
+let g:dusk_til_dawn_light_theme = 'solarized'
+let g:dusk_til_dawn_dark_theme = 'doom-one'
+lua require'Dusk-til-Dawn'.timeMan()()
+if strftime("%H") > 19
+  let g:airline_theme='onedark'
+else
+  let g:airline_theme='solarized'
+endif
 let g:airline_powerline_fonts = 1
-
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -206,7 +215,7 @@ c = cmp.mapping.close(),
   sources = cmp.config.sources({
   { name = 'nvim_lsp' },
   -- { name = 'vsnip' }, -- For vsnip users.
-  -- { name = 'luasnip' }, -- For luasnip users.
+  { name = 'luasnip' }, -- For luasnip users.
   { name = 'ultisnips' }, -- For ultisnips users.
   -- { name = 'snippy' }, -- For snippy users.
   }, {
@@ -283,29 +292,29 @@ function! FixLastSpellingError()
 endfunction
 nnoremap <leader>sc :call FixLastSpellingError()<cr>
 
-lua << EOF
-  require("grammar-guard").init()
+" lua << EOF
+"   require("grammar-guard").init()
 
-  -- setup LSP config
-  require("lspconfig").grammar_guard.setup{
-    settings = {
-      ltex = {
-      enabled = { "latex", "tex", "bib", "markdown" },
-      language = "en",
-      diagnosticSeverity = "information",
-      setenceCacheSize = 2000,
-      additionalRules = {
-      enablePickyRules = true,
-      motherTongue = "en",
-      },
-  trace = { server = "verbose" },
-  dictionary = {},
-  disabledRules = {},
-  hiddenFalsePositives = {},
-  },
-    },
-}
-EOF
+"   -- setup LSP config
+"   require("lspconfig").grammar_guard.setup{
+"     settings = {
+"       ltex = {
+"       enabled = { "latex", "tex", "bib", "markdown" },
+"       language = "en",
+"       diagnosticSeverity = "information",
+"       setenceCacheSize = 2000,
+"       additionalRules = {
+"       enablePickyRules = true,
+"       motherTongue = "en",
+"       },
+"   trace = { server = "verbose" },
+"   dictionary = {},
+"   disabledRules = {},
+"   hiddenFalsePositives = {},
+"   },
+"     },
+" }
+" EOF
 
 "}}}
 "{{{=====[ Vimwiki and Vim-zettel ]============================================
@@ -378,7 +387,7 @@ augroup pencil
 augroup END
 
 "}}}
-"{{{=====[ Goyo ]==============================================================
+"{{{=====[ Less Distractions ]=================================================
 
 function! s:goyo_enter()
     set nonumber
@@ -397,6 +406,7 @@ augroup Goyo
 augroup END
 
 nnoremap <leader>gy :Goyo<CR>
+nnoremap <leader>gz :ZenMode<CR>
 
 "}}}
 "{{{=====[ Orgmode ]===========================================================
@@ -490,11 +500,12 @@ let g:neoformat_basic_format_trim = 1
 
 
 "run python code from inside vim
+"
 nnoremap <F5> :w<CR>:term python3 %<CR>
 
 "nnoremap <F5> <Esc>:w<CR>:!clear;python3 %<CR>
 let g:python_highlight_all = 1
-let g:python3_host_prog= '/opt/homebrew/bin/python3'
+"let g:python3_host_prog= '/opt/homebrew/bin/python3'
 
 "}}}
 "{{{=====[ Data Science ]======================================================

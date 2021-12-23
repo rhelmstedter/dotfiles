@@ -334,6 +334,7 @@ let g:firenvim_config = {
 "quickly edit ~/.vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <C-s> :w<cr>
 
 "navigating windows
 nnoremap <leader>h <C-w>h
