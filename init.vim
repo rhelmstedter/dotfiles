@@ -77,7 +77,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'folke/zen-mode.nvim'
-Plug 'jonstoler/werewolf.vim'
 Plug 'ishan9299/nvim-solarized-lua'
 Plug 'Th3Whit3Wolf/Dusk-til-Dawn.nvim'
 call plug#end()
