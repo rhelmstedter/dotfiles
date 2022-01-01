@@ -1,4 +1,4 @@
-
+ 
 "{{{=====[ Settings ]==========================================================
 
 let mapleader = " "
@@ -34,13 +34,10 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
             \| endif
 
 call plug#begin()
-Plug 'sbdchd/neoformat'
 Plug 'SirVer/ultisnips'
 Plug 'akinsho/org-bullets.nvim'
 Plug 'brymer-meneses/grammar-guard.nvim'
 Plug 'dhruvasagar/vim-table-mode'
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-Plug 'greghor/vim-pyShell'
 Plug 'honza/vim-snippets'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-cmdline'
@@ -67,6 +64,7 @@ Plug 'preservim/vimux'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'reedes/vim-pencil'
 Plug 'romgrk/doom-one.vim'
+Plug 'sbdchd/neoformat'
 Plug 'shime/vim-livedown'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -74,7 +72,9 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
+Plug 'voldikss/vim-floaterm'
 Plug 'williamboman/nvim-lsp-installer'
+Plug 'xiyaowong/nvim-transparent'
 call plug#end()
 
 "}}}
@@ -87,12 +87,11 @@ set background=dark
 colorscheme doom-one
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
-
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-
+let g:transparent_enabled = v:true
 "Faster Update time
 set updatetime=1000
 "}}}
@@ -287,7 +286,7 @@ lua << EOF
   require("grammar-guard").init()
 
   -- setup LSP config
-  require("lspconfig").grammar_guard.setup{
+  require("lspconfig").grammar_guard.setup({
     settings = {
       ltex = {
       enabled = { "latex", "tex", "bib", "markdown" },
@@ -304,7 +303,7 @@ lua << EOF
   hiddenFalsePositives = {},
   },
     },
-}
+})
 EOF
 
 "}}}
@@ -437,15 +436,6 @@ endfunction
 autocmd FileType org call SetOrgSets()
 
 "}}}
-"{{{=====[ Nerdtree ]==========================================================
-
-augroup NerdTree
-    autocmd!
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
-map <leader>n :NERDTreeToggle<CR>
-
-"}}}
 "{{{=====[ Treesitter ]========================================================
 
 lua <<EOF
@@ -488,13 +478,12 @@ let g:neoformat_basic_format_retab = 1
 " Enable trimmming of trailing whitespace
 let g:neoformat_basic_format_trim = 1
 
-
 "run python code from inside vim
-nnoremap <F5> :w<CR>:term python3 %<CR>
-
-"nnoremap <F5> <Esc>:w<CR>:!clear;python3 %<CR>
 let g:python_highlight_all = 1
 let g:python3_host_prog= '/opt/homebrew/bin/python3'
+nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
+"run some tests
+nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
 
 "}}}
 "{{{=====[ Data Science ]======================================================
@@ -530,10 +519,16 @@ let g:firenvim_config = {
                     \ }
 
 "}}}
-"{{{=====[ Useful Remappings ]=================================================
+"{{{=====[ Netrw ]=============================================================
+
+nnoremap <leader>n :Ex<CR>
+let g:netrw_banner = 0
+
+"}}}
+"{{{=====[ Useful Mappings ]===================================================
 
 "save
-nnoremap <leader>w :w<cr>
+nnoremap <leader>w :w<CR>
 
 "quickly edit ~/.vimrc
 nnoremap <leader>ev :e $MYVIMRC<cr>
@@ -581,4 +576,18 @@ vnoremap K :m '<-2<CR>gv=gv
 "open html file
 nnoremap <leader>o :w<CR>:!open %<CR>
 
+"}}}
+"{{{=====[ Floaterm ]==========================================================
+
+ " let g:floaterm_keymap_toggle = '<F1>'
+ " let g:floaterm_keymap_next   = '<F2>'
+ " let g:floaterm_keymap_prev   = '<F3>'
+let g:floaterm_keymap_new    = '<leader>ft'
+let g:floaterm_gitcommit='floaterm'
+let g:floaterm_autoinsert=1
+let g:floaterm_width=0.9
+let g:floaterm_height=0.9
+let g:floaterm_wintitle=0
+let g:floaterm_title=''
+hi FloatermBorder guibg=none guifg='#c678dd'
 "}}}
