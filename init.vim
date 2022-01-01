@@ -79,6 +79,7 @@ Plug 'williamboman/nvim-lsp-installer'
 Plug 'folke/zen-mode.nvim'
 Plug 'ishan9299/nvim-solarized-lua'
 Plug 'Th3Whit3Wolf/Dusk-til-Dawn.nvim'
+Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
 call plug#end()
 
 "}}}
@@ -86,23 +87,31 @@ call plug#end()
 
 "theme
 set termguicolors
-syntax on
-let g:dusk_til_dawn_light_theme = 'solarized'
+
+if strftime("%H") >= 19
+    let g:airline_theme='onedark'
+elseif  strftime("%H") < 7
+    let g:airline_theme='onedark'
+else
+    let g:airline_theme='solarized'
+endif
+
+" Change theme based on time of day
+let g:dusk_til_dawn_light_theme = 'paper'
 let g:dusk_til_dawn_dark_theme = 'doom-one'
 lua require'Dusk-til-Dawn'.timeMan()()
-if strftime("%H") > 19
-  let g:airline_theme='onedark'
-else
-  let g:airline_theme='solarized'
-endif
 let g:airline_powerline_fonts = 1
+
+syntax on
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+set cmdheight=2
 
 "Faster Update time
 set updatetime=1000
+
 "}}}
 "{{{=====[ Auto Commands ]=====================================================
 
@@ -144,15 +153,111 @@ augroup END
 "highlights recommended line length
 augroup columnLenHighlight
     autocmd!
-    autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%91v', 100)
+    autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%81v', 100)
 augroup END
 
 "}}}
 "{{{=====[ Autocomplete ]======================================================
 
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+lua <<EOF
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+    vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+  end,
+  },
+  mapping = {
+        ['<Tab>'] = function(fallback)
+        if cmp.visible() then
+            cmp.select_next_item()
+        else
+            fallback()
+        end
+        end,
+        ['<S-Tab>'] = function(fallback)
+        if cmp.visible() then
+            cmp.select_prev_item()
+        else
+            fallback()
+        end
+        end,
+        ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        },
+        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+        ['<C-e>'] = cmp.mapping({
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+        }),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'ultisnips' }, -- For ultisnips users.
+      { name = 'buffer' },
+      { name = 'path' },
+  })
+})
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+    sources = {
+        { name = 'buffer' }
+      }
+    })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+      { name = 'path' },
+      { name = 'cmdline' }
+  })
+})
+
+  -- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+require('lspconfig')['pyright'].setup {
+  capabilities = capabilities
+  }
+require('lspconfig')['tailwindcss'].setup {
+  capabilities = capabilities
+  }
+require('lspconfig')['bashls'].setup {
+  capabilities = capabilities
+  }
+require('lspconfig')['pylsp'].setup {
+  capabilities = capabilities
+  }
+EOF
+
+"Diagnostics for LSP
+lua << EOF
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false,
+        underline = true,
+        signs = true,
+    }
+)
+
+vim.api.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
+EOF
+
+" " Use <Tab> and <S-Tab> to navigate through popup menu
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
@@ -163,110 +268,6 @@ set shortmess+=c
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-lua <<EOF
--- Setup nvim-cmp.
-local cmp = require'cmp'
-
-cmp.setup({
-snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-    -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-    -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-    vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-    -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-end,
-},
-    mapping = {
-        ['<Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-        else
-            fallback()
-        end
-    end,
-    ['<S-Tab>'] = function(fallback)
-    if cmp.visible() then
-        cmp.select_prev_item()
-    elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-    else
-        fallback()
-    end
-end,
-['<CR>'] = cmp.mapping.confirm {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = true,
-    },
-['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-['<C-e>'] = cmp.mapping({
-i = cmp.mapping.abort(),
-c = cmp.mapping.close(),
-}),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      },
-  sources = cmp.config.sources({
-  { name = 'nvim_lsp' },
-  -- { name = 'vsnip' }, -- For vsnip users.
-  { name = 'luasnip' }, -- For luasnip users.
-  { name = 'ultisnips' }, -- For ultisnips users.
-  -- { name = 'snippy' }, -- For snippy users.
-  }, {
-  { name = 'buffer' },
-  })
-  })
-
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline('/', {
-      sources = {
-          { name = 'buffer' }
-          }
-      })
-
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-      sources = cmp.config.sources({
-      { name = 'path' }
-      }, {
-      { name = 'cmdline' }
-      })
-  })
-
-  -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['pyright'].setup {
-      capabilities = capabilities
-      }
-  require('lspconfig')['tailwindcss'].setup {
-      capabilities = capabilities
-      }
-
-  require('lspconfig')['bashls'].setup {
-      capabilities = capabilities
-      }
-  require('lspconfig')['pylsp'].setup {
-      capabilities = capabilities
-      }
-EOF
-
-lua << EOF
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = false,
-    underline = true,
-    signs = true,
-    }
-)
-vim.api.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
-EOF
 
 "}}}
 "{{{=====[ Latex ]=============================================================
