@@ -35,15 +35,21 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 call plug#begin()
 Plug 'SirVer/ultisnips'
+Plug 'Th3Whit3Wolf/Dusk-til-Dawn.nvim'
 Plug 'akinsho/org-bullets.nvim'
 Plug 'brymer-meneses/grammar-guard.nvim'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'folke/zen-mode.nvim'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+Plug 'greghor/vim-pyShell'
 Plug 'honza/vim-snippets'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
+Plug 'ishan9299/nvim-solarized-lua'
 Plug 'joshdick/onedark.vim'
 Plug 'julienr/vim-cellmode'
 Plug 'junegunn/fzf'
@@ -71,6 +77,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 Plug 'voldikss/vim-floaterm'
 Plug 'williamboman/nvim-lsp-installer'
@@ -82,18 +89,31 @@ call plug#end()
 
 "theme
 set termguicolors
-syntax on
-set background=dark
-colorscheme doom-one
-let g:airline_theme='onedark'
+
+if strftime("%H") >= 19
+    let g:airline_theme='onedark'
+elseif  strftime("%H") < 7
+    let g:airline_theme='onedark'
+else
+    let g:airline_theme='solarized'
+endif
+
+" Change theme based on time of day
+let g:dusk_til_dawn_light_theme = 'paper'
+let g:dusk_til_dawn_dark_theme = 'doom-one'
+lua require'Dusk-til-Dawn'.timeMan()()
 let g:airline_powerline_fonts = 1
+
+syntax on
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-let g:transparent_enabled = v:true
+"let g:transparent_enabled = v:true
+
 "Faster Update time
 set updatetime=1000
+
 "}}}
 "{{{=====[ Auto Commands ]=====================================================
 
@@ -135,15 +155,107 @@ augroup END
 "highlights recommended line length
 augroup columnLenHighlight
     autocmd!
-    autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%91v', 100)
+    autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%81v', 100)
 augroup END
 
 "}}}
 "{{{=====[ Autocomplete ]======================================================
 
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+lua <<EOF
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+    vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+  end,
+  },
+  mapping = {
+        ['<Tab>'] = function(fallback)
+        if cmp.visible() then
+            cmp.select_next_item()
+        else
+            fallback()
+        end
+        end,
+        ['<S-Tab>'] = function(fallback)
+        if cmp.visible() then
+            cmp.select_prev_item()
+        else
+            fallback()
+        end
+        end,
+        ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        },
+        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+        ['<C-e>'] = cmp.mapping({
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+        }),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'ultisnips' }, -- For ultisnips users.
+      { name = 'path' },
+      { name = 'buffer' },
+  })
+})
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+    sources = {
+        { name = 'buffer' }
+      }
+    })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+      { name = 'path' },
+      { name = 'cmdline' }
+  })
+})
+
+  -- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+require('lspconfig')['pyright'].setup {
+  capabilities = capabilities
+  }
+require('lspconfig')['tailwindcss'].setup {
+  capabilities = capabilities
+  }
+require('lspconfig')['bashls'].setup {
+  capabilities = capabilities
+  }
+require('lspconfig')['pylsp'].setup {
+  capabilities = capabilities
+  }
+EOF
+
+"Diagnostics for LSP
+lua << EOF
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false,
+        underline = true,
+        signs = true,
+    }
+)
+
+vim.api.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
+EOF
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
@@ -154,110 +266,6 @@ set shortmess+=c
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-lua <<EOF
--- Setup nvim-cmp.
-local cmp = require'cmp'
-
-cmp.setup({
-snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-    -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-    -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-    vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-    -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-end,
-},
-    mapping = {
-        ['<Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-        else
-            fallback()
-        end
-    end,
-    ['<S-Tab>'] = function(fallback)
-    if cmp.visible() then
-        cmp.select_prev_item()
-    elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-    else
-        fallback()
-    end
-end,
-['<CR>'] = cmp.mapping.confirm {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = true,
-    },
-['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-['<C-e>'] = cmp.mapping({
-i = cmp.mapping.abort(),
-c = cmp.mapping.close(),
-}),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      },
-  sources = cmp.config.sources({
-  { name = 'nvim_lsp' },
-  -- { name = 'vsnip' }, -- For vsnip users.
-  -- { name = 'luasnip' }, -- For luasnip users.
-  { name = 'ultisnips' }, -- For ultisnips users.
-  -- { name = 'snippy' }, -- For snippy users.
-  }, {
-  { name = 'buffer' },
-  })
-  })
-
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline('/', {
-      sources = {
-          { name = 'buffer' }
-          }
-      })
-
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-      sources = cmp.config.sources({
-      { name = 'path' }
-      }, {
-      { name = 'cmdline' }
-      })
-  })
-
-  -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['pyright'].setup {
-      capabilities = capabilities
-      }
-  require('lspconfig')['tailwindcss'].setup {
-      capabilities = capabilities
-      }
-
-  require('lspconfig')['bashls'].setup {
-      capabilities = capabilities
-      }
-  require('lspconfig')['pylsp'].setup {
-      capabilities = capabilities
-      }
-EOF
-
-lua << EOF
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = false,
-    underline = true,
-    signs = true,
-    }
-)
-vim.api.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
-EOF
 
 "}}}
 "{{{=====[ Latex ]=============================================================
@@ -282,29 +290,29 @@ function! FixLastSpellingError()
 endfunction
 nnoremap <leader>sc :call FixLastSpellingError()<cr>
 
-lua << EOF
-  require("grammar-guard").init()
+" lua << EOF
+"   require("grammar-guard").init()
 
-  -- setup LSP config
-  require("lspconfig").grammar_guard.setup({
-    settings = {
-      ltex = {
-      enabled = { "latex", "tex", "bib", "markdown" },
-      language = "en",
-      diagnosticSeverity = "information",
-      setenceCacheSize = 2000,
-      additionalRules = {
-      enablePickyRules = true,
-      motherTongue = "en",
-      },
-  trace = { server = "verbose" },
-  dictionary = {},
-  disabledRules = {},
-  hiddenFalsePositives = {},
-  },
-    },
-})
-EOF
+"   -- setup LSP config
+"   require("lspconfig").grammar_guard.setup{
+"     settings = {
+"       ltex = {
+"       enabled = { "latex", "tex", "bib", "markdown" },
+"       language = "en",
+"       diagnosticSeverity = "information",
+"       setenceCacheSize = 2000,
+"       additionalRules = {
+"       enablePickyRules = true,
+"       motherTongue = "en",
+"       },
+"   trace = { server = "verbose" },
+"   dictionary = {},
+"   disabledRules = {},
+"   hiddenFalsePositives = {},
+"   },
+"     },
+" }
+" EOF
 
 "}}}
 "{{{=====[ Vimwiki and Vim-zettel ]============================================
@@ -377,7 +385,7 @@ augroup pencil
 augroup END
 
 "}}}
-"{{{=====[ Goyo ]==============================================================
+"{{{=====[ Less Distractions ]=================================================
 
 function! s:goyo_enter()
     set nonumber
@@ -396,6 +404,7 @@ augroup Goyo
 augroup END
 
 nnoremap <leader>gy :Goyo<CR>
+nnoremap <leader>gz :ZenMode<CR>
 
 "}}}
 "{{{=====[ Orgmode ]===========================================================
@@ -484,6 +493,11 @@ let g:python3_host_prog= '/opt/homebrew/bin/python3'
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
 nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
+nnoremap <F5> :w<CR>:term python3 %<CR>
+
+"nnoremap <F5> <Esc>:w<CR>:!clear;python3 %<CR>
+let g:python_highlight_all = 1
+"let g:python3_host_prog= '/opt/homebrew/bin/python3'
 
 "}}}
 "{{{=====[ Data Science ]======================================================
