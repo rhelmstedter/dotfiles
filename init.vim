@@ -34,11 +34,12 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
             \| endif
 
 call plug#begin()
-Plug 'sbdchd/neoformat'
 Plug 'SirVer/ultisnips'
+Plug 'Th3Whit3Wolf/Dusk-til-Dawn.nvim'
 Plug 'akinsho/org-bullets.nvim'
 Plug 'brymer-meneses/grammar-guard.nvim'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'folke/zen-mode.nvim'
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'greghor/vim-pyShell'
 Plug 'honza/vim-snippets'
@@ -47,6 +48,8 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
+Plug 'ishan9299/nvim-solarized-lua'
 Plug 'joshdick/onedark.vim'
 Plug 'julienr/vim-cellmode'
 Plug 'junegunn/fzf'
@@ -67,6 +70,7 @@ Plug 'preservim/vimux'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'reedes/vim-pencil'
 Plug 'romgrk/doom-one.vim'
+Plug 'sbdchd/neoformat'
 Plug 'shime/vim-livedown'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -76,10 +80,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 Plug 'williamboman/nvim-lsp-installer'
-Plug 'folke/zen-mode.nvim'
-Plug 'ishan9299/nvim-solarized-lua'
-Plug 'Th3Whit3Wolf/Dusk-til-Dawn.nvim'
-Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
 call plug#end()
 
 "}}}
