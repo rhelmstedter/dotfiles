@@ -1,28 +1,37 @@
-#!/usr/bin/env bash
-############################
-# This script creates symlinks from the home directory to any desired dotfiles in ${homedir}/dotfiles
-############################
+# install nix on WSL2
+sh <(curl -L https://nixos.org/nix/install) --no-daemon
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: install.sh <home_directory>"
-    exit 1
-fi
+. ~/.nix-profile/etc/profile.d/nix.sh
 
-homedir=$1
+# install packages
+nix-env -iA \
+	nixpkgs.zsh \
+	nixpkgs.antibody \
+	nixpkgs.git \
+	nixpkgs.neovim \
+	nixpkgs.tmux \
+	nixpkgs.stow \
+	nixpkgs.yarn \
+	nixpkgs.fzf \
+	nixpkgs.ripgrep \
+	nixpkgs.bat \
+	nixpkgs.gnumake \
+	nixpkgs.gcc
 
-# dotfiles directory
-dotfiledir=${homedir}/dotfiles
+# stow dotfiles
+stow git
+stow nvim
+stow tmux
+stow zsh
 
-# list of files/folders to symlink in ${homedir}
-files="vimrc tmux.conf"
+# add zsh as a login shell
+command -v zsh | sudo tee -a /etc/shells
 
-# change to the dotfiles directory
-echo "Changing to the ${dotfiledir} directory"
-cd ${dotfiledir}
-echo "...done"
+# use zsh as default shell
+sudo chsh -s $(which zsh) $USER
 
-# create symlinks (will overwrite old dotfiles)
-for file in ${files}; do
-    echo "Creating symlink to $file in home directory."
-    ln -s {dotfiledir}/${file} ${homedir}/.${file}
-done
+# bundle zsh plugins 
+antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
+
+# install neovim plugins
+nvim --headless +PlugInstall +qall

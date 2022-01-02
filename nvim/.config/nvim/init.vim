@@ -3,19 +3,11 @@
 
 let mapleader = " "
 inoremap jk <esc>
-
-"show numbers
 set number
 set rnu
 set ruler
-
-"show commands at bottom of page
 set showcmd
-
-"show matching brackets and quotes
 set showmatch
-
-"flashes when you make an error. No beep.
 set visualbell
 set incsearch
 set scrolloff=8
@@ -24,6 +16,7 @@ set smartcase
 set ignorecase
 set hidden
 set foldmethod=marker
+set cmdheight=2
 
 "}}}
 "{{{=====[ Plugins ]===========================================================
@@ -227,19 +220,14 @@ cmp.setup.cmdline(':', {
 
   -- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-require('lspconfig')['pyright'].setup {
-  capabilities = capabilities
-  }
-require('lspconfig')['tailwindcss'].setup {
-  capabilities = capabilities
-  }
-require('lspconfig')['bashls'].setup {
-  capabilities = capabilities
-  }
-require('lspconfig')['pylsp'].setup {
-  capabilities = capabilities
-  }
+  -- Add lsp servers to the lua table
+local servers = { 'pyright', 'tailwindcss', 'bashls', 'pylsp', 'ltex' }
+
+for _, server in ipairs(servers) do
+    require('lspconfig')[server].setup {
+        capabilities = capabilities
+    }
+end
 EOF
 
 "Diagnostics for LSP
@@ -248,13 +236,13 @@ lua << EOF
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
         virtual_text = false,
-        underline = true,
+        underline = false,
         signs = true,
     }
 )
 
-vim.api.nvim_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
 EOF
 
 " Set completeopt to have a better completion experience
@@ -272,7 +260,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 let g:tex_flavor='latex'
 let g:vimtex_quickfix_mode=0
-set conceallevel=1
+"set conceallevel=1
 let g:tex_conceal='abdmg'
 
 "}}}
@@ -290,29 +278,28 @@ function! FixLastSpellingError()
 endfunction
 nnoremap <leader>sc :call FixLastSpellingError()<cr>
 
-" lua << EOF
-"   require("grammar-guard").init()
-
-"   -- setup LSP config
-"   require("lspconfig").grammar_guard.setup{
-"     settings = {
-"       ltex = {
-"       enabled = { "latex", "tex", "bib", "markdown" },
-"       language = "en",
-"       diagnosticSeverity = "information",
-"       setenceCacheSize = 2000,
-"       additionalRules = {
-"       enablePickyRules = true,
-"       motherTongue = "en",
-"       },
-"   trace = { server = "verbose" },
-"   dictionary = {},
-"   disabledRules = {},
-"   hiddenFalsePositives = {},
-"   },
-"     },
-" }
-" EOF
+lua << EOF
+  require("grammar-guard").init()
+  -- setup LSP config
+require("lspconfig").grammar_guard.setup{
+    settings = {
+        ltex = {
+            enabled = { "latex", "tex", "bib", "markdown" },
+            language = "en",
+            diagnosticSeverity = "information",
+            setenceCacheSize = 2000,
+            additionalRules = {
+            enablePickyRules = true,
+            motherTongue = "en",
+        },
+        trace = { server = "verbose" },
+        dictionary = {},
+        disabledRules = {},
+        hiddenFalsePositives = {},
+        },
+    },
+}
+EOF
 
 "}}}
 "{{{=====[ Vimwiki and Vim-zettel ]============================================
@@ -603,5 +590,6 @@ let g:floaterm_width=0.9
 let g:floaterm_height=0.9
 let g:floaterm_wintitle=0
 let g:floaterm_title=''
-hi FloatermBorder guibg=none guifg='#c678dd'
+hi FloatermBorder guibg=none guifg='#000000'
+
 "}}}
