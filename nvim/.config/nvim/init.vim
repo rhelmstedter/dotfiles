@@ -1,22 +1,88 @@
  
 "{{{=====[ Settings ]==========================================================
 
-let mapleader = " "
-inoremap jk <esc>
+set cmdheight=2
+set expandtab
+set foldmethod=marker
+set hidden
+set ignorecase
+set incsearch
+set noswapfile
 set number
 set rnu
-set ruler
+set scrolloff=8
+set shiftwidth=2
 set showcmd
 set showmatch
-set visualbell
-set incsearch
-set scrolloff=8
-set noswapfile
 set smartcase
-set ignorecase
-set hidden
-set foldmethod=marker
-set cmdheight=2
+set softtabstop=2
+set tabstop=2
+set termguicolors
+set updatetime=250
+set visualbell
+set linebreak
+set backspace=indent,eol,start
+set nocompatible
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+
+"}}}
+"{{{=====[ Useful Mappings ]===================================================
+
+let mapleader = " "
+inoremap jk <esc>
+
+"save
+nnoremap <leader>w :w<CR>
+
+"quickly edit ~/.vimrc
+nnoremap <leader>ev :e $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+"navigating windows
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
+
+"change directory to current file
+nnoremap <leader>cd :cd %:p:h<CR>
+
+"copy to clipboard on mac
+nnoremap <leader>p "+p
+vnoremap <leader>y "+y
+
+"delete without yanking
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+"make Y behave like D and C
+nnoremap Y yg_
+
+"copy link to mark.show presentation on mac
+nnoremap <leader>ms :!curl -F file=@% https://mark.show\|pbcopy<cr>
+
+"insert datetime
+nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+
+"clear search highlighting
+nnoremap <esc> :noh<return><esc>
+inoremap <esc> <esc>:noh<return><esc>
+
+"center searches
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+"move visuals lines
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+"open html file
+nnoremap <leader>o :w<CR>:!open %<CR>
+
+"Explore File
+nnoremap <leader>n :Ex<CR>
 
 "}}}
 "{{{=====[ Plugins ]===========================================================
@@ -80,41 +146,30 @@ call plug#end()
 "}}}
 "{{{=====[ Display ]===========================================================
 
-"theme
-set termguicolors
+" Change theme based on time of day
+" Winter sunset at 5pm Summer sunset at 8pm
+let g:sunset = 17
+let g:sunrise = 7
 
-if strftime("%H") >= 19
+if strftime("%H") >= sunset
     let g:airline_theme='onedark'
-elseif  strftime("%H") < 7
+elseif  strftime("%H") < sunrise
     let g:airline_theme='onedark'
 else
     let g:airline_theme='solarized'
 endif
 
-" Change theme based on time of day
 let g:dusk_til_dawn_light_theme = 'paper'
 let g:dusk_til_dawn_dark_theme = 'doom-one'
+let g:dusk_til_dawn_dawn = sunrise
+let g:dusk_til_dawn_night = sunset
 lua require'Dusk-til-Dawn'.timeMan()()
 let g:airline_powerline_fonts = 1
 
 syntax on
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-"let g:transparent_enabled = v:true
-
-"Faster Update time
-set updatetime=1000
 
 "}}}
 "{{{=====[ Auto Commands ]=====================================================
-
-"highlight yanked region
-augroup highlight_yank
-    autocmd!
-    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
-augroup END
 
 "highlights recommended line length
 augroup columnLenHighlight
@@ -154,9 +209,7 @@ augroup END
 "}}}
 "{{{=====[ Autocomplete ]======================================================
 
-
 lua <<EOF
--- Setup nvim-cmp.
 local cmp = require'cmp'
 
 cmp.setup({
@@ -245,12 +298,6 @@ vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>"
 vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = true, silent = true})
 EOF
 
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing message extra message when using completion
-set shortmess+=c
-
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
@@ -266,11 +313,6 @@ let g:tex_conceal='abdmg'
 "}}}
 "{{{=====[ Word Processing ]===================================================
 
-"doesn't split words
-set linebreak
-
-"fix backspace
-set backspace=indent,eol,start
 
 "spellcheck
 function! FixLastSpellingError()
@@ -304,7 +346,6 @@ EOF
 "}}}
 "{{{=====[ Vimwiki and Vim-zettel ]============================================
 
-set nocompatible
 filetype plugin on
 let g:zettel_format = "%Y%m%d%H%M"
 "Main zettelkasten plus two github repos I use for work
@@ -522,67 +563,11 @@ let g:firenvim_config = {
 "}}}
 "{{{=====[ Netrw ]=============================================================
 
-nnoremap <leader>n :Ex<CR>
 let g:netrw_banner = 0
-
-"}}}
-"{{{=====[ Useful Mappings ]===================================================
-
-"save
-nnoremap <leader>w :w<CR>
-
-"quickly edit ~/.vimrc
-nnoremap <leader>ev :e $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
-
-"navigating windows
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
-
-"change directory to current file
-nnoremap <leader>cd :cd %:p:h<CR>
-
-"copy to clipboard on mac
-nnoremap <leader>p "+p
-vnoremap <leader>y "+y
-
-"delete without yanking
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
-
-"make Y behave
-nnoremap Y yg_
-
-"copy link to mark.show presentation on mac
-nnoremap <leader>ms :!curl -F file=@% https://mark.show\|pbcopy<cr>
-
-"insert datetime
-nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
-imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
-
-"clear search highlighting
-nnoremap <esc> :noh<return><esc>
-inoremap <esc> <esc>:noh<return><esc>
-
-"center searches
-nnoremap n nzzzv
-nnoremap N Nzzzv
-
-"move visuals lines
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
-"open html file
-nnoremap <leader>o :w<CR>:!open %<CR>
 
 "}}}
 "{{{=====[ Floaterm ]==========================================================
 
- " let g:floaterm_keymap_toggle = '<F1>'
- " let g:floaterm_keymap_next   = '<F2>'
- " let g:floaterm_keymap_prev   = '<F3>'
 let g:floaterm_keymap_new    = '<leader>ft'
 let g:floaterm_gitcommit='floaterm'
 let g:floaterm_autoinsert=1
