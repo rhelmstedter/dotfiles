@@ -120,5 +120,5 @@ source ~/.zsh_plugins.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export PATH=/home/helm/.local/bin:/home/helm/.local/share/nvim:$PATH
-export PATH=~/.emacs.d/bin/:$PATH
+export PATH=~/.emacs.d/bin/:/usr/bin/gh:$PATH
 cd
