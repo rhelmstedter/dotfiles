@@ -128,7 +128,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'preservim/vimux'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'reedes/vim-pencil'
-Plug 'romgrk/doom-one.vim'
+"Plug 'romgrk/doom-one.vim'
+Plug 'NTBBloodbath/doom-one.nvim'
 Plug 'sbdchd/neoformat'
 Plug 'shime/vim-livedown'
 Plug 'tpope/vim-commentary'
@@ -141,6 +142,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'voldikss/vim-floaterm'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'xiyaowong/nvim-transparent'
+Plug 'Shatur/neovim-ayu'
+Plug 'vim-scripts/ironman.vim'
 call plug#end()
 
 "}}}
@@ -156,10 +159,10 @@ if strftime("%H") >= sunset
 elseif  strftime("%H") < sunrise
     let g:airline_theme='onedark'
 else
-    let g:airline_theme='solarized'
+    let g:airline_theme='transparent'
 endif
 
-let g:dusk_til_dawn_light_theme = 'paper'
+let g:dusk_til_dawn_light_theme = 'doom-one'
 let g:dusk_til_dawn_dark_theme = 'doom-one'
 let g:dusk_til_dawn_dawn = sunrise
 let g:dusk_til_dawn_night = sunset
@@ -351,7 +354,7 @@ let g:zettel_format = "%Y%m%d%H%M"
 "Main zettelkasten plus two github repos I use for work
 let g:vimwiki_list = [{'path': '~/Zettelkasten/zettel', 'syntax': 'markdown', 'ext': '.md'},
             \{'path': '~/Coding-in-Math-Class', 'syntax': 'markdown', 'ext': '.md'},
-            \{'path': '~/coding-class', 'syntax': 'markdown', 'ext': '.md'}]
+            \{'path': '~/Coding', 'syntax': 'markdown', 'ext': '.md'}]
 
 " Why learn vimwiki format when I sort of know markdown?
 let g:vimwiki_markdown_link_ext = 1
@@ -387,9 +390,9 @@ nnoremap <leader>zk :vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>
 
 "don't expand links in normal mode
 augroup hide_links
-	autocmd!
-	autocmd FileType vimwiki set concealcursor=nc| set conceallevel=2|
-	autocmd FileType markdown set concealcursor=nc| set conceallevel=2|
+  autocmd!
+  autocmd FileType vimwiki set concealcursor=nc| set conceallevel=2|
+  autocmd FileType markdown set concealcursor=nc| set conceallevel=2|
 augroup END
 
 "}}}
@@ -517,7 +520,7 @@ let g:neoformat_basic_format_trim = 1
 
 "run python code from inside vim
 let g:python_highlight_all = 1
-let g:python3_host_prog= '/opt/homebrew/bin/python3'
+let g:python3_host_prog= '/usr/bin/python3'
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
 nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
