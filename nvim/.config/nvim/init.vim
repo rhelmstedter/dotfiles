@@ -9,7 +9,8 @@ set ignorecase
 set incsearch
 set noswapfile
 set number
-set rnu
+set numberwidth=5
+set relativenumber
 set scrolloff=8
 set shiftwidth=2
 set showcmd
@@ -18,6 +19,8 @@ set smartcase
 set softtabstop=2
 set tabstop=2
 set termguicolors
+set undodir=~/.config/nvim/undodir
+set undofile
 set updatetime=250
 set visualbell
 set linebreak
@@ -500,34 +503,6 @@ require'nvim-treesitter.configs'.setup {
 EOF
 
 "}}}
-"{{{=====[ Python ]============================================================
-
-"run black formating from inside vim
-function! RunBlack()
-    normal! :w :! python3 -m black %
-endfunction
-nnoremap <leader>b :Neoformat black<cr>
-
-" Enable alignment
-let g:neoformat_basic_format_align = 1
-" Enable tab to space conversion
-let g:neoformat_basic_format_retab = 1
-" Enable trimmming of trailing whitespace
-let g:neoformat_basic_format_trim = 1
-
-"run python code from inside vim
-let g:python_highlight_all = 1
-let g:python3_host_prog= '/opt/homebrew/bin/python3'
-nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
-"run some tests
-nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
-nnoremap <F5> :w<CR>:term python3 %<CR>
-
-"nnoremap <F5> <Esc>:w<CR>:!clear;python3 %<CR>
-let g:python_highlight_all = 1
-"let g:python3_host_prog= '/opt/homebrew/bin/python3'
-
-"}}}
 "{{{=====[ Data Science ]======================================================
 
 "vim cell-mode parameters
@@ -576,5 +551,12 @@ let g:floaterm_height=0.9
 let g:floaterm_wintitle=0
 let g:floaterm_title=''
 hi FloatermBorder guibg=none guifg='#000000'
+"}}}
+"{{{=====[ Python ]============================================================
+
+let g:python3_host_prog = '/opt/homebrew/bin/python3'
+let g:neoformat_enabled_python = ['black']
+nnoremap <leader>b :Neoformat<CR>
+noremap <F5> :w<CR> :FloatermNew python3 %<CR>
 
 "}}}
