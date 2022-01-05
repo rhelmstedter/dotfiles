@@ -1,5 +1,5 @@
-# install nix on WSL2
-sh <(curl -L https://nixos.org/nix/install) --no-daemon
+# # install nix on WSL2
+curl -L https://nixos.org/nix/install | sh
 
 . ~/.nix-profile/etc/profile.d/nix.sh
 
