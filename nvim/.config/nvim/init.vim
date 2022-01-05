@@ -517,16 +517,15 @@ let g:neoformat_basic_format_trim = 1
 
 "run python code from inside vim
 let g:python_highlight_all = 1
-let g:python3_host_prog= '/usr/bin/python3'
+
+"let g:python3_host_prog= '/usr/bin/python3'
+let g:python3_host_prog= '/opt/homebrew/bin/python3'
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
 nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
 
 "nnoremap <F5> <Esc>:w<CR>:!clear;python3 %<CR>
 let g:python_highlight_all = 1
-"let g:python3_host_prog= '/opt/homebrew/bin/python3'
-
-"let g:python3_host_prog = '/opt/homebrew/bin/python3'
 let g:neoformat_enabled_python = ['black']
 nnoremap <leader>b :Neoformat<CR>
 
