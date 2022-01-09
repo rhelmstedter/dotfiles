@@ -524,7 +524,9 @@ nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
 nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
 
-"nnoremap <F5> <Esc>:w<CR>:!clear;python3 %<CR>
+"f-strings
+nnoremap <leader>fs maF"if<esc>`al
+
 let g:python_highlight_all = 1
 let g:neoformat_enabled_python = ['black']
 nnoremap <leader>b :Neoformat<CR>
