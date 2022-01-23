@@ -28,6 +28,7 @@ set backspace=indent,eol,start
 set nocompatible
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
+set fileencodings=utf-8
 
 "}}}
 "{{{=====[ Useful Mappings ]===================================================
@@ -102,7 +103,6 @@ Plug 'akinsho/org-bullets.nvim'
 Plug 'brymer-meneses/grammar-guard.nvim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'folke/zen-mode.nvim'
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'greghor/vim-pyShell'
 Plug 'honza/vim-snippets'
 Plug 'hrsh7th/cmp-buffer'
@@ -120,7 +120,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'kristijanhusak/orgmode.nvim'
 Plug 'lervag/vimtex'
-Plug 'lukas-reineke/headlines.nvim'
 Plug 'markonm/traces.vim'
 Plug 'michal-h21/vim-zettel'
 Plug 'neovim/nvim-lspconfig'
@@ -131,11 +130,10 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'preservim/vimux'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'reedes/vim-pencil'
-"Plug 'romgrk/doom-one.vim'
 Plug 'NTBBloodbath/doom-one.nvim'
 Plug 'sbdchd/neoformat'
 Plug 'shime/vim-livedown'
-Plug 'tpope/vim-commentary'
+Plug 'numToStr/Comment.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -179,16 +177,16 @@ syntax on
 
 "highlights recommended line length
 augroup columnLenHighlight
-    autocmd!
-    autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%81v', 100)
+  autocmd!
+  autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%81v', 100)
 augroup END
 
 "set tabs based on filetype
 augroup tabs
-    autocmd!
-    autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab|set nowrap
-    autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set nowrap|set nospell
-    autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent|set spell
+  autocmd!
+  autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab|set nowrap
+  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set nowrap|set nospell
+  autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent|set spell
 augroup END
 
 "Save folds after closing
@@ -257,6 +255,7 @@ cmp.setup({
   sources = cmp.config.sources({
       { name = 'nvim_lsp' },
       { name = 'ultisnips' }, -- For ultisnips users.
+      { name = 'orgmode' },
       { name = 'path' },
       { name = 'buffer' },
   })
@@ -357,7 +356,7 @@ let g:zettel_format = "%Y%m%d%H%M"
 "Main zettelkasten plus two github repos I use for work
 let g:vimwiki_list = [{'path': '~/Zettelkasten/zettel', 'syntax': 'markdown', 'ext': '.md'},
             \{'path': '~/Coding-in-Math-Class', 'syntax': 'markdown', 'ext': '.md'},
-            \{'path': '~/Coding', 'syntax': 'markdown', 'ext': '.md'}]
+            \{'path': '~/coding-class', 'syntax': 'markdown', 'ext': '.md'}]
 
 " Why learn vimwiki format when I sort of know markdown?
 let g:vimwiki_markdown_link_ext = 1
@@ -365,7 +364,7 @@ let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 let g:nv_search_paths = ['/Zettelkasten']
 let g:zettel_options = [{"front_matter" : [["tags", ""], ["citation", ""]]}]
-let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'lua']
+let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim']
 
 "I prefer ripgrep to ag, but honestly I just use telescope now
 let g:zettel_fzf_command = "rg --column --line-number --smart-case --no-heading --color=always"
@@ -379,7 +378,7 @@ vnoremap nz :<C-U>ZettelNew<CR>
 
 "adds #tags in addition to wiki tags for use in Zettlr
 function! AddTags()
-    normal! mm0wly$$p`mlv$:s/\%V:/ #/gA€kb€kb€ýaF:lx$
+    normal! mm0wly$$p`mlv$:s/\%V:/ #/gA?kb?kb??aF:lx$
 endfunction
 nnoremap <leader>at :call AddTags()<cr>
 nnoremap <C-e> :Buffers<CR>
@@ -416,7 +415,15 @@ augroup pencil
     autocmd!
     autocmd FileType markdown,mkd call pencil#init()
     autocmd FileType text         call pencil#init()
+    autocmd FileType org         call pencil#init()
 augroup END
+
+"}}}
+"{{{=====[ Comment ]===========================================================
+
+lua << EOF
+require('Comment').setup{ }
+EOF
 
 "}}}
 "{{{=====[ Less Distractions ]=================================================
@@ -463,20 +470,27 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = {'org'}, -- Or run :TSUpdate org
   }
 
-require('orgmode').setup({
-org_agenda_files = {'~/Dropbox/org/*', '~/org-mode/**/*'},
-org_default_notes_file = '~/Dropbox/org/refile.org',
-})
+require("org-bullets").setup {
+  symbols = { "â–", "â—‰", "â—‹", "âœ¸", "âœ¿" }
+  }
 
-require("headlines").setup()
+require('orgmode').setup{
+  org_agenda_files = {'~/Dropbox/org/*', '~/org-mode/**/*'},
+  org_default_notes_file = '~/Dropbox/org/refile.org',
+  org_todo_keywords = {'TODO(t)', 'WAITING(w)', '|', 'DONE', 'CANCALLED(c)'},
+  org_todo_keyword_faces = {
+    WAITING = ':foreground #51afef :weight bold',
+    TODO = ':foreground #98be65',
+  }
+}
+
 EOF
 
-function! SetOrgSets()
-    setlocal conceallevel=2
-    setlocal concealcursor=nc
-    setlocal nowrap
-endfunction
-autocmd FileType org call SetOrgSets()
+augroup orgSettings
+    autocmd!
+    autocmd FileType org set concealcursor=nc| set conceallevel=2|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
+augroup END
+
 
 "}}}
 "{{{=====[ Treesitter ]========================================================
@@ -548,21 +562,6 @@ noremap <leader>sk :call StopPyShell()<CR>
 nnoremap <leader>sl  :call PyShellSendLine()<CR>
 nnoremap <leader>r :call RunTmuxPythonCell(0)<CR>
 noremap <leader>ra :call RunTmuxPythonAllCellsAbove()<CR>
-
-"}}}
-"{{{=====[ Firevim ]===========================================================
-
-let g:firenvim_config = {
-            \ 'localSettings': {
-                \ '.*': {
-                    \ 'cmdline': 'neovim',
-                    \ 'content': 'text',
-                    \ 'priority': 0,
-                    \ 'selector': 'textarea',
-                    \ 'takeover': 'never',
-                    \ },
-                    \ }
-                    \ }
 
 "}}}
 "{{{=====[ Netrw ]=============================================================
