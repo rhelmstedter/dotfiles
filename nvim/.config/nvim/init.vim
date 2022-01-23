@@ -532,8 +532,14 @@ let g:neoformat_basic_format_trim = 1
 "run python code from inside vim
 let g:python_highlight_all = 1
 
+
+"for WSL on work comp
 "let g:python3_host_prog= '/usr/bin/python3'
+
+"for mac-mini
 "let g:python3_host_prog= '/opt/homebrew/bin/python3'
+
+" for mbp 2015
 let g:python3_host_prog= '/usr/local/bin/python3'
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
