@@ -178,7 +178,7 @@ syntax on
 "highlights recommended line length
 augroup columnLenHighlight
   autocmd!
-  autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%81v', 100)
+  autocmd BufEnter,WinEnter,FileType python highlight ColorColumn ctermbg=gray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
 augroup END
 
 "set tabs based on filetype
@@ -529,7 +529,6 @@ let g:neoformat_basic_format_retab = 1
 " Enable trimmming of trailing whitespace
 let g:neoformat_basic_format_trim = 1
 
-"run python code from inside vim
 let g:python_highlight_all = 1
 
 
