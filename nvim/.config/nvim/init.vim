@@ -184,7 +184,7 @@ augroup END
 augroup tabs
   autocmd!
   autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab|set nowrap
-  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set nowrap|set nospell
+  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set nowrap|set nospell|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
   autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent|set spell
 augroup END
 
@@ -210,82 +210,10 @@ augroup columnLenHighlight
 augroup END
 
 "}}}
-"{{{=====[ Autocomplete ]======================================================
-
-lua <<EOF
-local cmp = require'cmp'
-
-cmp.setup({
-  snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-    vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-  end,
-  },
-  mapping = {
-        ['<Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_next_item()
-        else
-            fallback()
-        end
-        end,
-        ['<S-Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_prev_item()
-        else
-            fallback()
-        end
-        end,
-        ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        },
-        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-        ['<C-e>'] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
-  sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'ultisnips' }, -- For ultisnips users.
-      { name = 'orgmode' },
-      { name = 'path' },
-      { name = 'buffer' },
-  })
-})
-
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline('/', {
-    sources = {
-        { name = 'buffer' }
-      }
-    })
-
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  sources = cmp.config.sources({
-      { name = 'path' },
-      { name = 'cmdline' }
-  })
-})
-EOF
-
-let g:UltiSnipsExpandTrigger="<c-l>"
-let g:UltiSnipsJumpForwardTrigger="<c-l>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-"}}}
 "{{{=====[ LSP ]===============================================================
 
 lua << EOF
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
+
 local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
@@ -314,19 +242,22 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 end
-  -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Add lsp servers to the lua table
-local servers = { 'grammarly', 'pyright', 'tailwindcss', 'bashls', 'pylsp' }
+  -- Setup lspconfig for autocompletion.
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
+  -- Add lsp servers to the lua table
+local servers = { 'pyright', 'tailwindcss', 'bashls', 'pylsp', --[[ 'jedi_language_server' ]] }
+
+ -- enable servers listed in the servers table
 for _, server in ipairs(servers) do
     require('lspconfig')[server].setup {
-        capabilities = capabilities
+      on_attach = on_attach,
+      capabilities = capabilities,
     }
 end
 
--- Diagnostics for LSP
-
+  -- Diagnostics for LSP
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
         virtual_text = false,
@@ -335,14 +266,92 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
+require'lspconfig'.grammarly.setup{
+    capabilities = capabilities,
+    cmd = { "unofficial-grammarly-language-server", "--stdio" },
+    filetypes = { "markdown", "vimwiki"},
+    autoActive = false,
+}
 
 local lsp_installer = require("nvim-lsp-installer")
 lsp_installer.on_server_ready(function(server)
     local opts = {}
     server:setup(opts)
-end)
 
+end)
 EOF
+
+"}}}
+"{{{=====[ Autocomplete ]======================================================
+
+lua <<EOF
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
+  mapping = {
+        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+        ['<C-e>'] = cmp.mapping{
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+        },
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<Tab>'] = function(fallback)
+        if cmp.visible() then
+            cmp.select_next_item()
+        else
+            fallback()
+        end
+        end,
+        ['<S-Tab>'] = function(fallback)
+        if cmp.visible() then
+            cmp.select_prev_item()
+        else
+            fallback()
+        end
+        end,
+        ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        },
+  },
+  sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'ultisnips' }, -- For ultisnips users.
+      { name = 'orgmode' },
+      { name = 'path' },
+      { name = 'buffer' },
+  })
+})
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+    sources = {
+        { name = 'buffer' },
+        { name = 'nvim_lsp' },
+    }
+})
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources{
+      { name = 'path' },
+      { name = 'cmdline' }
+  }
+})
+EOF
+
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 "}}}
 "{{{=====[ Latex ]=============================================================
@@ -515,13 +524,6 @@ require'nvim-treesitter.configs'.setup {
     highlight = {
     enable = true,
     },
-}
-require "nvim-treesitter.highlight"
-vim.treesitter.highlighter.hl_map.error = nil
-EOF
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
     incremental_selection = {
     enable = true,
     keymaps = {
@@ -532,7 +534,10 @@ require'nvim-treesitter.configs'.setup {
         },
     },
 }
+  vim.treesitter.highlighter.hl_map.error = nil
+  vim.optfoldexpr = "nvim_treesitter#foldexpr()"
 EOF
+
 
 "}}}
 "{{{=====[ Python ]============================================================
