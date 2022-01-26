@@ -1,21 +1,28 @@
  
 "{{{=====[ Settings ]==========================================================
 
+set backspace=indent,eol,start
 set cmdheight=2
+set completeopt=menuone,noinsert,noselect
 set expandtab
+set fileencodings=utf-8
 set foldmethod=marker
 set hidden
 set ignorecase
 set incsearch
+set linebreak
+set nocompatible
 set noswapfile
 set number
 set numberwidth=5
 set relativenumber
 set scrolloff=8
 set shiftwidth=2
+set shortmess+=c
 set showcmd
 set showmatch
 set smartcase
+set splitright
 set softtabstop=2
 set tabstop=2
 set termguicolors
@@ -23,12 +30,6 @@ set undodir=~/.config/nvim/undodir
 set undofile
 set updatetime=250
 set visualbell
-set linebreak
-set backspace=indent,eol,start
-set nocompatible
-set completeopt=menuone,noinsert,noselect
-set shortmess+=c
-set fileencodings=utf-8
 
 "}}}
 "{{{=====[ Useful Mappings ]===================================================
@@ -536,10 +537,11 @@ let g:python_highlight_all = 1
 "let g:python3_host_prog= '/usr/bin/python3'
 
 "for mac-mini
-"let g:python3_host_prog= '/opt/homebrew/bin/python3'
+let g:python3_host_prog= '/opt/homebrew/bin/python3'
 
 " for mbp 2015
-let g:python3_host_prog= '/usr/local/bin/python3'
+" let g:python3_host_prog= '/usr/local/bin/python3'
+
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
 nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
