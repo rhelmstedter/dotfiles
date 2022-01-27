@@ -1,21 +1,28 @@
  
 "{{{=====[ Settings ]==========================================================
 
+set backspace=indent,eol,start
 set cmdheight=2
+set completeopt=menuone,noinsert,noselect
 set expandtab
+set fileencodings=utf-8
 set foldmethod=marker
 set hidden
 set ignorecase
 set incsearch
+set linebreak
+set nocompatible
 set noswapfile
 set number
 set numberwidth=5
 set relativenumber
 set scrolloff=8
 set shiftwidth=2
+set shortmess+=c
 set showcmd
 set showmatch
 set smartcase
+set splitright
 set softtabstop=2
 set tabstop=2
 set termguicolors
@@ -23,12 +30,6 @@ set undodir=~/.config/nvim/undodir
 set undofile
 set updatetime=250
 set visualbell
-set linebreak
-set backspace=indent,eol,start
-set nocompatible
-set completeopt=menuone,noinsert,noselect
-set shortmess+=c
-set fileencodings=utf-8
 
 "}}}
 "{{{=====[ Useful Mappings ]===================================================
@@ -183,7 +184,7 @@ augroup END
 augroup tabs
   autocmd!
   autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab|set nowrap
-  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set nowrap|set nospell
+  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set nowrap|set nospell|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
   autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent|set spell
 augroup END
 
@@ -209,6 +210,68 @@ augroup columnLenHighlight
 augroup END
 
 "}}}
+"{{{=====[ LSP ]===============================================================
+
+lua << EOF
+
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+
+  -- Setup lspconfig for autocompletion.
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+  -- Add lsp servers to the lua table
+local servers = { 'pyright', 'tailwindcss', 'bashls',--[[  'pylsp', ]] --[[ 'jedi_language_server' ]] }
+
+ -- enable servers listed in the servers table
+for _, server in ipairs(servers) do
+    require('lspconfig')[server].setup {
+      capabilities = capabilities,
+    }
+end
+
+  -- Diagnostics for LSP
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false,
+        underline = false,
+        signs = true,
+    }
+)
+
+require'lspconfig'.grammarly.setup{
+    capabilities = capabilities,
+    cmd = { "unofficial-grammarly-language-server", "--stdio" },
+    filetypes = { "markdown", "vimwiki"},
+    autoActive = false,
+}
+
+local lsp_installer = require("nvim-lsp-installer")
+lsp_installer.on_server_ready(function(server)
+    local opts = {}
+    server:setup(opts)
+
+end)
+EOF
+
+"}}}
 "{{{=====[ Autocomplete ]======================================================
 
 lua <<EOF
@@ -218,10 +281,19 @@ cmp.setup({
   snippet = {
     -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-    vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-  end,
+      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
   },
   mapping = {
+        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+        ['<C-e>'] = cmp.mapping{
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+        },
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<Tab>'] = function(fallback)
         if cmp.visible() then
             cmp.select_next_item()
@@ -240,15 +312,6 @@ cmp.setup({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         },
-        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-        ['<C-e>'] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
   sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -262,16 +325,17 @@ cmp.setup({
   -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
     sources = {
-        { name = 'buffer' }
-      }
-    })
+        { name = 'buffer' },
+        { name = 'nvim_lsp' },
+    }
+})
 
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
-  sources = cmp.config.sources({
+  sources = cmp.config.sources{
       { name = 'path' },
       { name = 'cmdline' }
-  })
+  }
 })
 EOF
 
@@ -279,63 +343,6 @@ let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-"}}}
-"{{{=====[ LSP ]===============================================================
-
-lua <<EOF
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
-
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
-vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-
-  -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Add lsp servers to the lua table
-local servers = { 'vimls', 'grammarly', 'tailwindcss', 'bashls', 'pyright' }
-
-for _, lsp in pairs(servers) do
-  require('lspconfig')[lsp].setup {
-    capabilities = capabilities,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    }
-  }
-end
--- Diagnostics for LSP
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
-        underline = false,
-        signs = true,
-    }
-)
-
-
-local lsp_installer = require("nvim-lsp-installer")
-lsp_installer.on_server_ready(function(server)
-    local opts = {}
-    server:setup(opts)
-end)
-EOF
-
-" nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
 "}}}
 "{{{=====[ Latex ]=============================================================
 
@@ -507,13 +514,6 @@ require'nvim-treesitter.configs'.setup {
     highlight = {
     enable = true,
     },
-}
-require "nvim-treesitter.highlight"
-vim.treesitter.highlighter.hl_map.error = nil
-EOF
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
     incremental_selection = {
     enable = true,
     keymaps = {
@@ -524,7 +524,10 @@ require'nvim-treesitter.configs'.setup {
         },
     },
 }
+  vim.treesitter.highlighter.hl_map.error = nil
+  vim.optfoldexpr = "nvim_treesitter#foldexpr()"
 EOF
+
 
 "}}}
 "{{{=====[ Python ]============================================================
@@ -543,10 +546,11 @@ let g:python_highlight_all = 1
 "let g:python3_host_prog= '/usr/bin/python3'
 
 "for mac-mini
-"let g:python3_host_prog= '/opt/homebrew/bin/python3'
+" let g:python3_host_prog= '/opt/homebrew/bin/python3'
 
 " for mbp 2015
 let g:python3_host_prog= '/usr/local/bin/python3'
+
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
 nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
