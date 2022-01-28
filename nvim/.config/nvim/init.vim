@@ -238,7 +238,13 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
   -- Add lsp servers to the lua table
-local servers = { 'pyright', 'tailwindcss', 'bashls',--[[  'pylsp', ]] --[[ 'jedi_language_server' ]] }
+local servers = {
+  --[[ 'pyright', ]]
+  'tailwindcss',
+  'bashls',
+  'pylsp',
+  --[[ 'jedi_language_server', ]]
+}
 
  -- enable servers listed in the servers table
 for _, server in ipairs(servers) do
@@ -546,10 +552,10 @@ let g:python_highlight_all = 1
 "let g:python3_host_prog= '/usr/bin/python3'
 
 "for mac-mini
-" let g:python3_host_prog= '/opt/homebrew/bin/python3'
+let g:python3_host_prog= '/opt/homebrew/bin/python3'
 
 " for mbp 2015
-let g:python3_host_prog= '/usr/local/bin/python3'
+" let g:python3_host_prog= '/usr/local/bin/python3'
 
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 "run some tests
