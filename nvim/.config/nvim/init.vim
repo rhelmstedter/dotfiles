@@ -146,6 +146,8 @@ Plug 'Shatur/neovim-ayu'
 Plug 'vim-scripts/ironman.vim'
 call plug#end()
 
+lua require('helm')
+
 "}}}
 "{{{=====[ Display ]===========================================================
 
@@ -239,16 +241,18 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
   -- Add lsp servers to the lua table
 local servers = {
-  --[[ 'pyright', ]]
   'tailwindcss',
+  -- 'pyright',
   'bashls',
   'pylsp',
-  --[[ 'jedi_language_server', ]]
+  -- 'jedi_language_server',
 }
 
  -- enable servers listed in the servers table
 for _, server in ipairs(servers) do
     require('lspconfig')[server].setup {
+      on_attach = function() print('fuck you man')
+      end,
       capabilities = capabilities,
     }
 end
@@ -425,6 +429,7 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fc <cmd>Telescope command_history<cr>
+nnoremap <leader>fd <cmd>Telescope diagnostics<cr>
 
 "}}}
 "{{{=====[ Pencil ]============================================================
