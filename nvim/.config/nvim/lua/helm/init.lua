@@ -1,1 +1,5 @@
+require('helm.cmp')
+require('helm.nvim-lsp')
+require('helm.nvim-treesitter')
+require('helm.org')
 require('helm.telescope')

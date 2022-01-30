@@ -1,4 +1,4 @@
- 
+
 "{{{=====[ Settings ]==========================================================
 
 set backspace=indent,eol,start
@@ -13,18 +13,20 @@ set incsearch
 set linebreak
 set nocompatible
 set noswapfile
+set nowrap
+set nospell
 set number
-set numberwidth=5
+set numberwidth=4
 set relativenumber
 set scrolloff=8
-set shiftwidth=2
+set shiftwidth=4
 set shortmess+=c
 set showcmd
 set showmatch
 set smartcase
 set splitright
-set softtabstop=2
-set tabstop=2
+set softtabstop=4
+set tabstop=4
 set termguicolors
 set undodir=~/.config/nvim/undodir
 set undofile
@@ -41,7 +43,6 @@ inoremap jk <esc>
 nnoremap <leader>w :w<CR>
 
 "quickly edit ~/.vimrc
-nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
 "navigating windows
@@ -94,8 +95,8 @@ nnoremap <leader>n :Ex<CR>
 
 "run PlugInstall if there are missing plugins
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-            \| PlugInstall --sync | source $MYVIMRC
-            \| endif
+      \| PlugInstall --sync | source $MYVIMRC
+      \| endif
 
 call plug#begin()
 Plug 'SirVer/ultisnips'
@@ -125,6 +126,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'preservim/vimux'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
@@ -142,8 +144,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'voldikss/vim-floaterm'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'xiyaowong/nvim-transparent'
-Plug 'Shatur/neovim-ayu'
-Plug 'vim-scripts/ironman.vim'
+Plug 'onsails/lspkind-nvim'
 call plug#end()
 
 lua require('helm')
@@ -157,11 +158,11 @@ let g:sunset = 17
 let g:sunrise = 7
 
 if strftime("%H") >= sunset
-    let g:airline_theme='onedark'
+  let g:airline_theme='onedark'
 elseif  strftime("%H") < sunrise
-    let g:airline_theme='onedark'
+  let g:airline_theme='onedark'
 else
-    let g:airline_theme='transparent'
+  let g:airline_theme='transparent'
 endif
 
 let g:dusk_til_dawn_light_theme = 'doom-one'
@@ -185,169 +186,29 @@ augroup END
 "set tabs based on filetype
 augroup tabs
   autocmd!
-  autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab|set nowrap
-  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set nowrap|set nospell|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
-  autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent|set spell
+  autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab
+  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
+  autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
+  autocmd FileType vimwiki set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
 augroup END
 
 "Save folds after closing
 augroup folds
-    autocmd!
-    if "" != expand("%")
-        autocmd BufWinLeave *.* mkview
-    endif
-    autocmd BufWinEnter *.* silent! loadview
+  autocmd!
+  if "" != expand("%")
+    autocmd BufWinLeave *.* mkview
+  endif
+  autocmd BufWinEnter *.* silent! loadview
 augroup END
 
 "highlight yanked region
 augroup highlight_yank
-    autocmd!
-    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
-augroup END
-
-"highlights recommended line length
-augroup columnLenHighlight
-    autocmd!
-    autocmd BufEnter,WinEnter,FileType python,julia highlight ColorColumn ctermbg=gray guibg=#c678dd|call matchadd('ColorColumn', '\%81v', 100)
+  autocmd!
+  au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
 augroup END
 
 "}}}
-"{{{=====[ LSP ]===============================================================
-
-lua << EOF
-
-local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-
-  -- Setup lspconfig for autocompletion.
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
-  -- Add lsp servers to the lua table
-local servers = {
-  'tailwindcss',
-  -- 'pyright',
-  'bashls',
-  'pylsp',
-  -- 'jedi_language_server',
-}
-
- -- enable servers listed in the servers table
-for _, server in ipairs(servers) do
-    require('lspconfig')[server].setup {
-      on_attach = function() print('fuck you man')
-      end,
-      capabilities = capabilities,
-    }
-end
-
-  -- Diagnostics for LSP
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
-        underline = false,
-        signs = true,
-    }
-)
-
-require'lspconfig'.grammarly.setup{
-    capabilities = capabilities,
-    cmd = { "unofficial-grammarly-language-server", "--stdio" },
-    filetypes = { "markdown", "vimwiki"},
-    autoActive = false,
-}
-
-local lsp_installer = require("nvim-lsp-installer")
-lsp_installer.on_server_ready(function(server)
-    local opts = {}
-    server:setup(opts)
-
-end)
-EOF
-
-"}}}
-"{{{=====[ Autocomplete ]======================================================
-
-lua <<EOF
-local cmp = require'cmp'
-
-cmp.setup({
-  snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-    end,
-  },
-  mapping = {
-        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-        ['<C-e>'] = cmp.mapping{
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        },
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        ['<Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_next_item()
-        else
-            fallback()
-        end
-        end,
-        ['<S-Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_prev_item()
-        else
-            fallback()
-        end
-        end,
-        ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        },
-  },
-  sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'ultisnips' }, -- For ultisnips users.
-      { name = 'orgmode' },
-      { name = 'path' },
-      { name = 'buffer' },
-  })
-})
-
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline('/', {
-    sources = {
-        { name = 'buffer' },
-        { name = 'nvim_lsp' },
-    }
-})
-
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  sources = cmp.config.sources{
-      { name = 'path' },
-      { name = 'cmdline' }
-  }
-})
-EOF
+"{{{=====[ UltiSnips ]=========================================================
 
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
@@ -364,10 +225,9 @@ let g:tex_conceal='abdmg'
 "}}}
 "{{{=====[ Word Processing ]===================================================
 
-
 "spellcheck
 function! FixLastSpellingError()
-    normal! mm[s1z=`m"
+  normal! mm[s1z=`m"
 endfunction
 nnoremap <leader>sc :call FixLastSpellingError()<cr>
 
@@ -377,10 +237,11 @@ nnoremap <leader>sc :call FixLastSpellingError()<cr>
 
 filetype plugin on
 let g:zettel_format = "%Y%m%d%H%M"
-"Main zettelkasten plus two github repos I use for work
-let g:vimwiki_list = [{'path': '~/Zettelkasten/zettel', 'syntax': 'markdown', 'ext': '.md'},
-            \{'path': '~/Coding-in-Math-Class', 'syntax': 'markdown', 'ext': '.md'},
-            \{'path': '~/coding-class', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [
+    \{'path': '~/Zettelkasten/zettel', 'syntax': 'markdown', 'ext': '.md'},
+    \{'path': '~/Coding-in-Math-Class', 'syntax': 'markdown', 'ext': '.md'},
+    \{'path': '~/coding-class', 'syntax': 'markdown', 'ext': '.md'},
+    \]
 
 " Why learn vimwiki format when I sort of know markdown?
 let g:vimwiki_markdown_link_ext = 1
@@ -402,7 +263,7 @@ vnoremap nz :<C-U>ZettelNew<CR>
 
 "adds #tags in addition to wiki tags for use in Zettlr
 function! AddTags()
-    normal! mm0wly$$p`mlv$:s/\%V:/ #/gA?kb?kb??aF:lx$
+  normal! mm0wly$$p`mlv$:s/\%V:/ #/gA?kb?kb??aF:lx$
 endfunction
 nnoremap <leader>at :call AddTags()<cr>
 nnoremap <C-e> :Buffers<CR>
@@ -417,19 +278,9 @@ nnoremap <leader>zk :vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>
 "don't expand links in normal mode
 augroup hide_links
   autocmd!
-  autocmd FileType vimwiki set concealcursor=nc| set conceallevel=2|
-  autocmd FileType markdown set concealcursor=nc| set conceallevel=2|
+  autocmd FileType vimwiki set concealcursor=nc |set conceallevel=2
+  autocmd FileType markdown set concealcursor=nc |set conceallevel=2
 augroup END
-
-"}}}
-"{{{=====[ Telescope ]=========================================================
-
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>fc <cmd>Telescope command_history<cr>
-nnoremap <leader>fd <cmd>Telescope diagnostics<cr>
 
 "}}}
 "{{{=====[ Pencil ]============================================================
@@ -437,10 +288,10 @@ nnoremap <leader>fd <cmd>Telescope diagnostics<cr>
 let g:pencil#wrapModeDefault = 'soft'   "default is 'hard'
 
 augroup pencil
-    autocmd!
-    autocmd FileType markdown,mkd call pencil#init()
-    autocmd FileType text         call pencil#init()
-    autocmd FileType org         call pencil#init()
+  autocmd!
+  autocmd FileType markdown,mkd call pencil#init()
+  autocmd FileType text         call pencil#init()
+  autocmd FileType org         call pencil#init()
 augroup END
 
 "}}}
@@ -454,19 +305,19 @@ EOF
 "{{{=====[ Less Distractions ]=================================================
 
 function! s:goyo_enter()
-    set nonumber
-    set nornu
+  set nonumber
+  set nornu
 endfunction
 
 function! s:goyo_leave()
-    set number
-    set rnu
+  set number
+  set rnu
 endfunction
 
 augroup Goyo
-    autocmd!
-    autocmd! User GoyoEnter nested call <SID>goyo_enter()
-    autocmd! User GoyoLeave nested call <SID>goyo_leave()
+  autocmd!
+  autocmd! User GoyoEnter nested call <SID>goyo_enter()
+  autocmd! User GoyoLeave nested call <SID>goyo_leave()
 augroup END
 
 nnoremap <leader>gy :Goyo<CR>
@@ -475,69 +326,10 @@ nnoremap <leader>gz :ZenMode<CR>
 "}}}
 "{{{=====[ Orgmode ]===========================================================
 
-lua << EOF
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.org = {
-    install_info = {
-        url = 'https://github.com/milisims/tree-sitter-org',
-        revision = 'main',
-        files = {'src/parser.c', 'src/scanner.cc'},
-        },
-    filetype = 'org',
-    }
-
-require'nvim-treesitter.configs'.setup {
-    -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
-    highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
-    },
-  ensure_installed = {'org'}, -- Or run :TSUpdate org
-  }
-
-require("org-bullets").setup {
-  symbols = { "⁖", "◉", "○", "✸", "✿" }
-  }
-
-require('orgmode').setup{
-  org_agenda_files = {'~/Dropbox/org/*', '~/org-mode/**/*'},
-  org_default_notes_file = '~/Dropbox/org/refile.org',
-  org_todo_keywords = {'TODO(t)', 'WAITING(w)', '|', 'DONE', 'CANCALLED(c)'},
-  org_todo_keyword_faces = {
-    WAITING = ':foreground #51afef :weight bold',
-    TODO = ':foreground #98be65',
-  }
-}
-
-EOF
-
 augroup orgSettings
-    autocmd!
-    autocmd FileType org set concealcursor=nc| set conceallevel=2|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
+  autocmd!
+  autocmd FileType org set concealcursor=nc| set conceallevel=2|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
 augroup END
-
-
-"}}}
-"{{{=====[ Treesitter ]========================================================
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-    highlight = {
-    enable = true,
-    },
-    incremental_selection = {
-    enable = true,
-    keymaps = {
-        init_selection = "gnn",
-        node_incremental = "grn",
-        scope_incremental = "grc",
-        node_decremental = "grm",
-        },
-    },
-}
-  vim.treesitter.highlighter.hl_map.error = nil
-  vim.optfoldexpr = "nvim_treesitter#foldexpr()"
-EOF
 
 
 "}}}
@@ -549,9 +341,6 @@ let g:neoformat_basic_format_align = 1
 let g:neoformat_basic_format_retab = 1
 " Enable trimmming of trailing whitespace
 let g:neoformat_basic_format_trim = 1
-
-let g:python_highlight_all = 1
-
 
 "for WSL on work comp
 "let g:python3_host_prog= '/usr/bin/python3'
