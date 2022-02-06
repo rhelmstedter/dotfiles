@@ -154,8 +154,8 @@ lua require('helm')
 
 " Change theme based on time of day
 " Winter sunset at 5pm Summer sunset at 8pm
-let g:sunset = 17
 let g:sunrise = 7
+let g:sunset = 8
 
 if strftime("%H") >= sunset
   let g:airline_theme='onedark'
@@ -219,7 +219,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 let g:tex_flavor='latex'
 let g:vimtex_quickfix_mode=0
-"set conceallevel=1
 let g:tex_conceal='abdmg'
 
 "}}}

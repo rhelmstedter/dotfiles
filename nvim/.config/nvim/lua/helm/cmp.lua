@@ -19,24 +19,24 @@ cmp.setup({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
         },
-       ['<Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_next_item()
-        else
-            fallback()
-        end
-        end,
-        ['<S-Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.select_prev_item()
-        else
-            fallback()
-        end
-        end,
         ['<CR>'] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
-        },
+	   },
+       -- ['<Tab>'] = function(fallback)
+       --  if cmp.visible() then
+       --      cmp.select_next_item()
+       --  else
+       --      fallback()
+       --  end
+       --  end,
+       --  ['<S-Tab>'] = function(fallback)
+       --  if cmp.visible() then
+       --      cmp.select_prev_item()
+       --  else
+       --      fallback()
+       --  end
+       --  end,
     },
 
     formatting = {
