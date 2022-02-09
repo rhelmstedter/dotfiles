@@ -43,7 +43,7 @@ inoremap jk <esc>
 nnoremap <leader>w :w<CR>
 
 "quickly edit ~/.vimrc
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader><leader>s :source $MYVIMRC<cr>
 
 "navigating windows
 nnoremap <leader>h <C-w>h
@@ -99,12 +99,17 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
       \| endif
 
 call plug#begin()
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
+" Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'Th3Whit3Wolf/Dusk-til-Dawn.nvim'
 Plug 'akinsho/org-bullets.nvim'
 Plug 'brymer-meneses/grammar-guard.nvim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'folke/zen-mode.nvim'
+Plug 'folke/twilight.nvim'
 Plug 'greghor/vim-pyShell'
 Plug 'honza/vim-snippets'
 Plug 'hrsh7th/cmp-buffer'
@@ -129,7 +134,6 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'preservim/vimux'
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'reedes/vim-pencil'
 Plug 'NTBBloodbath/doom-one.nvim'
 Plug 'sbdchd/neoformat'
@@ -148,7 +152,6 @@ Plug 'onsails/lspkind-nvim'
 call plug#end()
 
 lua require('helm')
-
 "}}}
 "{{{=====[ Display ]===========================================================
 
@@ -254,18 +257,9 @@ let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim']
 let g:zettel_fzf_command = "rg --column --line-number --smart-case --no-heading --color=always"
 
 "let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4"
+" let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4"
 "Nice way to see how markdown will render
 nmap gm :LivedownToggle<CR>
-
-vnoremap nz :<C-U>ZettelNew<CR>
-
-"adds #tags in addition to wiki tags for use in Zettlr
-function! AddTags()
-  normal! mm0wly$$p`mlv$:s/\%V:/ #/gA?kb?kb??aF:lx$
-endfunction
-nnoremap <leader>at :call AddTags()<cr>
-nnoremap <C-e> :Buffers<CR>
 
 "toggle file type between md and vimwiki filetypes
 nnoremap <leader>md :set filetype=markdown<CR>
@@ -299,28 +293,6 @@ augroup END
 lua << EOF
 require('Comment').setup{ }
 EOF
-
-"}}}
-"{{{=====[ Less Distractions ]=================================================
-
-function! s:goyo_enter()
-  set nonumber
-  set nornu
-endfunction
-
-function! s:goyo_leave()
-  set number
-  set rnu
-endfunction
-
-augroup Goyo
-  autocmd!
-  autocmd! User GoyoEnter nested call <SID>goyo_enter()
-  autocmd! User GoyoLeave nested call <SID>goyo_leave()
-augroup END
-
-nnoremap <leader>gy :Goyo<CR>
-nnoremap <leader>gz :ZenMode<CR>
 
 "}}}
 "{{{=====[ Orgmode ]===========================================================

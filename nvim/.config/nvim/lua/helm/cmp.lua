@@ -1,13 +1,16 @@
 local cmp = require('cmp')
+
 local lspkind = require('lspkind')
 lspkind.init()
 
+
 cmp.setup({
     snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-    end,
+        -- REQUIRED - you must specify a snippet engine
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        end,
     },
 
     mapping = {
@@ -23,40 +26,28 @@ cmp.setup({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
 	   },
-       -- ['<Tab>'] = function(fallback)
-       --  if cmp.visible() then
-       --      cmp.select_next_item()
-       --  else
-       --      fallback()
-       --  end
-       --  end,
-       --  ['<S-Tab>'] = function(fallback)
-       --  if cmp.visible() then
-       --      cmp.select_prev_item()
-       --  else
-       --      fallback()
-       --  end
-       --  end,
     },
 
     formatting = {
         format = lspkind.cmp_format {
             with_text = false,
             menu = {
-                nvim_lua = "[API]",
+                luasnip = "[snip]",
                 nvim_lsp = "[LSP]",
                 buffer = "[buf]",
                 path = "[path]",
                 orgmode = "[org]",
-                ultisnips = "[snip]",
+                nvim_lua = "[API]",
+                -- ultisnips = "[snip]",
             },
         },
     },
 
     sources = cmp.config.sources({
+        { name = 'luasnip' }, -- For luasnip users.
         { name = 'nvim_lua' },
         { name = 'nvim_lsp' },
-        { name = 'ultisnips' }, -- For ultisnips users.
+        -- { name = 'ultisnips' }, -- For ultisnips users.
         { name = 'orgmode' },
         { name = 'path' },
         { name = 'buffer', keyword_length = 5 },
