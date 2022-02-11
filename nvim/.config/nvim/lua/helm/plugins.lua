@@ -90,7 +90,8 @@ return packer.startup(function(use)
     use "kristijanhusak/orgmode.nvim"
     use "dhruvasagar/vim-table-mode"
 
-    -- data science
+    -- python
+    use 'python/black'
     use "greghor/vim-pyshell"
     use "julienr/vim-cellmode"
     use "shime/vim-livedown"
@@ -101,6 +102,8 @@ return packer.startup(function(use)
     use "michal-h21/vim-zettel"
     use "vimwiki/vimwiki"
     use "reedes/vim-pencil"
+    use 'junegunn/fzf'
+    use 'junegunn/fzf.vim'
 
 
   -- Automatically set up your configuration after cloning packer.nvim

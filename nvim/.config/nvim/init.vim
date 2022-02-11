@@ -188,13 +188,6 @@ augroup highlight_yank
 augroup END
 
 "}}}
-"{{{=====[ UltiSnips ]=========================================================
-
-" let g:UltiSnipsExpandTrigger="<c-l>"
-" let g:UltiSnipsJumpForwardTrigger="<c-l>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-"}}}
 "{{{=====[ Latex ]=============================================================
 
 " let g:tex_flavor='latex'
@@ -273,11 +266,6 @@ require('Comment').setup{ }
 EOF
 
 "}}}
-"{{{=====[ Orgmode ]===========================================================
-
-
-
-"}}}
 "{{{=====[ Python ]============================================================
 
 " Enable alignment
@@ -298,13 +286,15 @@ let g:python3_host_prog= '/opt/homebrew/bin/python3'
 
 nnoremap <F5> :w<CR> :FloatermNew python3 %<CR>
 " run some tests
-nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
+" nnoremap <leader>t :w<CR> :FloatermNew pytest -svv<CR>
 
 " f-strings
 nnoremap <leader>fs maF"if<esc>`al
 
-let g:neoformat_enabled_python = ['black']
-nnoremap <leader>b :Neoformat<CR>
+autocmd BufWritePre *.py execute ':Black'
+
+" let g:neoformat_enabled_python = ['black']
+" nnoremap <leader>b :Neoformat<CR>
 
 "}}}
 "{{{=====[ Data Science ]======================================================

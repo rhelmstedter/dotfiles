@@ -14,7 +14,7 @@ toggleterm.setup({
 	insert_mappings = true,
 	persist_size = true,
 	direction = "float",
-	close_on_exit = true,
+	close_on_exit = false,
 	shell = vim.o.shell,
 	float_opts = {
 		border = "curved",
@@ -38,6 +38,7 @@ end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
+
 local Terminal = require("toggleterm.terminal").Terminal
 local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
@@ -47,14 +48,19 @@ end
 
 vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", {noremap = true, silent = true})
 
-local htop = Terminal:new({ cmd = "htop", hidden = true })
-
-function _HTOP_TOGGLE()
-	htop:toggle()
-end
 
 local python = Terminal:new({ cmd = "python3", hidden = true })
 
 function _PYTHON_TOGGLE()
 	python:toggle()
 end
+vim.api.nvim_set_keymap("n", "<C-p>", "<cmd>lua _PYTHON_TOGGLE()<CR>", {noremap = true, silent = true})
+
+
+local pytest = Terminal:new({ cmd ="python3 -m pytest -svv", hidden = true })
+
+function _PYTEST_TOGGLE()
+	pytest:toggle()
+end
+vim.api.nvim_set_keymap("n", "<c-t>", "<cmd>w<CR><cmd>lua _PYTEST_TOGGLE()<CR>", {noremap = true, silent = true})
+
