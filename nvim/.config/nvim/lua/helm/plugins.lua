@@ -40,49 +40,68 @@ packer.init {
 -- Install your plugins here
 return packer.startup(function(use)
 
-    use 'nvim-lualine/lualine.nvim'
-    use 'kyazdani42/nvim-web-devicons'
-    use 'l3mon4d3/luasnip'
-    use 'saadparwaiz1/cmp_luasnip'
-    use 'rafamadriz/friendly-snippets'
-    use 'th3whit3wolf/dusk-til-dawn.nvim'
-    use 'akinsho/org-bullets.nvim'
-    use 'brymer-meneses/grammar-guard.nvim'
-    use 'dhruvasagar/vim-table-mode'
-    use 'folke/zen-mode.nvim'
-    use 'folke/twilight.nvim'
-    use 'greghor/vim-pyshell'
-    use 'honza/vim-snippets'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/nvim-cmp'
-    use 'julienr/vim-cellmode'
-    use 'kristijanhusak/orgmode.nvim'
-    use 'lervag/vimtex'
-    use 'markonm/traces.vim'
-    use 'michal-h21/vim-zettel'
-    use 'neovim/nvim-lspconfig'
-    use 'nvim-lua/plenary.nvim'
-    use 'nvim-lua/popup.nvim'
-    use 'nvim-telescope/telescope.nvim'
-    use 'nvim-telescope/telescope-fzy-native.nvim'
-    use {'nvim-treesitter/nvim-treesitter', run = ':tsupdate'}
-    use 'preservim/vimux'
-    use 'reedes/vim-pencil'
-    use 'ntbbloodbath/doom-one.nvim'
-    use 'sbdchd/neoformat'
-    use 'shime/vim-livedown'
-    use 'numtostr/comment.nvim'
-    use 'tpope/vim-fugitive'
-    use 'tpope/vim-repeat'
-    use 'tpope/vim-surround'
-    use 'vimwiki/vimwiki'
-    use 'voldikss/vim-floaterm'
-    use 'williamboman/nvim-lsp-installer'
-    use 'xiyaowong/nvim-transparent'
-    use 'onsails/lspkind-nvim'
+    -- auto complete
+    use "hrsh7th/cmp-buffer"
+    use "hrsh7th/cmp-cmdline"
+    use "hrsh7th/cmp-nvim-lsp"
+    use "hrsh7th/cmp-path"
+    use "hrsh7th/nvim-cmp"
+
+    -- lsp
+    use "neovim/nvim-lspconfig"
+    use "williamboman/nvim-lsp-installer"
+
+    -- general nvim
+    use "nvim-lua/plenary.nvim"
+    use "nvim-lua/popup.nvim"
+
+    -- improve vim experience
+    use "markonm/traces.vim"
+    use "numtostr/comment.nvim"
+    use "tpope/vim-fugitive"
+    use "tpope/vim-repeat"
+    use "tpope/vim-surround"
+    use "voldikss/vim-floaterm"
+    use "sbdchd/neoformat"
+    use "akinsho/toggleterm.nvim"
+
+    -- telescope
+    use "nvim-telescope/telescope.nvim"
+    use "nvim-telescope/telescope-fzy-native.nvim"
+
+    -- snippets
+    use "l3mon4d3/luasnip"
+    use "saadparwaiz1/cmp_luasnip"
+    use "rafamadriz/friendly-snippets"
+
+    -- display
+    use {"nvim-treesitter/nvim-treesitter", run = ":tsupdate"}
+    use "nvim-lualine/lualine.nvim"
+    use "kyazdani42/nvim-web-devicons"
+    use "th3whit3wolf/dusk-til-dawn.nvim"
+    use "folke/zen-mode.nvim"
+    use "folke/twilight.nvim"
+    use "xiyaowong/nvim-transparent"
+    use "onsails/lspkind-nvim"
+    use "ntbbloodbath/doom-one.nvim"
+
+    -- orgmode
+    use "akinsho/org-bullets.nvim"
+    use "kristijanhusak/orgmode.nvim"
+    use "dhruvasagar/vim-table-mode"
+
+    -- data science
+    use "greghor/vim-pyshell"
+    use "julienr/vim-cellmode"
+    use "shime/vim-livedown"
+    use "lervag/vimtex"
+    use "preservim/vimux"
+
+    -- zettelkasten
+    use "michal-h21/vim-zettel"
+    use "vimwiki/vimwiki"
+    use "reedes/vim-pencil"
+
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
