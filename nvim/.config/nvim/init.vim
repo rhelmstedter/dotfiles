@@ -208,43 +208,6 @@ nnoremap <leader>sc :call FixLastSpellingError()<cr>
 "{{{=====[ Vimwiki and Vim-zettel ]============================================
 
 filetype plugin on
-let g:zettel_format = "%Y%m%d%H%M"
-let g:vimwiki_list = [
-    \{'path': '~/Zettelkasten/zettel', 'syntax': 'markdown', 'ext': '.md'},
-    \{'path': '~/Coding-in-Math-Class', 'syntax': 'markdown', 'ext': '.md'},
-    \{'path': '~/coding-class', 'syntax': 'markdown', 'ext': '.md'},
-    \]
-
-" Why learn vimwiki format when I sort of know markdown?
-let g:vimwiki_markdown_link_ext = 1
-let g:vimwiki_global_ext = 0
-let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-let g:nv_search_paths = ['/Zettelkasten']
-let g:zettel_options = [{"front_matter" : [["tags", ""], ["citation", ""]]}]
-let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim']
-
-" I prefer ripgrep to ag, but honestly I just use telescope now
-let g:zettel_fzf_command = "rg --column --line-number --smart-case --no-heading --color=always"
-
-" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-" let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4"
-" Nice way to see how markdown will render
-nmap gm :LivedownToggle<CR>
-
-" toggle file type between md and vimwiki filetypes
-nnoremap <leader>md :set filetype=markdown<CR>
-nnoremap <leader>vw :set filetype=vimwiki<CR>
-
-" open zettelkasten to search notes while working in vim
-nnoremap <leader>zk :vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>
-
-" don't expand links in normal mode
-augroup hide_links
-  autocmd!
-  autocmd FileType vimwiki set concealcursor=nc |set conceallevel=2
-  autocmd FileType markdown set concealcursor=nc |set conceallevel=2
-augroup END
-
 "}}}
 "{{{=====[ Pencil ]============================================================
 
