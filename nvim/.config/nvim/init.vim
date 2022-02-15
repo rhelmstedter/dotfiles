@@ -156,37 +156,6 @@ syntax on
 
 "}}}
 "{{{=====[ Auto Commands ]=====================================================
-
-" highlights recommended line length
-augroup columnLenHighlight
-  autocmd!
-  autocmd BufEnter,WinEnter,FileType python highlight ColorColumn ctermbg=gray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
-augroup END
-
-" set tabs based on filetype
-augroup tabs
-  autocmd!
-  autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab
-  autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
-  autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
-  autocmd FileType vimwiki set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
-augroup END
-
-" Save folds after closing
-augroup folds
-  autocmd!
-  if "" != expand("%")
-    autocmd BufWinLeave *.* mkview
-  endif
-  autocmd BufWinEnter *.* silent! loadview
-augroup END
-
-" highlight yanked region
-augroup highlight_yank
-  autocmd!
-  au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
-augroup END
-
 "}}}
 "{{{=====[ Latex ]=============================================================
 
@@ -204,10 +173,6 @@ endfunction
 nnoremap <leader>sc :call FixLastSpellingError()<cr>
 
 
-"}}}
-"{{{=====[ Vimwiki and Vim-zettel ]============================================
-
-filetype plugin on
 "}}}
 "{{{=====[ Pencil ]============================================================
 

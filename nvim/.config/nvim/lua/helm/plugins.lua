@@ -104,7 +104,7 @@ return packer.startup(function(use)
     use "reedes/vim-pencil"
     use 'junegunn/fzf'
     use 'junegunn/fzf.vim'
-
+    -- use 'ibhagwan/fzf-lua'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
