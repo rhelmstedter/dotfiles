@@ -45,7 +45,6 @@ vim.g.fzf_layout = {
 }
 
 -- let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4"
-
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
@@ -61,10 +60,18 @@ keymap('n', "<leader>zk", ":vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<
 
 
 vim.cmd [[
+let g:pencil#wrapModeDefault = 'soft'
+let g:pencil#textwidth = 90
+let g:pencil#joinspaces = 0     " 0=one_space (def), 1=two_spaces
+let g:pencil#cursorwrap = 1     " 0=disable, 1=enable (def)
+let g:pencil#conceallevel = 3     " 0=disable, 1=one char, 2=hide char, 3=hide all (def)
+let g:pencil#concealcursor = 'c'  " n=normal, v=visual, i=insert, c=command (def)
+
 augroup pencil
-  autocmd!
-  autocmd FileType markdown call pencil#init()
-  autocmd FileType org         call pencil#init()
+    autocmd!
+    autocmd User TelescopePreviewerLoaded setlocal wrap
+    autocmd FileType markdown call pencil#init()
+    autocmd FileType org         call pencil#init()
 augroup END
 ]]
 

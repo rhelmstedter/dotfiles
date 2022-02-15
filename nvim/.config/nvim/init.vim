@@ -176,15 +176,12 @@ nnoremap <leader>sc :call FixLastSpellingError()<cr>
 "}}}
 "{{{=====[ Pencil ]============================================================
 
-let g:pencil#wrapModeDefault = 'soft'   "default is 'hard'
-let g:pencil#textwidth = 90
-let g:pencil#autoformat = 1 " 0=disable, 1=enable (def)
-
-augroup pencil
-  autocmd!
-  autocmd FileType markdown,mkd call pencil#init()
-  autocmd FileType org         call pencil#init()
-augroup END
+"
+" augroup pencil
+"   autocmd!
+"   autocmd FileType markdown,mkd call pencil#init({'wrap': 'soft'})
+"   autocmd FileType org         call pencil#init()
+" augroup END
 
 "}}}
 "{{{=====[ Comment ]===========================================================

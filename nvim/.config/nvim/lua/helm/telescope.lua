@@ -30,7 +30,7 @@ require("telescope").setup {
             override_file_sorter = true,
         },
     },
-  }
+}
 
 require("telescope").load_extension("fzy_native")
 
@@ -50,17 +50,18 @@ vim.api.nvim_set_keymap("n", "<Leader>fd", ":Telescope diagnostics<CR>", opts)
 local M = {}
 M.search_dotfiles = function()
     require("telescope.builtin").find_files({
-        prompt_title = "<dotfiles>",
+        prompt_title = "< dotfiles >",
         cwd = "~/dotfiles",
-        hidden = true
+        hidden = false,
     })
 end
 
 M.search_vimrc = function()
     require("telescope.builtin").find_files({
-        prompt_title = "<VimRC>",
+        prompt_title = "< VimRC >",
         cwd = "~/dotfiles/nvim/.config/nvim/",
-        hidden = true
+        hidden = true,
+        shorten_path = true,
     })
 end
 

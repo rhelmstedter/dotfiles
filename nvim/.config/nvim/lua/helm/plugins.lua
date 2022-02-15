@@ -101,10 +101,9 @@ return packer.startup(function(use)
     -- zettelkasten
     use "michal-h21/vim-zettel"
     use "vimwiki/vimwiki"
-    use "reedes/vim-pencil"
+    use "preservim/vim-pencil"
     use 'junegunn/fzf'
     use 'junegunn/fzf.vim'
-    -- use 'ibhagwan/fzf-lua'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
