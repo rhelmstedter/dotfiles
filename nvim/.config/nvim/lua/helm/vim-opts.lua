@@ -43,3 +43,5 @@ vim.opt.shortmess:append "c"
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
+
+vim.g.netrw_banner = 0

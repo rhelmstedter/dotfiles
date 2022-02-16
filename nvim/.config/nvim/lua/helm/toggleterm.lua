@@ -38,29 +38,34 @@ end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
-
 local Terminal = require("toggleterm.terminal").Terminal
-local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
+local keymap = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+
+local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 function _LAZYGIT_TOGGLE()
 	lazygit:toggle()
 end
 
-vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", {noremap = true, silent = true})
+keymap("n", "<leader>g", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 
 
 local python = Terminal:new({ cmd = "python3", hidden = true })
-
 function _PYTHON_TOGGLE()
 	python:toggle()
 end
-vim.api.nvim_set_keymap("n", "<C-p>", "<cmd>lua _PYTHON_TOGGLE()<CR>", {noremap = true, silent = true})
+keymap("n", "<C-p>", "<cmd>lua _PYTHON_TOGGLE()<CR>", opts)
 
 
 local pytest = Terminal:new({ cmd ="python3 -m pytest -svv", hidden = true })
-
 function _PYTEST_TOGGLE()
 	pytest:toggle()
 end
-vim.api.nvim_set_keymap("n", "<c-t>", "<cmd>w<CR><cmd>lua _PYTEST_TOGGLE()<CR>", {noremap = true, silent = true})
+keymap("n", "<c-t>", "<cmd>w<CR><cmd>lua _PYTEST_TOGGLE()<CR>", opts)
 
+local runpython = Terminal:new({ cmd ="python3 "..vim.fn.expand('%'), hidden = true })
+function _RUNPYTHON_TOGGLE()
+	runpython:toggle()
+end
+keymap("n", "<F5>", "<cmd>w<CR><cmd>lua _RUNPYTHON_TOGGLE()<CR>", opts)

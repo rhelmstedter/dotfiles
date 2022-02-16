@@ -59,6 +59,14 @@ keymap('n', "<leader>vw", ":set filetype=vimwiki<CR>", opts)
 keymap('n', "<leader>zk", ":vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>", opts)
 
 
+-- spellcheck
+vim.cmd [[
+    function! FixLastSpellingError()
+    normal! mm[s1z=`m"
+    endfunction
+    nnoremap <leader>sc :call FixLastSpellingError()<cr>
+]]
+
 vim.cmd [[
 let g:pencil#wrapModeDefault = 'soft'
 let g:pencil#textwidth = 90
