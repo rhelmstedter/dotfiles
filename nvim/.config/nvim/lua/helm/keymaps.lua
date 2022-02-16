@@ -1,4 +1,4 @@
-vim.cmd [[
+vim.cmd([[
     let mapleader = " "
     inoremap jk <esc>
 
@@ -62,4 +62,4 @@ vim.cmd [[
 
     " Explore File
     nnoremap <leader>n :Ex<CR>
-]]
+]])

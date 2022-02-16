@@ -1,4 +1,4 @@
-vim.cmd[[
+vim.cmd([[
     " " Enable alignment
     " let g:neoformat_basic_format_align = 1
     " " Enable tab to space conversion
@@ -35,4 +35,4 @@ vim.cmd[[
     nnoremap <leader>sl  :call PyShellSendLine()<CR>
     " nnoremap <leader>r :call RunTmuxPythonCell(0)<CR>
     noremap <leader>ra :call RunTmuxPythonAllCellsAbove()<CR>
-]]
+]])
