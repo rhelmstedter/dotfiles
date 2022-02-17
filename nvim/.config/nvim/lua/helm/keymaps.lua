@@ -1,4 +1,4 @@
-vim.cmd([[
+vim.cmd [[
     let mapleader = " "
     inoremap jk <esc>
 
@@ -6,23 +6,19 @@ vim.cmd([[
     nnoremap <leader>w :w<CR>
 
     " quickly edit ~/.vimrc
-    nnoremap <leader><leader>s :source $MYVIMRC<cr>
+    nnoremap <leader>sl :luafile %<cr>
 
     " navigating windows
-    " nnoremap <leader>h <C-w>h
-    " nnoremap <leader>j <C-w>j
-    " nnoremap <leader>k <C-w>k
-    " nnoremap <leader>l <C-w>l
+    nnoremap <leader>h <C-w>h
+    nnoremap <leader>j <C-w>j
+    nnoremap <leader>k <C-w>k
+    nnoremap <leader>l <C-w>l
 
     " use alt+hjkl to move between split/vsplit panels
     tnoremap <A-h> <C-\><C-n><C-w>h
     tnoremap <A-j> <C-\><C-n><C-w>j
     tnoremap <A-k> <C-\><C-n><C-w>k
     tnoremap <A-l> <C-\><C-n><C-w>l
-    nnoremap <A-h> <C-w>h
-    nnoremap <A-j> <C-w>j
-    nnoremap <A-k> <C-w>k
-    nnoremap <A-l> <C-w>l
 
     " change directory to current file
     nnoremap <leader>cd :cd %:p:h<CR>
@@ -62,4 +58,4 @@ vim.cmd([[
 
     " Explore File
     nnoremap <leader>n :Ex<CR>
-]])
+]]

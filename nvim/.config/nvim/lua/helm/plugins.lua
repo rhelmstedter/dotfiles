@@ -60,7 +60,6 @@ return packer.startup(function(use)
 	use("tpope/vim-fugitive")
 	use("tpope/vim-repeat")
 	use("tpope/vim-surround")
-	-- use "sbdchd/neoformat"
 	use("akinsho/toggleterm.nvim")
 	use("mhartington/formatter.nvim")
 
@@ -80,9 +79,9 @@ return packer.startup(function(use)
 	use("th3whit3wolf/dusk-til-dawn.nvim")
 	use("folke/zen-mode.nvim")
 	use("folke/twilight.nvim")
-	use("xiyaowong/nvim-transparent")
 	use("onsails/lspkind-nvim")
 	use("ntbbloodbath/doom-one.nvim")
+    use("f-person/auto-dark-mode.nvim")
 
 	-- orgmode
 	use("akinsho/org-bullets.nvim")

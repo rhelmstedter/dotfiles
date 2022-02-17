@@ -62,7 +62,7 @@ function _PYTEST_TOGGLE()
 end
 keymap("n", "<c-t>", "<cmd>w<CR><cmd>lua _PYTEST_TOGGLE()<CR>", opts)
 
-local runpython = Terminal:new({ cmd = "python3 " .. vim.fn.expand("%"), hidden = true })
+local runpython = Terminal:new({ cmd = "python3 "..vim.fn.expand("%"), hidden = true })
 function _RUNPYTHON_TOGGLE()
 	runpython:toggle()
 end

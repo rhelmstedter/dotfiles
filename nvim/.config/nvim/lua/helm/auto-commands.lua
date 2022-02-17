@@ -1,13 +1,13 @@
 -- highlights recommended line length
-vim.cmd([[
+vim.cmd [[
 augroup columnLenHighlight
   autocmd!
   autocmd BufEnter,WinEnter,FileType python highlight ColorColumn ctermbg=gray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
 augroup END
-]])
+]]
 
 -- set tabs based on filetype
-vim.cmd([[
+vim.cmd [[
 augroup tabs
   autocmd!
   autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab
@@ -15,10 +15,10 @@ augroup tabs
   autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
   autocmd FileType vimwiki set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
 augroup END
-]])
+]]
 
 -- Save folds after closing
-vim.cmd([[
+vim.cmd [[
 augroup folds
   autocmd!
   if "" != expand("%")
@@ -26,12 +26,12 @@ augroup folds
   endif
   autocmd BufWinEnter *.* silent! loadview
 augroup END
-]])
+]]
 
 -- highlight yanked region
-vim.cmd([[
+vim.cmd [[
 augroup highlight_yank
   autocmd!
   au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
 augroup END
-]])
+]]
