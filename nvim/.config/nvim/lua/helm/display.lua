@@ -10,27 +10,28 @@
 --
 -- require("Dusk-til-Dawn").timeMan()()
 -- vim.cmd('colorscheme doom-one')
--- local auto_dark_mode = require('auto-dark-mode')
---
--- auto_dark_mode.setup({
--- 	update_interval = 100,
--- 	set_dark_mode = function()
--- 		vim.api.nvim_set_option('background', 'dark')
--- 		vim.cmd('colorscheme doom-one')
--- 	end,
--- 	set_light_mode = function()
--- 		vim.api.nvim_set_option('background', 'light')
--- 		vim.cmd('colorscheme doom-one')
--- 	end,
--- })
--- auto_dark_mode.init()
---
-require('doom-one').setup({
+local auto_dark_mode = require "auto-dark-mode"
+
+auto_dark_mode.setup {
+    update_interval = 100,
+    set_dark_mode = function()
+        vim.api.nvim_set_option("background", "dark")
+        vim.cmd "colorscheme doom-one"
+    end,
+    set_light_mode = function()
+        vim.api.nvim_set_option("background", "light")
+        vim.cmd "colorscheme doom-one"
+    end,
+}
+
+auto_dark_mode.init()
+
+require("doom-one").setup {
     cursor_coloring = false,
     terminal_colors = true,
     italic_comments = true,
     enable_treesitter = true,
-    transparent_background = true,
+    transparent_background = false,
     pumblend = {
         enable = true,
         transparency_amount = 20,
@@ -51,4 +52,4 @@ require('doom-one').setup({
         vim_illuminate = false,
         lspsaga = false,
     },
-})
+}

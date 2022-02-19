@@ -48,7 +48,7 @@ function _LAZYGIT_TOGGLE()
 	lazygit:toggle()
 end
 
-keymap("n", "<leader>g", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
+keymap("n", "<C-g>", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 
 local python = Terminal:new({ cmd = "python3", hidden = true })
 function _PYTHON_TOGGLE()

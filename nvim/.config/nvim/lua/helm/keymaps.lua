@@ -6,7 +6,7 @@ vim.cmd [[
     nnoremap <leader>w :w<CR>
 
     " quickly edit ~/.vimrc
-    nnoremap <leader>sl :luafile %<cr>
+    nnoremap <leader><leader>l :luafile %<cr>
 
     " navigating windows
     nnoremap <leader>h <C-w>h

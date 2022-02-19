@@ -35,4 +35,10 @@ vim.cmd([[
     nnoremap <leader>sl  :call PyShellSendLine()<CR>
     " nnoremap <leader>r :call RunTmuxPythonCell(0)<CR>
     noremap <leader>ra :call RunTmuxPythonAllCellsAbove()<CR>
+
+    augroup indent
+        autocmd!
+        autocmd FileType python setlocal indentkeys-=<:>
+        autocmd FileType python setlocal indentkeys-=:
+    augroup END
 ]])
