@@ -17,16 +17,6 @@ augroup tabs
 augroup END
 ]]
 
--- Save folds after closing
-vim.cmd [[
-augroup folds
-  autocmd!
-  if "" != expand("%")
-    autocmd BufWinLeave *.* mkview
-  endif
-  autocmd BufWinEnter *.* silent! loadview
-augroup END
-]]
 
 -- highlight yanked region
 vim.cmd [[
@@ -34,5 +24,13 @@ augroup highlight_yank
   autocmd!
   au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
 augroup END
+]]
 
+
+vim.cmd [[
+    augroup hide_links
+        autocmd!
+        autocmd FileType vimwiki set concealcursor=nc |set conceallevel=3
+        autocmd FileType markdown set concealcursor=nc |set conceallevel=3
+    augroup END
 ]]

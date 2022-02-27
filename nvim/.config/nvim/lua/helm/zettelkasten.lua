@@ -21,28 +21,24 @@ vim.g.vimwiki_list = {
 vim.g.nv_search_paths = "~/Zettelkasten"
 vim.g.vimwiki_markdown_link_ext = 1
 vim.g.vimwiki_global_ext = 0
+vim.g.markdown_fenced_languages = { "html", "python", "ruby", "vim" }
 vim.g.vimwiki_ext2syntax = {
     [".md"] = "markdown",
     [".markdown"] = "markdown",
     [".mdown"] = "markdown",
 }
 
-vim.g.zettel_options = { {front_matter = { { tags = "" }, { citation = "" }}}, {}, {} }
-
-vim.g.markdown_fenced_languages = { "html", "python", "ruby", "vim" }
+vim.cmd [[
+    let g:zettel_options = [{"front_matter": {"tags": "", "citation": ""}}]
+]]
 
 -- I prefer ripgrep to ag, but honestly I just use telescope now
-vim.g.zettel_fzf_command =
-    "rg --column --line-number --smart-case --no-heading --color=always"
+vim.g.zettel_fzf_command = "rg --column --line-number --smart-case --no-heading --color=always"
 
-vim.g.fzf_layout = {
-    window = {
-        { width = 0.9 },
-        { height = 0.9 },
-    },
-}
+vim.cmd [[ 
+    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true } }
+]]
 
--- let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4"
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
@@ -63,6 +59,11 @@ keymap(
 
 -- spellcheck
 vim.cmd [[
+    augroup Spelling
+        autocmd!
+        autocmd FileType markdown set spell 
+    augroup END
+
     function! FixLastSpellingError()
     normal! mm[s1z=`m"
     endfunction
@@ -85,7 +86,7 @@ augroup pencil
 augroup END
 ]]
 
--- " don't expand links in normal mode
+-- don't expand links in normal mode
 vim.cmd [[
     augroup hide_links
         autocmd!
