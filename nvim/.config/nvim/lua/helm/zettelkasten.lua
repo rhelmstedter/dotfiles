@@ -33,7 +33,8 @@ vim.cmd [[
 ]]
 
 -- I prefer ripgrep to ag, but honestly I just use telescope now
-vim.g.zettel_fzf_command = "rg --column --line-number --smart-case --no-heading --color=always"
+vim.g.zettel_fzf_command =
+    "rg --column --line-number --smart-case --no-heading --color=always"
 
 vim.cmd [[ 
     let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true } }

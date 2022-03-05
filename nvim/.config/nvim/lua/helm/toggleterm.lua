@@ -66,4 +66,4 @@ local runpythonfile = Terminal:new({ cmd = "python3 "..vim.fn.expand("%"), hidde
 function _RUNPYTHONFILE_TOGGLE()
 	runpythonfile:toggle()
 end
-keymap("n", "<F5>", "<cmd>w<CR><cmd>lua _RUNPYTHONFILE_TOGGLE()<CR>", opts)
+keymap("n", "<F9>", "<cmd>w<CR><cmd>lua _RUNPYTHONFILE_TOGGLE()<CR>", opts)

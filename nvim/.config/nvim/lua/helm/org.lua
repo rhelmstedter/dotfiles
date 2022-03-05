@@ -26,7 +26,7 @@ require("orgmode").setup {
 
 vim.cmd [[
     augroup orgSettings
-      autocmd!
-      autocmd FileType org set concealcursor=nc| set conceallevel=2|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
+        autocmd!
+        autocmd FileType org set concealcursor=nc| set conceallevel=2|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
     augroup END
 ]]

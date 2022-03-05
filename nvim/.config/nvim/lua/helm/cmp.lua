@@ -34,8 +34,8 @@ cmp.setup {
             menu = {
                 luasnip = "[snip]",
                 nvim_lsp = "[LSP]",
-                buffer = "[buf]",
                 path = "[path]",
+                buffer = "[buf]",
                 orgmode = "[org]",
                 nvim_lua = "[API]",
             },
