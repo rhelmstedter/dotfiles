@@ -1,7 +1,6 @@
-vim.g.mapleader = " "
 
-require("helm/cmp")
 require("helm/keymaps")
+require("helm/cmp")
 require("helm/lualine")
 require("helm/luasnip")
 require("helm/nvim-lsp")
@@ -17,5 +16,3 @@ require("helm/python")
 require("helm/comment")
 require("helm/display")
 require("helm/formatter")
-
-
