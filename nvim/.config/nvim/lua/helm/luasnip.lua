@@ -16,13 +16,10 @@ keymap("i", "<c-a>","<cmd>lua require'helm.luasnip'.backward_trigger()<CR>", { s
 keymap("n", "<leader><leader>s","<cmd>source ~/.config/nvim/lua/helm/luasnip.lua<CR>", { silent = true })
 
 ls.snippets = {
-    all = {
-        ls.parser.parse_snippet("expand", "-- fuck you man")
+    python = {
+        ls.parser.parse_snippet("cc", "##{\n$1\n##}\n")
     },
 }
-
-
-
 
 
 local M = {}
