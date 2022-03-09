@@ -17,7 +17,6 @@ vim.cmd [[
     augroup END
 ]]
 
-
 -- highlight yanked region
 vim.cmd [[
     augroup highlight_yank
@@ -26,6 +25,11 @@ vim.cmd [[
     augroup END
 ]]
 
+-- local highlight_yank = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+--     callback = "vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 300 })",
+--     group = highlight_yank,
+-- })
 
 vim.cmd [[
     augroup hide_links
