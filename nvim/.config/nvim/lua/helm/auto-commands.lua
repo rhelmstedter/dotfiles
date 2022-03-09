@@ -1,8 +1,11 @@
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+
 -- highlights recommended line length
 vim.cmd [[
     augroup columnLenHighlight
           autocmd!
-          autocmd BufEnter,WinEnter,FileType python highlight ColorColumn ctermbg=gray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
+          autocmd FileType python highlight ColorColumn ctermbg=gray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
     augroup END
 ]]
 
@@ -17,19 +20,18 @@ vim.cmd [[
     augroup END
 ]]
 
--- highlight yanked region
-vim.cmd [[
-    augroup highlight_yank
-          autocmd!
-          au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
-    augroup END
-]]
 
--- local highlight_yank = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
--- vim.api.nvim_create_autocmd("TextYankPost", {
---     callback = "vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 300 })",
---     group = highlight_yank,
--- })
+-- highlight yanked region
+local highlight_yank = augroup("highlight_yank", { clear = true })
+
+autocmd("TextYankPost", {
+    callback = function()
+        vim.highlight.on_yank { higroup = "IncSearch", timeout = 300 }
+    end,
+    group = highlight_yank,
+})
+
+-- local hide_links = augroup("hide_links", { clear = true })
 
 vim.cmd [[
     augroup hide_links

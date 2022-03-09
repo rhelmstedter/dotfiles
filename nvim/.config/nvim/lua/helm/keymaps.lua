@@ -13,6 +13,7 @@ keymap("n", "<leader>w", "<cmd>w<CR>", opts)
 
 -- source lua files
 keymap("n", "<leader><leader>l", ":luafile %<cr>", opts)
+keymap("n", "<leader><leader>s", ":so %<cr>", opts)
 
 -- move windows
 keymap("n", "<leader>h", "<C-w>h", s_opts)

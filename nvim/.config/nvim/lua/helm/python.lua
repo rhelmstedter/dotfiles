@@ -11,7 +11,11 @@ vim.cmd([[
     " f-strings
     nnoremap <leader>fs maF"if<esc>`al
 
-    autocmd BufWritePre *.py execute ':Black'
+    augroup formatPython
+        autocmd!
+        autocmd BufWritePre *.py execute ':Black'
+        autocmd BufWritePre *.py execute ':Isort'
+    augroup END
 
     " vim cell-mode parameters
     let g:cellmode_use_tmux=1

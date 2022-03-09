@@ -73,7 +73,7 @@ return packer.startup(function(use)
     use "rafamadriz/friendly-snippets"
 
     -- display
-    use { "nvim-treesitter/nvim-treesitter", run = ":tsupdate" }
+    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
     use "nvim-lualine/lualine.nvim"
     use "kyazdani42/nvim-web-devicons"
     use "th3whit3wolf/dusk-til-dawn.nvim"
@@ -90,6 +90,7 @@ return packer.startup(function(use)
 
     -- python
     use "python/black"
+    use { 'stsewd/isort.nvim', run = ':UpdateRemotePlugins' }
     use "greghor/vim-pyshell"
     use "julienr/vim-cellmode"
     use "shime/vim-livedown"
