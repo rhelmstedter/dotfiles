@@ -27,15 +27,26 @@ require("orgmode").setup {
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
--- highlight yanked region
 local org_settings = augroup("org_settings", { clear = true })
-autocmd("Filetype org", { command = "set concealcursor=nc", group = org_settings })
-autocmd("Filetype org", { command = "set conceallevel=3", group = org_settings })
-autocmd("Filetype org", { command = "set foldmethod=expr", group = org_settings })
-
-vim.cmd [[
-    augroup orgSettings
-        autocmd!
-        autocmd FileType org set foldexpr=nvim_treesitter#foldexpr()
-    augroup END
-]]
+autocmd("Filetype", {
+    pattern = "org",
+    command = "set concealcursor=nc",
+    group = org_settings,
+})
+autocmd("Filetype", {
+    pattern = "org",
+    command = "set conceallevel=3",
+    group = org_settings,
+})
+autocmd("Filetype", {
+    pattern = "org",
+    command = "set foldmethod=expr",
+    group = org_settings,
+})
+autocmd("Filetype", {
+    pattern = "org",
+    callback = function()
+        vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+    end,
+    group = org_settings,
+})
