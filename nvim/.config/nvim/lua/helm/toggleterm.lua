@@ -1,70 +1,91 @@
 local status_ok, toggleterm = pcall(require, "toggleterm")
 if not status_ok then
-	return
+    return
 end
 
-toggleterm.setup({
-	size = 20,
-	open_mapping = [[<c-\>]],
-	hide_numbers = true,
-	shade_filetypes = {},
-	shade_terminals = true,
-	shading_factor = 2,
-	start_in_insert = true,
-	insert_mappings = true,
-	persist_size = true,
-	direction = "float",
-	close_on_exit = false,
-	shell = vim.o.shell,
-	float_opts = {
-		border = "curved",
-		winblend = 0,
-		highlights = {
-			border = "Normal",
-			background = "Normal",
-		},
-	},
-})
+toggleterm.setup {
+    size = 20,
+    open_mapping = [[<c-\>]],
+    hide_numbers = true,
+    shade_filetypes = {},
+    shade_terminals = true,
+    shading_factor = 2,
+    start_in_insert = true,
+    insert_mappings = true,
+    persist_size = true,
+    direction = "float",
+    close_on_exit = false,
+    shell = vim.o.shell,
+    float_opts = {
+        border = "curved",
+        winblend = 0,
+        highlights = {
+            border = "Normal",
+            background = "Normal",
+        },
+    },
+}
 
 function _G.set_terminal_keymaps()
-	local opts = { noremap = true }
+    local opts = { noremap = true }
     local buf_keymap = vim.api.nvim_buf_set_keymap
-	buf_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-	buf_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-	-- buf_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
-	-- buf_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
-	-- buf_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
-	-- buf_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
+    buf_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+    buf_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
+    -- buf_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
+    -- buf_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
+    -- buf_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
+    -- buf_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
 end
 
-vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 
 local Terminal = require("toggleterm.terminal").Terminal
-
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
-local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+local lazygit = Terminal:new {
+    cmd = "lazygit",
+    hidden = true,
+}
+local python = Terminal:new {
+    cmd = "python3",
+    hidden = true,
+}
+local pytest = Terminal:new {
+    cmd = "python3 -m pytest -svv",
+    hidden = true,
+}
+local run_python_file = Terminal:new {
+    cmd = "python3 " .. vim.fn.expand "%",
+    hidden = true,
+}
+local debug_python_file = Terminal:new {
+    cmd = "python3 -m pdb " .. vim.fn.expand "%",
+    hidden = true,
+}
+
 function _LAZYGIT_TOGGLE()
-	lazygit:toggle()
+    lazygit:toggle()
 end
 
-keymap("n", "<C-g>", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
-
-local python = Terminal:new({ cmd = "python3", hidden = true })
 function _PYTHON_TOGGLE()
-	python:toggle()
+    python:toggle()
 end
-keymap("n", "<C-p>", "<cmd>lua _PYTHON_TOGGLE()<CR>", opts)
 
-local pytest = Terminal:new({ cmd = "python3 -m pytest -svv", hidden = true })
 function _PYTEST_TOGGLE()
-	pytest:toggle()
+    pytest:toggle()
 end
-keymap("n", "<c-t>", "<cmd>w<CR><cmd>lua _PYTEST_TOGGLE()<CR>", opts)
 
-local runpythonfile = Terminal:new({ cmd = "python3 "..vim.fn.expand("%"), hidden = true })
-function _RUNPYTHONFILE_TOGGLE()
-	runpythonfile:toggle()
+function _RUN_PYTHON_FILE_TOGGLE()
+    run_python_file:toggle()
 end
-keymap("n", "<F9>", "<cmd>w<CR><cmd>lua _RUNPYTHONFILE_TOGGLE()<CR>", opts)
+
+function _DEBUG_PYTHON_FILE_TOGGLE()
+    debug_python_file:toggle()
+end
+
+keymap("n", "<F5>", "<cmd>w<CR><cmd>lua _DEBUG_PYTHON_FILE_TOGGLE()<CR>", opts)
+keymap("n", "<F9>", "<cmd>w<CR><cmd>lua _RUN_PYTHON_FILE_TOGGLE()<CR>", opts)
+keymap("n", "<c-t>", "<cmd>w<CR><cmd>lua _PYTEST_TOGGLE()<CR>", opts)
+keymap("n", "<C-p>", "<cmd>lua _PYTHON_TOGGLE()<CR>", opts)
+keymap("n", "<C-g>", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
