@@ -37,6 +37,12 @@ vim.cmd [[
 vim.g.zettel_fzf_command =
     "rg --column --line-number --smart-case --no-heading --color=always"
 
+-- pencil settings
+vim.cmd [[
+    let g:pencil#wrapModeDefault = 'soft'
+    let g:pencil#textwidth = 90
+]]
+
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
@@ -55,37 +61,21 @@ keymap(
     opts
 )
 
--- spellcheck
--- TODO: convert to lua
-vim.cmd [[
-    function! FixLastSpellingError()
-    normal! mm[s1z=`m"
-    endfunction
-    nnoremap <leader>sc :call FixLastSpellingError()<cr>
-]]
+-- FixLastSpellingError
+keymap("n", "<leader>sc", 'mm[s1z=`m"', opts)
 
--- TODO: convert autocommands to lua
-vim.cmd [[
-    let g:pencil#wrapModeDefault = 'soft'
-    let g:pencil#textwidth = 90
-    let g:pencil#joinspaces = 0     " 0=one_space (def), 1=two_spaces
-    let g:pencil#cursorwrap = 1     " 0=disable, 1=enable (def)
-    let g:pencil#conceallevel = 3     " 0=disable, 1=one char, 2=hide char, 3=hide all (def)
-    let g:pencil#concealcursor = 'c'  " n=normal, v=visual, i=insert, c=command (def)
-
-    augroup pencil
-        autocmd!
-        autocmd User TelescopePreviewerLoaded setlocal wrap
-        autocmd FileType markdown call pencil#init()
-        autocmd FileType org call pencil#init()
-    augroup END
-]]
 
 
 -- Zettelkasten Specific Autocommands
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+local pencil = augroup("pencil", { clear = true })
+autocmd("FileType", {
+    pattern = { "markdown", "vimwiki" },
+    callback = "pencil#init",
+    group = pencil,
+})
 local spell_check = augroup("spell_check", { clear = true })
 autocmd("FileType", {
     pattern = { "markdown", "vimwiki" },
