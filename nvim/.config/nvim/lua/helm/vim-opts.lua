@@ -4,7 +4,6 @@ local options = {
     completeopt = { "menuone", "noselect" }, -- mostly just for cmp
     expandtab = true, -- convert tabs to spaces
     fileencoding = "utf-8", -- the encoding written to a file
-    foldmethod = "marker",
     hidden = true, -- required to keep multiple buffers and open multiple buffers
     hlsearch = true, -- highlight all matches on previous search pattern
     ignorecase = true, -- ignore case in search patterns
@@ -66,14 +65,20 @@ vim.cmd [[
     augroup END
 ]]
 
--- set tabs based on filetype
--- TODO: convert to lua
-vim.cmd [[
-    augroup tabs
-          autocmd!
-          autocmd FileType html set tabstop=2|set shiftwidth=2|set expandtab
-          autocmd FileType python set tabstop=4|set shiftwidth=4|set expandtab|set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr()
-          autocmd FileType markdown set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
-          autocmd FileType vimwiki set tabstop=5|set shiftwidth=5|set noexpandtab|set noautoindent
-    augroup END
-]]
+local tabs = augroup("tabs", { clear = true })
+
+autocmd("FileType", {
+    pattern = { "html" },
+    command = "set tabstop=2| set shiftwidth=2| set expandtab",
+    group = tabs,
+})
+autocmd("FileType", {
+    pattern = { "markdown", "vimwiki" },
+    command = "set tabstop=5| set shiftwidth=5| set noexpandtab| set noautoindent",
+    group = tabs,
+})
+autocmd("FileType", {
+    pattern = { "python" },
+    command = "set tabstop=4| set shiftwidth=4| set expandtab",
+    group = tabs,
+})

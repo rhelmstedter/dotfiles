@@ -28,17 +28,14 @@ vim.g.vimwiki_ext2syntax = {
     [".mdown"] = "markdown",
 }
 
+-- couldn't get this working in lua
 vim.cmd [[
     let g:zettel_options = [{"front_matter": {"tags": "", "citation": ""}}]
 ]]
 
--- I prefer ripgrep to ag, but honestly I just use telescope now
+-- I prefer telescope, but use this for inserting a note with [[
 vim.g.zettel_fzf_command =
     "rg --column --line-number --smart-case --no-heading --color=always"
-
-vim.cmd [[ 
-    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true } }
-]]
 
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
@@ -61,11 +58,6 @@ keymap(
 -- spellcheck
 -- TODO: convert to lua
 vim.cmd [[
-    augroup Spelling
-        autocmd!
-        autocmd FileType markdown set spell 
-    augroup END
-
     function! FixLastSpellingError()
     normal! mm[s1z=`m"
     endfunction
@@ -93,14 +85,18 @@ vim.cmd [[
 -- Zettelkasten Specific Autocommands
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+
+local spell_check = augroup("spell_check", { clear = true })
+autocmd("FileType", {
+    pattern = { "markdown", "vimwiki" },
+    command = "set spell",
+    group = spell_check,
+})
+
 local hide_links = augroup("hide_links", { clear = true })
-
-autocmd("FileType vimwiki", {
+autocmd("FileType", {
+    pattern = { "markdown", "vimwiki" },
     command = "set concealcursor=nc |set conceallevel=3",
     group = hide_links,
 })
 
-autocmd("FileType markdown", {
-    command = "set concealcursor=nc |set conceallevel=3",
-    group = hide_links,
-})
