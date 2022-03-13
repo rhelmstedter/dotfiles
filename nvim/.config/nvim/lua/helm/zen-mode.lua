@@ -27,7 +27,7 @@ require("twilight").setup {
         "table",
         "if_statement",
     },
-    exclude = {}, -- exclude these filetypes
+    exclude = { "markdown", "vimwiki" }, -- exclude these filetypes
 }
 
 local keymap = vim.api.nvim_set_keymap

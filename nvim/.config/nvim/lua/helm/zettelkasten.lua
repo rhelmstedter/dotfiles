@@ -2,7 +2,7 @@ vim.g.zettel_format = "%Y%m%d%H%M"
 
 vim.g.vimwiki_list = {
     {
-        path = "~/Zettelkasten/zettel",
+        path = "~/Zettelkasten",
         syntax = "markdown",
         ext = ".md",
     },
@@ -59,6 +59,7 @@ keymap(
 )
 
 -- spellcheck
+-- TODO: convert to lua
 vim.cmd [[
     augroup Spelling
         autocmd!
@@ -71,6 +72,7 @@ vim.cmd [[
     nnoremap <leader>sc :call FixLastSpellingError()<cr>
 ]]
 
+-- TODO: convert autocommands to lua
 vim.cmd [[
     let g:pencil#wrapModeDefault = 'soft'
     let g:pencil#textwidth = 90
@@ -87,11 +89,18 @@ vim.cmd [[
     augroup END
 ]]
 
--- don't expand links in normal mode
-vim.cmd [[
-    augroup hide_links
-        autocmd!
-        autocmd FileType vimwiki set concealcursor=nc |set conceallevel=3
-        autocmd FileType markdown set concealcursor=nc |set conceallevel=3
-    augroup END
-]]
+
+-- Zettelkasten Specific Autocommands
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+local hide_links = augroup("hide_links", { clear = true })
+
+autocmd("FileType vimwiki", {
+    command = "set concealcursor=nc |set conceallevel=3",
+    group = hide_links,
+})
+
+autocmd("FileType markdown", {
+    command = "set concealcursor=nc |set conceallevel=3",
+    group = hide_links,
+})

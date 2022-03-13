@@ -32,12 +32,12 @@ cmp.setup {
         format = lspkind.cmp_format {
             with_text = false,
             menu = {
-                luasnip = "[snip]",
-                nvim_lsp = "[LSP]",
-                path = "[path]",
-                buffer = "[buf]",
-                orgmode = "[org]",
-                nvim_lua = "[API]",
+                luasnip = "SNIP",
+                nvim_lsp = "LSP",
+                path = "PATH",
+                buffer = "BUF",
+                orgmode = "ORG",
+                nvim_lua = "API",
             },
         },
     },

@@ -25,12 +25,12 @@ keymap("n", "<leader>l", "<C-w>l", s_opts)
 keymap("n", "<leader>cd", ":cd %:p:h<CR>", s_opts)
 
 -- copy to clipboard on mac
-keymap("n", "<leader>p", "\"+p", s_opts)
-keymap("v", "<leader>y", "\"+y", s_opts)
+keymap("n", "<leader>p", '"+p', s_opts)
+keymap("v", "<leader>y", '"+y', s_opts)
 
 -- delete without yanking
-keymap("n", "<leader>d", "\"_d", s_opts)
-keymap("v", "<leader>d", "\"_d", s_opts)
+keymap("n", "<leader>d", '"_d', s_opts)
+keymap("v", "<leader>d", '"_d', s_opts)
 
 -- make Y behave like D and C
 keymap("n", "Y", "yg_", s_opts)
@@ -51,13 +51,13 @@ keymap("v", "J", ":m '>+1<CR>gv=gv", s_opts)
 keymap("v", "K", ":m '<-2<CR>gv=gv", s_opts)
 
 -- open html file
-keymap("n", "<leader>o", ":w<CR>:!open "..vim.fn.expand("%").."<CR>", s_opts)
+keymap("n", "<leader>o", ":w<CR>:!open " .. vim.fn.expand "%" .. "<CR>", s_opts)
 
 -- Explore File
 keymap("n", "<leader>n", ":Ex<CR>", s_opts)
 
 vim.cmd [[
-" insert datetime
-nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
-imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+    " insert datetime
+    nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+    imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
 ]]
