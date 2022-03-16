@@ -17,6 +17,7 @@ local options = {
     shiftwidth = 4, -- the number of spaces inserted for each indentation
     showcmd = true,
     sidescrolloff = 8,
+    showmode = false,
     signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
     smartcase = true, -- smart case
     smartindent = true, -- make indenting smarter again
@@ -61,7 +62,7 @@ autocmd("TextYankPost", {
 vim.cmd [[
     augroup columnLenHighlight
           autocmd!
-          autocmd FileType python highlight ColorColumn ctermbg=gray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
+          autocmd FileType python highlight ColorColumn ctermbg=darkgray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
     augroup END
 ]]
 

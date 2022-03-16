@@ -82,6 +82,7 @@ return packer.startup(function(use)
     use "onsails/lspkind-nvim"
     use "ntbbloodbath/doom-one.nvim"
     use "f-person/auto-dark-mode.nvim"
+    use 'mvpopuk/inspired-github.vim'
 
     -- orgmode
     use "akinsho/org-bullets.nvim"

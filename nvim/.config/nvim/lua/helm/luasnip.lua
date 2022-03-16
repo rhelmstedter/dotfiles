@@ -11,16 +11,33 @@ ls.config.set_config {
 
 local keymap = vim.api.nvim_set_keymap
 
-keymap("i", "<c-f>","<cmd>lua require'helm.luasnip'.forward_trigger()<CR>", { silent = true })
-keymap("i", "<c-a>","<cmd>lua require'helm.luasnip'.backward_trigger()<CR>", { silent = true })
-keymap("n", "<leader>ls","<cmd>source ~/.config/nvim/lua/helm/luasnip.lua<CR>", { silent = true })
+keymap(
+    "i",
+    "<c-f>",
+    "<cmd>lua require'helm.luasnip'.forward_trigger()<CR>",
+    { silent = true }
+)
+keymap(
+    "i",
+    "<c-a>",
+    "<cmd>lua require'helm.luasnip'.backward_trigger()<CR>",
+    { silent = true }
+)
+keymap(
+    "n",
+    "<leader>ls",
+    "<cmd>source ~/.config/nvim/lua/helm/luasnip.lua<CR>",
+    { silent = true }
+)
 
 ls.snippets = {
     python = {
-        ls.parser.parse_snippet("cc", "##{\n$1\n##}\n")
+        ls.parser.parse_snippet("cc", "##{\n$1\n##}\n"),
+    },
+    vimwiki = {
+        ls.parser.parse_snippet("[]", "[$1]($2)"),
     },
 }
-
 
 local M = {}
 

@@ -2,10 +2,10 @@
 -- vim.g.python3_host_prog= '/usr/bin/python3'
 
 -- for mac-mini
--- vim.g.python3_host_prog= '/opt/homebrew/bin/python3'
+vim.g.python3_host_prog= '/opt/homebrew/bin/python3'
 
 -- for mbp 2015
-vim.g.python3_host_prog = "/usr/local/bin/python3"
+-- vim.g.python3_host_prog = "/usr/local/bin/python3"
 
 -- vim cell-mode parameters
 vim.g.cellmode_use_tmux = 1
