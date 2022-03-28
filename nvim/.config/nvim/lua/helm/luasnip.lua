@@ -1,4 +1,7 @@
-require("luasnip.loaders.from_vscode").load()
+local opts = {
+    paths = { "~/.local/share/nvim/site/pack/packer/start/friendly-snippets" },
+}
+
 
 local ls = require "luasnip"
 -- local types = require("luasnip.util.type")
@@ -38,6 +41,8 @@ ls.snippets = {
         ls.parser.parse_snippet("[]", "[$1]($2)"),
     },
 }
+
+require("luasnip.loaders.from_vscode").load(opts)
 
 local M = {}
 

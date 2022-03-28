@@ -64,6 +64,8 @@ keymap(
 -- FixLastSpellingError
 keymap("n", "<leader>sc", 'mm[s1z=`m"', opts)
 
+-- copy filename
+keymap("n", "<leader>yf", '<cmd> let @+ = expand("%:t")<CR>', opts)
 
 
 -- Zettelkasten Specific Autocommands
@@ -94,4 +96,3 @@ autocmd("FileType", {
     command = "set concealcursor=nc |set conceallevel=3",
     group = hide_links,
 })
-

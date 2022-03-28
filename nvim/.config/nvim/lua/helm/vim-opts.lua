@@ -19,8 +19,8 @@ local options = {
     sidescrolloff = 8,
     showmode = false,
     signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
-    smartcase = true, -- smart case
-    smartindent = true, -- make indenting smarter again
+    smartcase = true,
+    smartindent = true,
     softtabstop = 4,
     splitbelow = true, -- force all horizontal splits to go below current window
     splitright = true, -- force all vertical splits to go to the right of current window
@@ -59,12 +59,12 @@ autocmd("TextYankPost", {
 
 -- highlights recommended line length
 -- TODO: convert to lua
-vim.cmd [[
-    augroup columnLenHighlight
-          autocmd!
-          autocmd FileType python highlight ColorColumn ctermbg=darkgray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
-    augroup END
-]]
+-- vim.cmd [[
+--     augroup columnLenHighlight
+--           autocmd!
+--           autocmd FileType python highlight ColorColumn ctermbg=darkgray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
+--     augroup END
+-- ]]
 
 local tabs = augroup("tabs", { clear = true })
 

@@ -68,8 +68,8 @@ return packer.startup(function(use)
     use "nvim-telescope/telescope-fzy-native.nvim"
 
     -- snippets
-    use "l3mon4d3/luasnip"
     use "saadparwaiz1/cmp_luasnip"
+    use "l3mon4d3/luasnip"
     use "rafamadriz/friendly-snippets"
 
     -- display
