@@ -83,6 +83,7 @@ return packer.startup(function(use)
     use "ntbbloodbath/doom-one.nvim"
     use "f-person/auto-dark-mode.nvim"
     use 'mvpopuk/inspired-github.vim'
+    use 'i3d/vim-jimbothemes'
 
     -- orgmode
     use "akinsho/org-bullets.nvim"
