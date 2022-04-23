@@ -42,6 +42,7 @@ vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 local Terminal = require("toggleterm.terminal").Terminal
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
+local current_file = vim.api.nvim_buf_get_name(0)
 
 local lazygit = Terminal:new {
     cmd = "lazygit",
@@ -56,7 +57,7 @@ local pytest = Terminal:new {
     hidden = true,
 }
 local run_python_file = Terminal:new {
-    cmd = "python3 " .. vim.fn.expand "%",
+    cmd = "python3 " .. current_file,
     hidden = true,
 }
 local debug_python_file = Terminal:new {
