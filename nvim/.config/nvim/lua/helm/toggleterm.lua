@@ -4,7 +4,7 @@ if not status_ok then
 end
 
 toggleterm.setup {
-    size = 20,
+    size = 120,
     open_mapping = [[<c-\>]],
     hide_numbers = true,
     shade_filetypes = {},
@@ -53,11 +53,13 @@ local python = Terminal:new {
     hidden = true,
 }
 local pytest = Terminal:new {
+    dir = vim.fn.expand "%:p:h",
     cmd = "python3 -m pytest -svv",
     hidden = true,
+    direction = "vertical",
 }
 local run_python_file = Terminal:new {
-    cmd = "python3 " .. current_file,
+    cmd = "python3 " .. vim.fn.expand "%",
     hidden = true,
 }
 local debug_python_file = Terminal:new {

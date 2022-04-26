@@ -1,8 +1,8 @@
 -- for WSL on work comp
-vim.g.python3_host_prog= '/usr/bin/python3'
+-- vim.g.python3_host_prog= '/usr/bin/python3'
 
 -- for mac-mini
--- vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
+vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
 
 -- for mbp 2015
 -- vim.g.python3_host_prog = "/usr/local/bin/python3"

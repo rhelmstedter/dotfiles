@@ -78,7 +78,7 @@ return packer.startup(function(use)
     use "kyazdani42/nvim-web-devicons"
     use "th3whit3wolf/dusk-til-dawn.nvim"
     use "folke/zen-mode.nvim"
-    use "folke/twilight.nvim"
+    -- use "folke/twilight.nvim"
     use "onsails/lspkind-nvim"
     use "ntbbloodbath/doom-one.nvim"
     use "f-person/auto-dark-mode.nvim"
