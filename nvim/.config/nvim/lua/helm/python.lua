@@ -22,11 +22,11 @@ local format_python = augroup("format_python", { clear = true })
 --     command = "Black",
 --     group = format_python,
 -- })
--- autocmd("BufWritePre", {
---     pattern = "*.py",
---     command = "Isort",
---     group = format_python,
--- })
+autocmd("BufWritePre", {
+    pattern = "*.py",
+    command = "Isort",
+    group = format_python,
+})
 
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }

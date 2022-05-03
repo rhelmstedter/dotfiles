@@ -62,6 +62,7 @@ return packer.startup(function(use)
     use "tpope/vim-surround"
     use "akinsho/toggleterm.nvim"
     use "mhartington/formatter.nvim"
+    use "ThePrimeagen/harpoon"
 
     -- telescope
     use "nvim-telescope/telescope.nvim"
