@@ -19,6 +19,7 @@ vim.g.vimwiki_list = {
 }
 
 vim.g.nv_search_paths = "~/Zettelkasten"
+
 vim.g.vimwiki_markdown_link_ext = 1
 vim.g.vimwiki_global_ext = 0
 vim.g.markdown_fenced_languages = { "html", "python", "ruby", "vim", "lua" }
@@ -64,10 +65,6 @@ keymap(
 -- FixLastSpellingError
 keymap("n", "<leader>sc", 'mm[s1z=`m"', opts)
 
--- copy filename
-keymap("n", "<leader>yf", '<cmd> let @+ = expand("%:t")<CR>', opts)
-
-
 -- Zettelkasten Specific Autocommands
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
@@ -96,3 +93,36 @@ autocmd("FileType", {
     command = "set concealcursor=nc |set conceallevel=3",
     group = hide_links,
 })
+
+keymap("i", "[z", '<cmd>lua require("helm.zettelkasten").test_grep_filename()<CR>', opts)
+
+local M = {}
+function M.mysplit(inputstr, sep)
+    if sep == nil then
+        sep = "%s"
+    end
+    local t = {}
+    for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+function M.test_grep_filename()
+    local zettel_opts = {
+        prompt_title = "~ Insert Zettel ~",
+        shorten_path = false,
+        cwd = "~/Zettelkasten/zettel/",
+        attach_mappings = function(_, map)
+            map("i", "<CR>", function(prompt_bufnr)
+                -- filename is available at entry[1]
+                local entry = require("telescope.actions.state").get_selected_entry()
+                require("telescope.actions").close(prompt_bufnr)
+                local filename = M.mysplit(entry[1], ':')[1]
+                vim.cmd("normal i" .. filename)
+            end)
+            return true
+        end,
+    }
+    require("telescope.builtin").live_grep(zettel_opts)
+end
+return M
