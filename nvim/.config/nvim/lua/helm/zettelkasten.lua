@@ -2,7 +2,7 @@ vim.g.zettel_format = "%Y%m%d%H%M"
 
 vim.g.vimwiki_list = {
     {
-        path = "~/Zettelkasten",
+        path = "~/Zettelkasten/zettel",
         syntax = "markdown",
         ext = ".md",
     },

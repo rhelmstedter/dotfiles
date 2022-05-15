@@ -1,8 +1,10 @@
-
 vim = vim -- avoid lsp warnings
 
-local opts = { noremap = true, silent = true}
+local opts = { noremap = true, silent = true }
 local keymap = vim.api.nvim_set_keymap
+local refs =
+"<cmd>lua require'telescope.builtin'.lsp_references(require('telescope.themes').get_dropdown({layout = 'vertical', layout_config= {height = 0.4, width = 0.8 }}))<cr>"
+-- "<cmd>lua require'telescope.builtin'.lsp_references()<cr>"
 
 -- Diagnostic Mappings
 keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
@@ -21,10 +23,14 @@ vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
 vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, opts)
-keymap("n", "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", {})
-
+vim.keymap.set("n", "gr", refs, opts)
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting, opts)
+keymap(
+    "n",
+    "<leader>wl",
+    "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
+    {}
+)
 
 -- Setup lspconfig for autocompletion.
 local capabilities = require("cmp_nvim_lsp").update_capabilities(
@@ -52,10 +58,10 @@ end
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics,
     {
-        virtual_text = false,
-        underline = false,
-        signs = true,
-    }
+    virtual_text = false,
+    underline = false,
+    signs = true,
+}
 )
 
 local lsp_installer = require "nvim-lsp-installer"

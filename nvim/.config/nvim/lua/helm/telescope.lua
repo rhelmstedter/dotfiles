@@ -25,9 +25,6 @@ require("telescope").setup {
             },
         },
     },
-    pickers = {
-        lsp_references = {previewer = false},
-    },
     extensions = {
         fzy_native = {
             override_generic_sorter = false,
