@@ -25,6 +25,9 @@ require("telescope").setup {
             },
         },
     },
+    pickers = {
+        lsp_references = {previewer = false},
+    },
     extensions = {
         fzy_native = {
             override_generic_sorter = false,
@@ -41,7 +44,7 @@ local help_tags_layout =
     "<cmd>lua require'telescope.builtin'.help_tags(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
 
 -- vim.api.nvim_set_keymap("n", "<Leader>p", ":lua require\"helm.telescope\".project_files()<Cr>", opts)
-keymap("n", "<Leader>df", ":lua require'helm.telescope'.search_dotfiles()<Cr>", opts)
+-- keymap("n", "<Leader>df", ":lua require'helm.telescope'.search_dotfiles()<Cr>", opts)
 keymap("n", "<Leader>nc", ":lua require'helm.telescope'.search_vimrc()<Cr>", opts)
 keymap("n", "<Leader>ff", ":Telescope find_files<CR>", opts)
 keymap("n", "<Leader>fg", ":Telescope live_grep<CR>", opts)

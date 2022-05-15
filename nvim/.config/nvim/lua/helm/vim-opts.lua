@@ -1,7 +1,7 @@
 local options = {
     backup = false, -- creates a backup file
     cmdheight = 2, -- more space in the neovim command line for displaying messages
-    completeopt = { "menuone", "noselect" }, -- mostly just for cmp
+    completeopt = { "menu", "menuone", "noselect" }, -- mostly just for cmp
     expandtab = true, -- convert tabs to spaces
     fileencoding = "utf-8", -- the encoding written to a file
     hidden = true, -- required to keep multiple buffers and open multiple buffers

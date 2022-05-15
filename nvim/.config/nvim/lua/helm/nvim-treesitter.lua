@@ -1,7 +1,11 @@
 require("nvim-treesitter.configs").setup {
+    ensure_installed = { "python", "lua", "bash", "vim", "org" },
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
+    },
+    playground = {
+        enabled = true,
     },
     incremental_selection = {
         enable = true,
@@ -14,4 +18,3 @@ require("nvim-treesitter.configs").setup {
     },
 }
 vim.treesitter.highlighter.hl_map.error = nil
--- vim.optfoldexpr = "nvim_treesitter#foldexpr()"
