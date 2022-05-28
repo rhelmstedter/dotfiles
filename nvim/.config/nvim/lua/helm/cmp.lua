@@ -8,7 +8,6 @@ cmp.setup {
         -- REQUIRED - you must specify a snippet engine
         expand = function(args)
             require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-            -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
         end,
     },
     mapping = {
@@ -50,7 +49,7 @@ cmp.setup {
         { name = "nvim_lsp" },
         { name = "orgmode" },
         { name = "path" },
-        { name = "buffer", keyword_length = 5 },
+        { name = "buffer", keyword_length = 3 },
     },
 }
 

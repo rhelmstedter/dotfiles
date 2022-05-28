@@ -36,16 +36,19 @@ auto_dark_mode.setup {
         vim.cmd "colorscheme doom-one"
         require("lualine").setup {
             options = {
-                theme = require("helm/lualine-doom-one").theme()
+                theme = require("helm/lualine-doom-one").theme(),
             },
         }
     end,
     set_light_mode = function()
         vim.api.nvim_set_option("background", "light")
-        vim.cmd "colorscheme inspired-github"
+        vim.cmd "colorscheme doom-one"
+        require("doom-one").setup {
+            transparent_background = false,
+        }
         require("lualine").setup {
             options = {
-                theme = require("helm/lualine-ig").theme()
+                theme = require("helm/lualine-doom-one-light").theme(),
             },
         }
     end,

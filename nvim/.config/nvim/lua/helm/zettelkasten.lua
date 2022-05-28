@@ -81,11 +81,11 @@ autocmd("FileType", {
     command = "set spell",
     group = spell_check,
 })
-autocmd("BufLeave", {
-    pattern = { "*.md" },
-    command = "set nospell",
-    group = spell_check,
-})
+-- autocmd("BufLeave", {
+--     pattern = { "*.md" },
+--     command = "set nospell",
+--     group = spell_check,
+-- })
 
 local hide_links = augroup("hide_links", { clear = true })
 autocmd("FileType", {

@@ -1,7 +1,8 @@
 local opts = {
-    paths = { "~/.local/share/nvim/site/pack/packer/start/friendly-snippets" },
+    paths = {
+        "~/.local/share/nvim/site/pack/packer/start/friendly-snippets",
+    },
 }
-
 
 local ls = require "luasnip"
 -- local types = require("luasnip.util.type")
@@ -12,7 +13,7 @@ ls.config.set_config {
     enable_autosnippets = true,
 }
 
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
 keymap(
     "i",
@@ -33,14 +34,17 @@ keymap(
     { silent = true }
 )
 
-ls.snippets = {
+ls.add_snippets(nil, {
     python = {
         ls.parser.parse_snippet("cc", "##{\n$1\n##}\n"),
     },
     vimwiki = {
         ls.parser.parse_snippet("[]", "[$1]($2)"),
     },
-}
+    markdown = {
+        ls.parser.parse_snippet("[]", "[$1]($2)"),
+    },
+})
 
 require("luasnip.loaders.from_vscode").load(opts)
 
