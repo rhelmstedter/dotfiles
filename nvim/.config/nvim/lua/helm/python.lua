@@ -13,6 +13,7 @@ vim.g.cellmode_tmux_panenumber = 0
 vim.g.VimuxRunnerType = "window"
 vim.g.cellmode_tmux_windowname = "iPython"
 
+
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 

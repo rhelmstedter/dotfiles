@@ -6,6 +6,16 @@ local refs =
 "<cmd>lua require'telescope.builtin'.lsp_references(require('telescope.themes').get_dropdown({layout = 'vertical', layout_config= {height = 0.4, width = 0.8 }}))<cr>"
 -- "<cmd>lua require'telescope.builtin'.lsp_references()<cr>"
 
+require("nvim-lsp-installer").setup({
+    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+    ui = {
+        icons = {
+            server_installed = "✓",
+            server_pending = "➜",
+            server_uninstalled = "✗"
+        }
+    }
+})
 -- Diagnostic Mappings
 keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
@@ -39,6 +49,7 @@ local capabilities = require("cmp_nvim_lsp").update_capabilities(
 
 local servers = {
     "pylsp",
+    -- "pyright",
     "sumneko_lua",
     "tailwindcss",
     "bashls",
@@ -64,8 +75,3 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 }
 )
 
-local lsp_installer = require "nvim-lsp-installer"
-lsp_installer.on_server_ready(function(server)
-    local opt = {}
-    server:setup(opt)
-end)

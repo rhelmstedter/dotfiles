@@ -49,6 +49,7 @@ return packer.startup(function(use)
     -- lsp
     use "neovim/nvim-lspconfig"
     use "williamboman/nvim-lsp-installer"
+    -- use "dense-analysis/ale"
 
     -- general nvim
     use "nvim-lua/plenary.nvim"
@@ -83,8 +84,8 @@ return packer.startup(function(use)
     use "onsails/lspkind-nvim"
     use "ntbbloodbath/doom-one.nvim"
     use "f-person/auto-dark-mode.nvim"
-    use 'mvpopuk/inspired-github.vim'
-    use 'i3d/vim-jimbothemes'
+    use "mvpopuk/inspired-github.vim"
+    use "i3d/vim-jimbothemes"
 
     -- orgmode
     use "akinsho/org-bullets.nvim"
@@ -93,7 +94,7 @@ return packer.startup(function(use)
 
     -- python
     use "python/black"
-    use { 'stsewd/isort.nvim', run = ':UpdateRemotePlugins' }
+    use { "stsewd/isort.nvim", run = ":UpdateRemotePlugins" }
     use "greghor/vim-pyshell"
     use "julienr/vim-cellmode"
     use "shime/vim-livedown"
