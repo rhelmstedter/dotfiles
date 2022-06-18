@@ -28,7 +28,6 @@ cmp.setup {
             select = true,
         },
     },
-
     formatting = {
         format = lspkind.cmp_format {
             with_text = false,
@@ -42,7 +41,6 @@ cmp.setup {
             },
         },
     },
-
     sources = cmp.config.sources {
         { name = "luasnip" }, -- For luasnip users.
         { name = "nvim_lua" },

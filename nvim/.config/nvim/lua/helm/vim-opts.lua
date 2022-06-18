@@ -41,8 +41,8 @@ for k, v in pairs(options) do
     vim.opt[k] = v
 end
 
--- Remove banner in netrw
-vim.g.netrw_banner = 0
+-- -- Remove banner in netrw
+-- vim.g.netrw_banner = 0
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
