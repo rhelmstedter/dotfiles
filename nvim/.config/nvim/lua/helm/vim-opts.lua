@@ -1,6 +1,6 @@
 local options = {
     backup = false, -- creates a backup file
-    cmdheight = 2, -- more space in the neovim command line for displaying messages
+    cmdheight = 0, -- more space in the neovim command line for displaying messages
     completeopt = { "menu", "menuone", "noselect" }, -- mostly just for cmp
     expandtab = true, -- convert tabs to spaces
     fileencoding = "utf-8", -- the encoding written to a file
@@ -49,10 +49,9 @@ local autocmd = vim.api.nvim_create_autocmd
 
 -- highlight yanked region
 local highlight_yank = augroup("highlight_yank", { clear = true })
-
 autocmd("TextYankPost", {
     callback = function()
-        vim.highlight.on_yank { higroup = "IncSearch", timeout = 300 }
+        vim.highlight.on_yank { higroup = "IncSearch", timeout = 200 }
     end,
     group = highlight_yank,
 })
@@ -62,7 +61,7 @@ autocmd("TextYankPost", {
 -- vim.cmd [[
 --     augroup columnLenHighlight
 --           autocmd!
---           autocmd FileType python highlight ColorColumn ctermbg=darkgray guibg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
+--           autocmd FileType python, lua highlight ColorColumn ctermbg=darkgray bg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
 --     augroup END
 -- ]]
 

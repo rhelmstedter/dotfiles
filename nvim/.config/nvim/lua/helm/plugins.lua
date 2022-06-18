@@ -14,13 +14,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
     vim.cmd [[packadd packer.nvim]]
 end
 
--- Autocommand that reloads neovim whenever you save the plugins.lua file
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]]
 
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
@@ -37,8 +30,9 @@ packer.init {
     },
 }
 
--- Install your plugins here
+
 return packer.startup(function(use)
+
     -- auto complete
     use "hrsh7th/cmp-buffer"
     use "hrsh7th/cmp-cmdline"
@@ -49,21 +43,18 @@ return packer.startup(function(use)
     -- lsp
     use "neovim/nvim-lspconfig"
     use "williamboman/nvim-lsp-installer"
-    -- use "dense-analysis/ale"
-
-    -- general nvim
-    use "nvim-lua/plenary.nvim"
-    use "nvim-lua/popup.nvim"
 
     -- IDE
+    use "ThePrimeagen/harpoon"
+    use "akinsho/toggleterm.nvim"
     use "markonm/traces.vim"
+    use "mhartington/formatter.nvim"
     use "numtostr/comment.nvim"
+    use "nvim-lua/plenary.nvim"
+    use "nvim-lua/popup.nvim"
     use "tpope/vim-fugitive"
     use "tpope/vim-repeat"
     use "tpope/vim-surround"
-    use "akinsho/toggleterm.nvim"
-    use "mhartington/formatter.nvim"
-    use "ThePrimeagen/harpoon"
 
     -- telescope
     use "nvim-telescope/telescope.nvim"
@@ -80,7 +71,6 @@ return packer.startup(function(use)
     use "kyazdani42/nvim-web-devicons"
     use "th3whit3wolf/dusk-til-dawn.nvim"
     use "folke/zen-mode.nvim"
-    -- use "folke/twilight.nvim"
     use "onsails/lspkind-nvim"
     use "ntbbloodbath/doom-one.nvim"
     use "f-person/auto-dark-mode.nvim"
@@ -108,9 +98,4 @@ return packer.startup(function(use)
     use "junegunn/fzf"
     use "junegunn/fzf.vim"
 
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if PACKER_BOOTSTRAP then
-        require("packer").sync()
-    end
 end)

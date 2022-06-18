@@ -16,6 +16,7 @@ require("nvim-lsp-installer").setup({
         }
     }
 })
+
 -- Diagnostic Mappings
 keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
@@ -34,7 +35,7 @@ vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 vim.keymap.set("n", "gr", refs, opts)
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting, opts)
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
 keymap(
     "n",
     "<leader>wl",
@@ -61,7 +62,9 @@ for _, lsp in pairs(servers) do
         capabilities = capabilities,
         flags = {
             debounce_text_changes = 150,
+            -- exit_timeout = 0,
         },
+    no_wait = true,
     }
 end
 
