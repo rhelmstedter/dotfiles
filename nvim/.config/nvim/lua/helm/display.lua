@@ -3,7 +3,6 @@ require("doom-one").setup {
     terminal_colors = true,
     italic_comments = true,
     enable_treesitter = true,
-    transparent_background = true,
     pumblend = {
         enable = true,
         transparency_amount = 20,
@@ -27,31 +26,35 @@ require("doom-one").setup {
     },
 }
 
-local auto_dark_mode = require "auto-dark-mode"
+local keymap = vim.keymap.set
+local s_opts = { noremap = true, silent = true }
 
-auto_dark_mode.setup {
-    update_interval = 1000,
-    set_dark_mode = function()
-        vim.api.nvim_set_option("background", "dark")
-        vim.cmd "colorscheme doom-one"
-        require("lualine").setup {
-            options = {
-                theme = require("helm/lualine-doom-one").theme(),
-            },
-        }
-    end,
-    set_light_mode = function()
-        vim.api.nvim_set_option("background", "light")
-        vim.cmd "colorscheme doom-one"
-        require("doom-one").setup {
-            transparent_background = false,
-        }
-        require("lualine").setup {
-            options = {
-                theme = require("helm/lualine-doom-one-light").theme(),
-            },
-        }
-    end,
-}
+function Dark_mode()
+    require "doom-one".setup()
+    vim.api.nvim_set_option("background", "dark")
+    vim.cmd "colorscheme doom-one"
+    require("doom-one").setup {
+        transparent_background = true,
+    }
+    require("lualine").setup {
+        options = {
+            theme = require("helm/lualine-doom-one").theme(),
+        },
+    }
+end
 
-auto_dark_mode.init()
+function Light_mode()
+    vim.api.nvim_set_option("background", "light")
+    vim.cmd "colorscheme doom-one"
+    require("doom-one").setup {
+        transparent_background = false,
+    }
+    require("lualine").setup {
+        options = {
+            theme = require("helm/lualine-doom-one-light").theme(),
+        },
+    }
+end
+
+keymap("n", "<leader>lm", "<cmd> lua Light_mode()<CR>", s_opts)
+keymap("n", "<leader>dm",  "<cmd> lua Dark_mode()<CR>", s_opts)

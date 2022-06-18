@@ -73,7 +73,6 @@ return packer.startup(function(use)
     use "folke/zen-mode.nvim"
     use "onsails/lspkind-nvim"
     use "ntbbloodbath/doom-one.nvim"
-    use "f-person/auto-dark-mode.nvim"
     use "mvpopuk/inspired-github.vim"
     use "i3d/vim-jimbothemes"
 
