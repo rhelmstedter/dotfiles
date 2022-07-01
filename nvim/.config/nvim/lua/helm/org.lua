@@ -1,21 +1,27 @@
 require("orgmode").setup_ts_grammar()
 
--- Tree-sitter configuration
-require("nvim-treesitter.configs").setup {
-    -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
-    },
-    ensure_installed = { "org" }, -- Or run :TSUpdate org
-}
+-- -- Tree-sitter configuration
+-- require("nvim-treesitter.configs").setup {
+--     highlight = {
+--         enable = true,
+--         additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
+--     },
+--     ensure_installed = { "org" },
+-- }
 
 require("org-bullets").setup {
-    symbols = { "⁖", "◉", "○", "✸", "✿" },
+    symbols = {
+        headlines = { "⁖", "◉", "○", "✸", "✿" },
+        checkboxes = {
+            cancelled = { "", "OrgCancelled" },
+            done = { "✓", "OrgDone" },
+            todo = { "˟", "OrgTODO" },
+        },
+    },
 }
 
 require("orgmode").setup {
-    org_agenda_files = { "~/Dropbox/org/*", "~/org-mode/**/*" },
+    org_agenda_files = { "~/Dropbox/org/*" },
     org_default_notes_file = "~/Dropbox/org/refile.org",
     org_todo_keywords = { "TODO(t)", "WAITING(w)", "|", "DONE", "CANCALLED(c)" },
     org_todo_keyword_faces = {
@@ -41,12 +47,5 @@ autocmd("Filetype", {
 autocmd("Filetype", {
     pattern = "org",
     command = "set foldmethod=expr",
-    group = org_settings,
-})
-autocmd("Filetype", {
-    pattern = "org",
-    callback = function()
-        vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-    end,
     group = org_settings,
 })

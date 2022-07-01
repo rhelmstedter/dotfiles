@@ -1,6 +1,6 @@
 local options = {
     backup = false, -- creates a backup file
-    cmdheight = 0, -- more space in the neovim command line for displaying messages
+    cmdheight = 2, -- more space in the neovim command line for displaying messages
     completeopt = { "menu", "menuone", "noselect" }, -- mostly just for cmp
     expandtab = true, -- convert tabs to spaces
     fileencoding = "utf-8", -- the encoding written to a file
@@ -41,9 +41,6 @@ for k, v in pairs(options) do
     vim.opt[k] = v
 end
 
--- -- Remove banner in netrw
--- vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 25
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
@@ -57,17 +54,7 @@ autocmd("TextYankPost", {
     group = highlight_yank,
 })
 
--- highlights recommended line length
--- TODO: convert to lua
--- vim.cmd [[
---     augroup columnLenHighlight
---           autocmd!
---           autocmd FileType python, lua highlight ColorColumn ctermbg=darkgray bg=#a9a1e1|call matchadd('ColorColumn', '\%90v', 100)
---     augroup END
--- ]]
-
 local tabs = augroup("tabs", { clear = true })
-
 autocmd("FileType", {
     pattern = { "html" },
     command = "set tabstop=2| set shiftwidth=2| set expandtab",

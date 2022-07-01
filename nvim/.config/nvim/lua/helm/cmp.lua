@@ -1,6 +1,6 @@
 local cmp = require("cmp")
 
-local lspkind = require "lspkind"
+local lspkind = require("lspkind")
 lspkind.init()
 
 cmp.setup {

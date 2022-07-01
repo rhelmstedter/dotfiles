@@ -31,10 +31,6 @@ function _G.set_terminal_keymaps()
     local buf_keymap = vim.api.nvim_buf_set_keymap
     buf_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
     buf_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-    -- buf_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
-    -- buf_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
-    -- buf_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
-    -- buf_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
 end
 
 vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
@@ -42,7 +38,6 @@ vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 local Terminal = require("toggleterm.terminal").Terminal
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
-local current_file = vim.api.nvim_buf_get_name(0)
 
 local lazygit = Terminal:new {
     cmd = "lazygit",

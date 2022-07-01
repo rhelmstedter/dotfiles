@@ -45,13 +45,13 @@ return packer.startup(function(use)
     use "williamboman/nvim-lsp-installer"
 
     -- IDE
-    use "ThePrimeagen/harpoon"
     use "akinsho/toggleterm.nvim"
     use "markonm/traces.vim"
     use "mhartington/formatter.nvim"
     use "numtostr/comment.nvim"
     use "nvim-lua/plenary.nvim"
     use "nvim-lua/popup.nvim"
+    use "ThePrimeagen/harpoon"
     use "tpope/vim-fugitive"
     use "tpope/vim-repeat"
     use "tpope/vim-surround"
@@ -61,40 +61,37 @@ return packer.startup(function(use)
     use "nvim-telescope/telescope-fzy-native.nvim"
 
     -- snippets
-    use "saadparwaiz1/cmp_luasnip"
     use "l3mon4d3/luasnip"
     use "rafamadriz/friendly-snippets"
+    use "saadparwaiz1/cmp_luasnip"
 
     -- display
-    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
-    use "nvim-lualine/lualine.nvim"
-    use "kyazdani42/nvim-web-devicons"
-    use "th3whit3wolf/dusk-til-dawn.nvim"
     use "folke/zen-mode.nvim"
-    use "onsails/lspkind-nvim"
+    use "kyazdani42/nvim-web-devicons"
     use "ntbbloodbath/doom-one.nvim"
-    use "mvpopuk/inspired-github.vim"
-    use "i3d/vim-jimbothemes"
+    use "nvim-lualine/lualine.nvim"
+    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+    use "onsails/lspkind-nvim"
 
     -- orgmode
     use "akinsho/org-bullets.nvim"
-    use "kristijanhusak/orgmode.nvim"
     use "dhruvasagar/vim-table-mode"
+    use "kristijanhusak/orgmode.nvim"
 
     -- python
-    use "python/black"
-    use { "stsewd/isort.nvim", run = ":UpdateRemotePlugins" }
     use "greghor/vim-pyshell"
     use "julienr/vim-cellmode"
-    use "shime/vim-livedown"
     use "lervag/vimtex"
     use "preservim/vimux"
+    use "python/black"
+    use "shime/vim-livedown"
+    use { "stsewd/isort.nvim", run = ":UpdateRemotePlugins" }
 
     -- zettelkasten
-    use "michal-h21/vim-zettel"
-    use "vimwiki/vimwiki"
-    use "preservim/vim-pencil"
     use "junegunn/fzf"
     use "junegunn/fzf.vim"
+    use "michal-h21/vim-zettel"
+    use "preservim/vim-pencil"
+    use "vimwiki/vimwiki"
 
 end)

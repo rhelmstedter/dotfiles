@@ -1,10 +1,9 @@
 vim = vim -- avoid lsp warnings
 
 local opts = { noremap = true, silent = true }
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 local refs =
 "<cmd>lua require'telescope.builtin'.lsp_references(require('telescope.themes').get_dropdown({layout = 'vertical', layout_config= {height = 0.4, width = 0.8 }}))<cr>"
--- "<cmd>lua require'telescope.builtin'.lsp_references()<cr>"
 
 require("nvim-lsp-installer").setup({
     automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
@@ -24,18 +23,18 @@ keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 
 -- LSP Mappings.
-vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-vim.keymap.set("n", "gr", refs, opts)
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
+keymap("n", "gD", vim.lsp.buf.declaration, opts)
+keymap("n", "gd", vim.lsp.buf.definition, opts)
+keymap("n", "K", vim.lsp.buf.hover, opts)
+keymap("n", "gi", vim.lsp.buf.implementation, opts)
+keymap("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+keymap("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
+keymap("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
+keymap("n", "<leader>D", vim.lsp.buf.type_definition, opts)
+keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)
+keymap("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+keymap("n", "gr", refs, opts)
+keymap("n", "<leader>f", vim.lsp.buf.format, opts)
 keymap(
     "n",
     "<leader>wl",
@@ -50,7 +49,6 @@ local capabilities = require("cmp_nvim_lsp").update_capabilities(
 
 local servers = {
     "pylsp",
-    -- "pyright",
     "sumneko_lua",
     "tailwindcss",
     "bashls",
@@ -62,7 +60,6 @@ for _, lsp in pairs(servers) do
         capabilities = capabilities,
         flags = {
             debounce_text_changes = 150,
-            -- exit_timeout = 0,
         },
     no_wait = true,
     }

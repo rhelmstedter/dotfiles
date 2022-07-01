@@ -14,21 +14,6 @@ vim.g.VimuxRunnerType = "window"
 vim.g.cellmode_tmux_windowname = "iPython"
 
 
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-
-local format_python = augroup("format_python", { clear = true })
--- autocmd("BufWritePre", {
---     pattern = "*.py",
---     command = "Black",
---     group = format_python,
--- })
--- autocmd("BufWritePre", {
---     pattern = "*.py",
---     command = "Isort",
---     group = format_python,
--- })
-
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 

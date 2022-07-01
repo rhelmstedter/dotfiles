@@ -4,8 +4,7 @@ local opts = {
     },
 }
 
-local ls = require "luasnip"
--- local types = require("luasnip.util.type")
+local ls = require("luasnip")
 
 ls.config.set_config {
     history = true,

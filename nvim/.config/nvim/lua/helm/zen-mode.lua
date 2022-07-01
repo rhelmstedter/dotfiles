@@ -1,6 +1,6 @@
 require("zen-mode").setup {
     window = {
-        backdrop = 0.4,
+        backdrop = 1,
         width = 120,
         height = 1,
         options = {
@@ -11,4 +11,4 @@ require("zen-mode").setup {
 
 
 local keymap = vim.api.nvim_set_keymap
-keymap("n", "z", ":ZenMode<CR>", { silent = true })
+keymap("n", "<leader>z", ":ZenMode<CR>", { silent = true })

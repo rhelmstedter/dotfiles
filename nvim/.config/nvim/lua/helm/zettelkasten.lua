@@ -41,7 +41,7 @@ vim.g.zettel_fzf_command =
 -- pencil settings
 vim.cmd [[
     let g:pencil#wrapModeDefault = 'soft'
-    let g:pencil#textwidth = 90
+    let g:pencil#textwidth = 100
 ]]
 
 local keymap = vim.api.nvim_set_keymap
@@ -81,11 +81,6 @@ autocmd("FileType", {
     command = "set spell",
     group = spell_check,
 })
--- autocmd("BufLeave", {
---     pattern = { "*.md" },
---     command = "set nospell",
---     group = spell_check,
--- })
 
 local hide_links = augroup("hide_links", { clear = true })
 autocmd("FileType", {
@@ -94,35 +89,35 @@ autocmd("FileType", {
     group = hide_links,
 })
 
-keymap("i", "[z", '<cmd>lua require("helm.zettelkasten").test_grep_filename()<CR>', opts)
-
-local M = {}
-function M.mysplit(inputstr, sep)
-    if sep == nil then
-        sep = "%s"
-    end
-    local t = {}
-    for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
-        table.insert(t, str)
-    end
-    return t
-end
-function M.test_grep_filename()
-    local zettel_opts = {
-        prompt_title = "~ Insert Zettel ~",
-        shorten_path = false,
-        cwd = "~/Zettelkasten/zettel/",
-        attach_mappings = function(_, map)
-            map("i", "<CR>", function(prompt_bufnr)
-                -- filename is available at entry[1]
-                local entry = require("telescope.actions.state").get_selected_entry()
-                require("telescope.actions").close(prompt_bufnr)
-                local filename = M.mysplit(entry[1], ':')[1]
-                vim.cmd("normal i" .. filename)
-            end)
-            return true
-        end,
-    }
-    require("telescope.builtin").live_grep(zettel_opts)
-end
-return M
+-- keymap("i", "[z", '<cmd>lua require("helm.zettelkasten").test_grep_filename()<CR>', opts)
+--
+-- local M = {}
+-- function M.mysplit(inputstr, sep)
+--     if sep == nil then
+--         sep = "%s"
+--     end
+--     local t = {}
+--     for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+--         table.insert(t, str)
+--     end
+--     return t
+-- end
+-- function M.test_grep_filename()
+--     local zettel_opts = {
+--         prompt_title = "~ Insert Zettel ~",
+--         shorten_path = false,
+--         cwd = "~/Zettelkasten/zettel/",
+--         attach_mappings = function(_, map)
+--             map("i", "<CR>", function(prompt_bufnr)
+--                 -- filename is available at entry[1]
+--                 local entry = require("telescope.actions.state").get_selected_entry()
+--                 require("telescope.actions").close(prompt_bufnr)
+--                 local filename = M.mysplit(entry[1], ':')[1]
+--                 vim.cmd("normal i" .. filename)
+--             end)
+--             return true
+--         end,
+--     }
+--     require("telescope.builtin").live_grep(zettel_opts)
+-- end
+-- return M

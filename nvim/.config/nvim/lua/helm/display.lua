@@ -9,6 +9,7 @@ require("doom-one").setup {
     },
     plugins_integrations = {
         neorg = false,
+        orgmode = false,
         barbar = false,
         bufferline = false,
         gitgutter = false,

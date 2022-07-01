@@ -36,25 +36,23 @@ require("telescope").setup {
 require("telescope").load_extension "fzy_native"
 
 local opts = { noremap = true, silent = true }
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 local help_tags_layout =
-    "<cmd>lua require'telescope.builtin'.help_tags(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
+"<cmd>lua require'telescope.builtin'.help_tags(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
 
--- vim.api.nvim_set_keymap("n", "<Leader>p", ":lua require\"helm.telescope\".project_files()<Cr>", opts)
--- keymap("n", "<Leader>df", ":lua require'helm.telescope'.search_dotfiles()<Cr>", opts)
-keymap("n", "<Leader>nc", ":lua require'helm.telescope'.search_vimrc()<Cr>", opts)
-keymap("n", "<Leader>ff", ":Telescope find_files<CR>", opts)
-keymap("n", "<Leader>fg", ":Telescope live_grep<CR>", opts)
-keymap("n", "<Leader>fb", ":Telescope buffers<CR>", opts)
+keymap("n", "<Leader>nc", "<cmd>lua require'helm.telescope'.search_vimrc()<Cr>", opts)
+keymap("n", "<Leader>ff", "<cmd>Telescope find_files<CR>", opts)
+keymap("n", "<Leader>fg", "<cmd>Telescope live_grep<CR>", opts)
+keymap("n", "<Leader>fb", "<cmd>Telescope buffers<CR>", opts)
 keymap("n", "<Leader>fh", help_tags_layout, opts)
-keymap("n", "<Leader>fc", ":Telescope command_history<CR>", opts)
-keymap("n", "<Leader>fd", ":Telescope diagnostics<CR>", opts)
+keymap("n", "<Leader>fc", "<cmd>Telescope command_history<CR>", opts)
+keymap("n", "<Leader>fd", "<cmd>Telescope diagnostics<CR>", opts)
 
-local themes = require "telescope.themes"
+local themes = require("telescope.themes")
 local should_reload = true
 local reloader = function()
     if should_reload then
-        require("plenary.reload").reload_module "helm/telescope"
+        require("plenary.reload").reload_module("helm/telescope")
     end
 end
 
