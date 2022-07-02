@@ -61,23 +61,18 @@ local debug_python_file = Terminal:new {
     cmd = "python3 -m pdb " .. vim.fn.expand "%",
     hidden = true,
 }
-
 function _LAZYGIT_TOGGLE()
     lazygit:toggle()
 end
-
 function _PYTHON_TOGGLE()
     python:toggle()
 end
-
 function _PYTEST_TOGGLE()
     pytest:toggle()
 end
-
 function _RUN_PYTHON_FILE_TOGGLE()
     run_python_file:toggle()
 end
-
 function _DEBUG_PYTHON_FILE_TOGGLE()
     debug_python_file:toggle()
 end

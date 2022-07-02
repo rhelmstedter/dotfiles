@@ -9,6 +9,5 @@ require("zen-mode").setup {
     },
 }
 
-
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 keymap("n", "<leader>z", ":ZenMode<CR>", { silent = true })

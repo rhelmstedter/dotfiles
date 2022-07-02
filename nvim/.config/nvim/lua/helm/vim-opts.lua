@@ -34,27 +34,22 @@ local options = {
     wrap = false, -- display lines as one long line
     writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 }
-
 vim.opt.shortmess:append "c"
-
-for k, v in pairs(options) do
-    vim.opt[k] = v
+for option, value in pairs(options) do
+    vim.opt[option] = value
 end
-
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-
--- highlight yanked region
+local tabs = augroup("tabs", { clear = true })
 local highlight_yank = augroup("highlight_yank", { clear = true })
+
 autocmd("TextYankPost", {
     callback = function()
         vim.highlight.on_yank { higroup = "IncSearch", timeout = 200 }
     end,
     group = highlight_yank,
 })
-
-local tabs = augroup("tabs", { clear = true })
 autocmd("FileType", {
     pattern = { "html" },
     command = "set tabstop=2| set shiftwidth=2| set expandtab",

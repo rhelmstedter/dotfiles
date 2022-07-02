@@ -1,14 +1,5 @@
 require("orgmode").setup_ts_grammar()
 
--- -- Tree-sitter configuration
--- require("nvim-treesitter.configs").setup {
---     highlight = {
---         enable = true,
---         additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
---     },
---     ensure_installed = { "org" },
--- }
-
 require("org-bullets").setup {
     symbols = {
         headlines = { "⁖", "◉", "○", "✸", "✿" },
@@ -32,8 +23,8 @@ require("orgmode").setup {
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-
 local org_settings = augroup("org_settings", { clear = true })
+
 autocmd("Filetype", {
     pattern = "org",
     command = "set concealcursor=nc",
