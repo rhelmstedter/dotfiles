@@ -26,14 +26,6 @@ toggleterm.setup {
     },
 }
 
--- function _G.set_terminal_keymaps()
---     local opts = { noremap = true }
---     local buf_keymap = vim.api.nvim_buf_set_keymap
---     buf_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
---     buf_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
--- end
--- vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
-
 local Terminal = require("toggleterm.terminal").Terminal
 local keymap = vim.keymap.set
 local opts = { silent = true }
