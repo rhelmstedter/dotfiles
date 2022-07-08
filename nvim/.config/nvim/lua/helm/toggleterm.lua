@@ -26,23 +26,17 @@ toggleterm.setup {
     },
 }
 
-function _G.set_terminal_keymaps()
-    local opts = { noremap = true }
-    local buf_keymap = vim.api.nvim_buf_set_keymap
-    buf_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-    buf_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-end
-
-vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
+-- function _G.set_terminal_keymaps()
+--     local opts = { noremap = true }
+--     local buf_keymap = vim.api.nvim_buf_set_keymap
+--     buf_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+--     buf_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
+-- end
+-- vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 
 local Terminal = require("toggleterm.terminal").Terminal
-local keymap = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
-
-local lazygit = Terminal:new {
-    cmd = "lazygit",
-    hidden = true,
-}
+local keymap = vim.keymap.set
+local opts = { silent = true }
 local python = Terminal:new {
     cmd = "python3",
     hidden = true,
@@ -54,31 +48,19 @@ local pytest = Terminal:new {
     direction = "vertical",
 }
 local run_python_file = Terminal:new {
-    cmd = "python3 " .. vim.fn.expand "%",
-    hidden = true,
+    dir = vim.fn.expand "%:p:h",
+    cmd = "python3 " .. vim.fn.expand("%"),
+    hidden = false,
 }
 local debug_python_file = Terminal:new {
-    cmd = "python3 -m pdb " .. vim.fn.expand "%",
+    dir = vim.fn.expand "%:p:h",
+    cmd = "python3 -m pdb " .. vim.fn.expand("%"),
     hidden = true,
 }
-function _LAZYGIT_TOGGLE()
-    lazygit:toggle()
-end
-function _PYTHON_TOGGLE()
-    python:toggle()
-end
-function _PYTEST_TOGGLE()
-    pytest:toggle()
-end
-function _RUN_PYTHON_FILE_TOGGLE()
-    run_python_file:toggle()
-end
-function _DEBUG_PYTHON_FILE_TOGGLE()
-    debug_python_file:toggle()
-end
 
-keymap("n", "<F5>", "<cmd>w<CR><cmd>lua _DEBUG_PYTHON_FILE_TOGGLE()<CR>", opts)
-keymap("n", "<F9>", "<cmd>w<CR><cmd>lua _RUN_PYTHON_FILE_TOGGLE()<CR>", opts)
-keymap("n", "<c-t>", "<cmd>w<CR><cmd>lua _PYTEST_TOGGLE()<CR>", opts)
-keymap("n", "<C-p>", "<cmd>lua _PYTHON_TOGGLE()<CR>", opts)
-keymap("n", "<C-g>", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
+-- vim.keymap.set('n', '<c-f>', function () return ':e ' ..  vim.fn.expand '%:p:h' .. '/' end, { expr = true })
+keymap("n", "<F5>",  function () return debug_python_file:toggle() end, opts)
+keymap("n", "<F9>", function () return run_python_file:toggle() end, opts)
+keymap("n", "<c-t>", function () return pytest:toggle() end, opts)
+keymap("n", "<C-p>",  function () return python:toggle() end, opts)
+keymap("t", "<esc>", [[<C-\><C-n>]], opts)
