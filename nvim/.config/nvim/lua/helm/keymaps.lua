@@ -1,11 +1,12 @@
 local keymap = vim.keymap.set
 local opts = { noremap = true }
-local s_opts = { noremap = true, silent = true }
+local s_opts = { silent = true }
 
--- best mapleader ever
+
 vim.g.mapleader = " "
+
 -- escape
-keymap("i", "jk", "<esc>", opts)
+keymap("i", "jk", "<esc>", s_opts)
 -- write file
 keymap("n", "<leader>w", "<cmd>w<CR>", opts)
 -- source lua files

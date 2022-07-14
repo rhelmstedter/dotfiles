@@ -4,8 +4,8 @@ local snip_paths = {
     },
 }
 require("luasnip.loaders.from_vscode").load(snip_paths)
-local ls = require("luasnip")
 
+local ls = require("luasnip")
 ls.config.set_config {
     history = true,
     updateevents = "TextChanged, TextChangedI",

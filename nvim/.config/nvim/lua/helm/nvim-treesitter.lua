@@ -2,7 +2,11 @@ require("nvim-treesitter.configs").setup {
     ensure_installed = { "python", "lua", "bash", "vim", "org" },
     highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
+        additional_vim_regex_highlighting = { "org" },
+    },
+    pyfold = {
+        enable = true,
+        custom_foldtext = true,
     },
     playground = {
         enabled = true,

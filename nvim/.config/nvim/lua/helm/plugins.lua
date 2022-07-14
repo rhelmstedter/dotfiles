@@ -77,6 +77,7 @@ return packer.startup(function(use)
     use "kristijanhusak/orgmode.nvim"
 
     -- python
+    use 'eddiebergman/nvim-treesitter-pyfold'
     use "greghor/vim-pyshell"
     use "julienr/vim-cellmode"
     use "lervag/vimtex"

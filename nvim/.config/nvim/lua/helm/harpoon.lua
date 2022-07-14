@@ -1,5 +1,5 @@
 local keymap = vim.keymap.set
-local s_opts = { noremap = true, silent = true }
+local s_opts = { silent = true }
 
 -- harpoon file
 keymap("n", "<leader>ha", "<cmd>lua require('harpoon.mark').add_file()<CR>", s_opts)
