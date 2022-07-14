@@ -75,6 +75,7 @@ return packer.startup(function(use)
     use "akinsho/org-bullets.nvim"
     use "dhruvasagar/vim-table-mode"
     use "kristijanhusak/orgmode.nvim"
+    use 'simrat39/symbols-outline.nvim'
 
     -- python
     use 'eddiebergman/nvim-treesitter-pyfold'
