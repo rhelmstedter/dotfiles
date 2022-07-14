@@ -52,7 +52,8 @@ return packer.startup(function(use)
     use "ThePrimeagen/harpoon"
     use "tpope/vim-fugitive"
     use "tpope/vim-repeat"
-    use "tpope/vim-surround"
+    -- use "tpope/vim-surround"
+    use "kylechui/nvim-surround"
 
     -- telescope
     use "nvim-telescope/telescope.nvim"
