@@ -5,3 +5,16 @@ end
 require("Comment").setup({})
 
 require("nvim-surround").setup({})
+
+require("nvim-surround").buffer_setup({
+    delimiters = {
+        pairs = {
+            ["l"] = function()
+                return {
+                    "[",
+                    "](" .. vim.fn.getreg("+") .. ")",
+                }
+            end,
+        },
+    },
+})
