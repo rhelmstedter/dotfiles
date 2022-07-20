@@ -26,7 +26,8 @@ vim.g.vimwiki_ext2syntax = {
     [".mdown"] = "markdown",
 }
 -- I prefer telescope, but use this for inserting a note with [[
-vim.g.zettel_fzf_command = "rg --column --line-number --smart-case --no-heading --color=always"
+vim.g.zettel_fzf_command =
+    "rg --column --line-number --smart-case --no-heading --color=always"
 -- couldn't get these working in lua
 vim.cmd [[
     let g:zettel_options = [{"front_matter": {"tags": "", "citation": ""}}]
@@ -36,7 +37,7 @@ vim.cmd [[
     let g:pencil#textwidth = 100
 ]]
 
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 local s_opts = { noremap = true, silent = true }
 
 -- Nice way to see how markdown will render
@@ -56,24 +57,22 @@ keymap("n", "<leader>sc", 'mm[s1z=`m"', s_opts)
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-local pencil = augroup("pencil", { clear = true })
-local spell_check = augroup("spell_check", { clear = true })
-local hide_links = augroup("hide_links", { clear = true })
+local zettelkasten = augroup("zettelkasten", { clear = true })
 
 autocmd("FileType", {
     pattern = { "markdown", "vimwiki" },
     callback = "pencil#init",
-    group = pencil,
+    group = zettelkasten,
 })
 autocmd("FileType", {
     pattern = { "markdown", "vimwiki" },
-    command = "set spell",
-    group = spell_check,
+    command = "setlocal spell",
+    group = zettelkasten,
 })
 autocmd("FileType", {
     pattern = { "markdown", "vimwiki" },
-    command = "set concealcursor=nc |set conceallevel=3",
-    group = hide_links,
+    command = "setlocal concealcursor=nc |setlocal conceallevel=3",
+    group = zettelkasten,
 })
 
 -- This was an attempt to rewrite [[ to work with telescope. I have failed.
