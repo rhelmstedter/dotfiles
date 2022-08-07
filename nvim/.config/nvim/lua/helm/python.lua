@@ -46,12 +46,12 @@ end, s_opts)
 -- current file with a debugger
 keymap("n", "<F5>", function()
     if python_debugger == nil then
-        local e = vim.fn.expand
+        local expand = vim.fn.expand
         local errmsg
 
         if vim.bo.buftype ~= "" then
             errmsg = "Can't run python debugger on terminal"
-        elseif e "%" == "" then
+        elseif expand("%")== "" then
             errmsg = "Can't run python debugger on unnamed file"
         end
 
@@ -61,8 +61,8 @@ keymap("n", "<F5>", function()
         end
 
         python_debugger = Terminal:new {
-            dir = e "%:p:h",
-            cmd = "python3 -m pdb " .. e "%",
+            dir = expand("%:p:h"),
+            cmd = "python3 -m pdb " .. expand("%"),
             hidden = true,
             on_exit = function()
                 python_debugger = nil
@@ -75,12 +75,12 @@ end)
 -- current file
 keymap("n", "<F9>", function()
     if python_file_runner == nil then
-        local e = vim.fn.expand
+        local expand = vim.fn.expand
         local errmsg
 
         if vim.bo.buftype ~= "" then
             errmsg = "Can't run python file on terminal"
-        elseif e "%" == "" then
+        elseif expand("%") == "" then
             errmsg = "Can't run python on unnamed file"
         end
 
@@ -90,8 +90,8 @@ keymap("n", "<F9>", function()
         end
 
         python_file_runner = Terminal:new {
-            dir = e "%:p:h",
-            cmd = "python3 " .. e "%",
+            dir = expand("%:p:h"),
+            cmd = "python3 " .. expand("%"),
             hidden = true,
             on_exit = function()
                 python_file_runner = nil

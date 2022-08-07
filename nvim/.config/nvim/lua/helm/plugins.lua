@@ -52,7 +52,6 @@ return packer.startup(function(use)
     use "ThePrimeagen/harpoon"
     use "tpope/vim-fugitive"
     use "tpope/vim-repeat"
-    -- use "tpope/vim-surround"
     use "kylechui/nvim-surround"
 
     -- telescope
@@ -70,6 +69,7 @@ return packer.startup(function(use)
     use "ntbbloodbath/doom-one.nvim"
     use "nvim-lualine/lualine.nvim"
     use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+    use 'nvim-treesitter/nvim-treesitter-context'
     use "onsails/lspkind-nvim"
 
     -- orgmode
@@ -96,3 +96,4 @@ return packer.startup(function(use)
     use "vimwiki/vimwiki"
 
 end)
+
