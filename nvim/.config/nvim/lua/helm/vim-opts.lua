@@ -41,6 +41,8 @@ for option, value in pairs(options) do
     vim.opt[option] = value
 end
 
+vim.cmd("colorscheme doom-one")
+
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 local tabs = augroup("tabs", { clear = true })

@@ -4,7 +4,7 @@ local s_opts = { silent = true }
 local keymap = vim.keymap.set
 local refs = "<cmd>lua require'telescope.builtin'.lsp_references(require('telescope.themes').get_dropdown({layout = 'vertical', layout_config= {height = 0.4, width = 0.8 }}))<cr>"
 
-require("nvim-lsp-installer").setup({
+require("mason").setup({
     automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
     ui = {
         icons = {
@@ -61,29 +61,29 @@ for _, lsp in pairs(servers) do
     }
 end
 
--- pyright is only used for auto import; turned off everything else
-require("lspconfig")["pyright"].setup {
-    capabilities = capabilities,
-    handlers = {
-        ['textDocument/publishDiagnostics'] = function(...) end
-    },
-    settings = {
-        typeCheckingMode = 'off',
-        python = {
-            analysis = {
-                typeCheckingMode = 'off',
-                autoImportCompletions = true,
-            },
-        },
-        pyright = {
-            disableDiagnostics = false,
-            -- disableLanguageServices = true,
-            analysis = {
-                autoImportCompletions = true,
-            },
-        },
-    },
-}
+-- -- pyright is only used for auto import; turned off everything else
+-- require("lspconfig")["pyright"].setup {
+--     capabilities = capabilities,
+--     handlers = {
+--         ['textDocument/publishDiagnostics'] = function(...) end
+--     },
+--     settings = {
+--         typeCheckingMode = 'off',
+--         python = {
+--             analysis = {
+--                 typeCheckingMode = 'off',
+--                 autoImportCompletions = true,
+--             },
+--         },
+--         pyright = {
+--             disableDiagnostics = false,
+--             -- disableLanguageServices = true,
+--             analysis = {
+--                 autoImportCompletions = true,
+--             },
+--         },
+--     },
+-- }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics,
