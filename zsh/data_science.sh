@@ -4,7 +4,7 @@ CODEDIR="$HOME/code/effective_pandas/"
 BOOK="$HOME/code/books/pdf/effective-pandas.pdf"
 
 
-cd $CODEDIR
+# cd $CODEDIR
 
 if tmux has-session "$SN"
 then
