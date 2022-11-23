@@ -9,10 +9,17 @@ vim.g.python3_host_prog = "/opt/homebrew/bin/python3" -- for mac-mini
 -- vim.g.python3_host_prog= '/usr/bin/python3' -- for WSL on work comp
 -- vim.g.python3_host_prog = "/usr/local/bin/python3" -- for mbp 2015
 
--- format with Black
+---------------------
+-- format niceties --
+---------------------
+
+-- format code
 keymap("n", "<leader>b", "<cmd>Black<CR>", s_opts)
+keymap("n", "<leader>i", "<cmd>Isort<CR>", s_opts)
 -- make it an f-string
 keymap("n", "<leader>fs", 'maF"if<esc>`al', s_opts)
+--docstrings
+vim.g.python_style = "rest"
 
 ------------------------------------
 -- ipython-shell for data science --
@@ -103,7 +110,7 @@ keymap("n", "<F9>", function()
 end)
 local pytest = Terminal:new {
     dir = vim.fn.expand "%:p:h",
-    cmd = "python3 -m pytest -svv",
+    cmd = "python3 -m pytest",
     hidden = true,
     direction = "vertical",
 }

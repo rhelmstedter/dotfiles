@@ -1,32 +1,33 @@
 vim.g.zettel_format = "%Y%m%d%H%M"
 vim.g.vimwiki_list = {
-	{
-		path = "~/Zettelkasten/zettel",
-		syntax = "markdown",
-		ext = ".md",
-	},
-	{
-		path = "~/Coding-in-Math-Class",
-		syntax = "markdown",
-		ext = ".md",
-	},
-	{
-		path = "~/coding-class",
-		syntax = "markdown",
-		ext = ".md",
-	},
+    {
+        path = "~/Zettelkasten/zettel",
+        syntax = "markdown",
+        ext = ".md",
+    },
+    {
+        path = "~/Coding-in-Math-Class",
+        syntax = "markdown",
+        ext = ".md",
+    },
+    {
+        path = "~/coding-class",
+        syntax = "markdown",
+        ext = ".md",
+    },
 }
 vim.g.nv_search_paths = "~/Zettelkasten"
 vim.g.vimwiki_markdown_link_ext = 1
 vim.g.vimwiki_global_ext = 0
 vim.g.markdown_fenced_languages = { "html", "python", "ruby", "vim", "lua" }
 vim.g.vimwiki_ext2syntax = {
-	[".md"] = "markdown",
-	[".markdown"] = "markdown",
-	[".mdown"] = "markdown",
+    [".md"] = "markdown",
+    [".markdown"] = "markdown",
+    [".mdown"] = "markdown",
 }
 -- I prefer telescope, but use this for inserting a note with [[
-vim.g.zettel_fzf_command = "rg --column --line-number --smart-case --no-heading --color=always"
+vim.g.zettel_fzf_command =
+    "rg --column --line-number --smart-case --no-heading --color=always"
 -- couldn't get these working in lua
 vim.cmd [[
     let g:zettel_options = [{"front_matter": {"tags": "", "citation": ""}}]
@@ -46,10 +47,10 @@ keymap("n", "<leader>md", ":set filetype=markdown<CR>", s_opts)
 keymap("n", "<leader>vw", ":set filetype=vimwiki<CR>", s_opts)
 -- open zettelkasten to search notes while working in vim
 keymap(
-	"n",
-	"<leader>zk",
-	":vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>",
-	s_opts
+    "n",
+    "<leader>zk",
+    ":vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>",
+    s_opts
 )
 -- Fix last spelling error
 keymap("n", "<leader>sc", 'mm[s1z=`m"', s_opts)
@@ -59,43 +60,48 @@ local autocmd = vim.api.nvim_create_autocmd
 local zettelkasten = augroup("zettelkasten", { clear = true })
 
 autocmd("FileType", {
-	pattern = { "markdown", "vimwiki" },
-	callback = "pencil#init",
-	group = zettelkasten,
+    pattern = { "markdown", "vimwiki" },
+    callback = "pencil#init",
+    group = zettelkasten,
 })
 autocmd("FileType", {
-	pattern = { "markdown", "vimwiki" },
-	command = "setlocal spell",
-	group = zettelkasten,
+    pattern = { "markdown", "vimwiki" },
+    command = "setlocal spell",
+    group = zettelkasten,
 })
 autocmd("FileType", {
-	pattern = { "markdown", "vimwiki" },
-	command = "setlocal concealcursor=nc |setlocal conceallevel=3",
-	group = zettelkasten,
+    pattern = { "markdown", "vimwiki" },
+    command = "setlocal concealcursor=nc |setlocal conceallevel=3",
+    group = zettelkasten,
 })
 
-keymap("n", "<Leader>fz", "<cmd>lua require'helm.zettelkasten'.search_vimrc()<Cr>", s_opts)
+keymap(
+    "n",
+    "<Leader>fz",
+    "<cmd>lua require'helm.zettelkasten'.search_vimrc()<Cr>",
+    s_opts
+)
 local themes = require "telescope.themes"
 local should_reload = true
 local reloader = function()
-	if should_reload then
-		require("plenary.reload").reload_module("helm/telescope")
-	end
+    if should_reload then
+        require("plenary.reload").reload_module "helm/telescope"
+    end
 end
 
 local M = {}
 function M.search_vimrc()
-	reloader()
-	vim.cmd [[autocmd User TelescopePreviewerLoaded setlocal wrap]]
-	local zettel_opts = themes.get_ivy {
-		prompt_title = "<Zettel Search>",
-		cwd = "~/Zettelkasten/zettel",
-		hidden = true,
-		shorten_path = true,
-		height = .8,
-		-- previewer = true,
-	}
-	require("telescope.builtin").live_grep(zettel_opts)
+    reloader()
+    vim.cmd [[autocmd User TelescopePreviewerLoaded setlocal wrap]]
+    local zettel_opts = themes.get_ivy {
+        prompt_title = "<Zettel Search>",
+        cwd = "~/Zettelkasten/zettel",
+        hidden = true,
+        shorten_path = true,
+        height = 0.8,
+        -- previewer = true,
+    }
+    require("telescope.builtin").live_grep(zettel_opts)
 end
 
 return M

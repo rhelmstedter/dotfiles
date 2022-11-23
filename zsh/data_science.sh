@@ -20,11 +20,7 @@ else
 
     # create and name windows
     tmux rename-window -t "$SN:0" "$EDITOR"
-    tmux new-window -t "$SN:1" -n "iPython"
-    tmux new-window -t "$SN:2" -n "zk"
-
-    # open zk
-    tmux send-keys zk Enter
+    tmux new-window -t "$SN:1" -n "iPython REPL"
 
     # start ipython shell
     tmux select-window -t "$SN:1"
