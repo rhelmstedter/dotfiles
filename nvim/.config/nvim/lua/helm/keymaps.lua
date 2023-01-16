@@ -2,14 +2,15 @@ local keymap = vim.keymap.set
 local opts = { noremap = true }
 local s_opts = { silent = true }
 
-
 vim.g.mapleader = " "
+
+-- keymap is a function: keymap(mode, keys, action, options)
 
 -- escape
 keymap("i", "jk", "<esc>", s_opts)
 -- write file
 keymap("n", "<leader>w", "<cmd>w<CR>", opts)
--- source lua files
+-- source files
 keymap("n", "<leader><leader>l", ":luafile %<cr>", opts)
 keymap("n", "<leader><leader>s", ":so %<cr>", opts)
 -- move between windows (splits)
@@ -23,7 +24,6 @@ keymap("n", "<leader>cd", ":cd %:p:h<CR>", s_opts)
 keymap("n", "<leader>p", '"+p', s_opts)
 keymap("v", "<leader>y", '"+y', s_opts)
 -- delete without yanking
-keymap("n", "<leader>d", '"_d', s_opts)
 keymap("v", "<leader>d", '"_d', s_opts)
 -- clear search highlighting
 keymap("n", "<esc>", ":noh<return><esc>", s_opts)

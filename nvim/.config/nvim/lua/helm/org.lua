@@ -1,15 +1,15 @@
 require("orgmode").setup_ts_grammar()
 
-require("org-bullets").setup {
-    symbols = {
-        headlines = { "⁖", "◉", "○", "✸", "✿" },
-        checkboxes = {
-            cancelled = { "", "OrgCancelled" },
-            done = { "✓", "OrgDone" },
-            todo = { "˟", "OrgTODO" },
-        },
-    },
-}
+-- require("org-bullets").setup {
+--     symbols = {
+--         headlines = { "⁖", "◉", "○", "✸", "✿" },
+--         checkboxes = {
+--             cancelled = { "", "OrgCancelled" },
+--             done = { "✓", "OrgDone" },
+--             todo = { "˟", "OrgTODO" },
+--         },
+--     },
+-- }
 
 require'nvim-treesitter.configs'.setup {
   -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting

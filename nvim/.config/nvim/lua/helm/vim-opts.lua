@@ -1,38 +1,33 @@
 local options = {
     backup = false, -- creates a backup file
     cmdheight = 2, -- more space in the neovim command line for displaying messages
-    colorcolumn = { 90 },
-    completeopt = { "menu", "menuone", "noselect" }, -- mostly just for cmp
+    colorcolumn = { 90 }, -- highlight preferred line length
+    completeopt = { "menu", "menuone", "noselect" }, -- need for cmp
     expandtab = true, -- convert tabs to spaces
     fileencoding = "utf-8", -- the encoding written to a file
-    foldexpr = "nvim_treesitter#foldexpr()",
-    foldmethod = "expr",
+    foldexpr = "nvim_treesitter#foldexpr()", -- used for python folding
+    foldmethod = "expr", -- used for python folding
     hidden = true, -- required to keep multiple buffers and open multiple buffers
     hlsearch = true, -- highlight all matches on previous search pattern
     ignorecase = true, -- ignore case in search patterns
-    incsearch = true,
+    incsearch = true, -- highlight as you search and replace
     linebreak = true, -- don't break midword
-    list = true,
+    list = true, -- show characters like spaces and tabs
     number = true, -- set numbered lines
     pumheight = 15, -- pop up menu height
     relativenumber = false, -- set relative numbered lines
     scrolloff = 8, -- keep cursor off bottom
     shiftwidth = 4, -- the number of spaces inserted for each indentation
-    showcmd = true,
-    showmode = false,
-    sidescrolloff = 8,
+    showmode = false, -- hide message when not in normal mode
+    sidescrolloff = 8, -- keep cursor 8 lines off bottom
     signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
-    smartcase = true,
-    smartindent = true,
-    softtabstop = 4,
+    smartcase = true, -- case insensitive search until you include a capital letter
     splitbelow = true, -- force all horizontal splits to go below current window
     splitright = true, -- force all vertical splits to go to the right of current window
     swapfile = false, -- creates a swapfile
-    tabstop = 4, -- insert 4 spaces for a tab
     termguicolors = true, -- set term gui colors (most terminals support this)
-    -- textwidth = 90,
     timeoutlen = 500, -- time to wait for a mapped sequence to complete (in milliseconds)
-    undodir = vim.fn.stdpath "config" .. "/undodir",
+    undodir = vim.fn.stdpath "config" .. "/undodir", -- location of undo files
     undofile = true, -- enable persistent undo
     updatetime = 300, -- faster completion (4000ms default)
     wrap = false, -- display lines as one long line
@@ -43,7 +38,7 @@ for option, value in pairs(options) do
     vim.opt[option] = value
 end
 
-vim.cmd("colorscheme doom-one")
+-- vim.cmd "colorscheme doom-one"
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd

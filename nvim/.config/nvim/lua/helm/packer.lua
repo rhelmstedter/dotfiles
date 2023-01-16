@@ -1,19 +1,15 @@
-local fn = vim.fn
--- Automatically install packer
-local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-    PACKER_BOOTSTRAP = fn.system {
-        "git",
-        "clone",
-        "--depth",
-        "1",
-        "https://github.com/wbthomason/packer.nvim",
-        install_path,
-    }
-    print "Installing packer close and reopen Neovim..."
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
     vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 
+local packer_bootstrap = ensure_packer()
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -29,7 +25,7 @@ packer.init {
     },
 }
 
-return packer.startup(function(use)
+return require('packer').startup(function(use)
     -- auto complete
     use "hrsh7th/cmp-buffer"
     use "hrsh7th/cmp-cmdline"
@@ -44,7 +40,6 @@ return packer.startup(function(use)
         "neovim/nvim-lspconfig",
     }
 
-
     -- IDE
     use "akinsho/toggleterm.nvim"
     use "markonm/traces.vim"
@@ -56,6 +51,7 @@ return packer.startup(function(use)
     use "tpope/vim-fugitive"
     use "tpope/vim-repeat"
     use "kylechui/nvim-surround"
+    use "jose-elias-alvarez/null-ls.nvim"
 
     -- telescope
     use "nvim-telescope/telescope.nvim"
@@ -70,50 +66,14 @@ return packer.startup(function(use)
     use "folke/zen-mode.nvim"
     use "kyazdani42/nvim-web-devicons"
     use "ntbbloodbath/doom-one.nvim"
-    use {
-        "NTBBloodbath/doom-one.nvim",
-        setup = function()
-            -- Add color to cursor
-            vim.g.doom_one_cursor_coloring = true
-            -- Set :terminal colors
-            vim.g.doom_one_terminal_colors = true
-            -- Enable italic comments
-            vim.g.doom_one_italic_comments = true
-            -- Enable TS support
-            vim.g.doom_one_enable_treesitter = true
-            -- Color whole diagnostic text or only underline
-            vim.g.doom_one_diagnostics_text_color = false
-            -- Enable transparent background
-            vim.g.doom_one_transparent_background = false
-
-            -- Pumblend transparency
-            vim.g.doom_one_pumblend_enable = false
-            vim.g.doom_one_pumblend_transparency = 20
-
-            -- Plugins integration
-            vim.g.doom_one_plugin_neorg = false
-            vim.g.doom_one_plugin_barbar = false
-            vim.g.doom_one_plugin_telescope = true
-            vim.g.doom_one_plugin_neogit = true
-            vim.g.doom_one_plugin_nvim_tree = true
-            vim.g.doom_one_plugin_dashboard = true
-            vim.g.doom_one_plugin_startify = true
-            vim.g.doom_one_plugin_whichkey = true
-            vim.g.doom_one_plugin_indent_blankline = true
-            vim.g.doom_one_plugin_vim_illuminate = true
-            vim.g.doom_one_plugin_lspsaga = false
-        end,
-        config = function()
-            vim.cmd "colorscheme doom-one"
-        end,
-    }
+    use "NTBBloodbath/doom-one.nvim"
     use "nvim-lualine/lualine.nvim"
     use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
     use "nvim-treesitter/nvim-treesitter-context"
     use "onsails/lspkind-nvim"
 
     -- orgmode
-    use "akinsho/org-bullets.nvim"
+    -- use "akinsho/org-bullets.nvim"
     use "dhruvasagar/vim-table-mode"
     use "simrat39/symbols-outline.nvim"
     use "nvim-orgmode/orgmode"
@@ -135,4 +95,7 @@ return packer.startup(function(use)
     use "michal-h21/vim-zettel"
     use "preservim/vim-pencil"
     use "vimwiki/vimwiki"
+    if packer_bootstrap then
+    require('packer').sync()
+  end
 end)

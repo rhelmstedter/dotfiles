@@ -14,7 +14,7 @@ vim.g.python3_host_prog = "/opt/homebrew/bin/python3" -- for mac-mini
 ---------------------
 
 -- format code
-keymap("n", "<leader>b", "<cmd>Black<CR>", s_opts)
+keymap("n", "<leader>b", "<cmd>Black<CR><cmd>Isort<CR>", s_opts)
 keymap("n", "<leader>i", "<cmd>Isort<CR>", s_opts)
 -- make it an f-string
 keymap("n", "<leader>fs", 'maF"if<esc>`al', s_opts)
@@ -56,6 +56,7 @@ keymap("n", "<F5>", function()
         local expand = vim.fn.expand
         local errmsg
 
+        vim.api.nvim_command('write')
         if vim.bo.buftype ~= "" then
             errmsg = "Can't run python debugger on terminal"
         elseif expand("%")== "" then
@@ -85,6 +86,7 @@ keymap("n", "<F9>", function()
         local expand = vim.fn.expand
         local errmsg
 
+        vim.api.nvim_command('write')
         if vim.bo.buftype ~= "" then
             errmsg = "Can't run python file on terminal"
         elseif expand("%") == "" then
@@ -108,14 +110,34 @@ keymap("n", "<F9>", function()
 
     python_file_runner:toggle()
 end)
-local pytest = Terminal:new {
-    dir = vim.fn.expand "%:p:h",
-    cmd = "python3 -m pytest",
-    hidden = true,
-    direction = "vertical",
-}
-keymap("n", "<c-t>",
-    function()
-        return pytest:toggle()
-    end,
-    s_opts)
+
+keymap("n", "<C-t>", function()
+    if pytest_runner == nil then
+        local expand = vim.fn.expand
+        local errmsg
+
+        vim.api.nvim_command('write')
+        if vim.bo.buftype ~= "" then
+            errmsg = "Can't run python file on terminal"
+        elseif expand("%") == "" then
+            errmsg = "Can't run python on unnamed file"
+        end
+
+        if errmsg ~= nil then
+            vim.notify(errmsg, vim.log.levels.WARN, { title = "toggleterm" })
+            return
+        end
+
+        pytest_runner = Terminal:new {
+            dir = expand("%:p:h"),
+            cmd = "python3 -m pytest",
+            hidden = true,
+            direction = "vertical",
+            on_exit = function()
+                pytest_runner = nil
+            end,
+        }
+    end
+
+    pytest_runner:toggle()
+end)

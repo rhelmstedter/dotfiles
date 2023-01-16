@@ -33,21 +33,29 @@ require("telescope").setup {
 
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
-local help_tags_layout = "<cmd>lua require'telescope.builtin'.help_tags(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
+local builtin = require "telescope.builtin"
 
-keymap("n", "<Leader>nc", "<cmd>lua require'helm.telescope'.search_vimrc()<Cr>", opts)
-keymap("n", "<Leader>ff", "<cmd>Telescope find_files<CR>", opts)
-keymap("n", "<Leader>fg", "<cmd>Telescope live_grep<CR>", opts)
-keymap("n", "<Leader>fb", "<cmd>Telescope buffers<CR>", opts)
-keymap("n", "<Leader>fh", help_tags_layout, opts)
-keymap("n", "<Leader>fc", "<cmd>Telescope command_history<CR>", opts)
-keymap("n", "<Leader>fd", "<cmd>Telescope diagnostics<CR>", opts)
+keymap("n", "<Leader>ff", builtin.find_files, opts)
+keymap("n", "<Leader>fg", builtin.live_grep, opts)
+keymap("n", "<Leader>fb", builtin.buffers, opts)
+keymap("n", "<Leader>fc", builtin.command_history, opts)
+keymap("n", "<Leader>fd", builtin.diagnostics, opts)
+keymap("n", "<C-p>", builtin.git_files, opts)
+keymap("n", "<Leader>fh", function()
+    builtin.help_tags(require("telescope.themes").get_dropdown { previewer = false })
+end, opts)
+keymap("n", "<leader>ps", function()
+    builtin.grep_string { search = vim.fn.input "Grep > " }
+end, opts)
+keymap("n", "<Leader>nc", function()
+    require'helm.telescope'.search_vimrc()
+end, opts)
 
 local themes = require "telescope.themes"
 local should_reload = true
 local reloader = function()
     if should_reload then
-        require("plenary.reload").reload_module("helm/telescope")
+        require("plenary.reload").reload_module "helm/telescope"
     end
 end
 
@@ -64,4 +72,5 @@ function M.search_vimrc()
     }
     require("telescope.builtin").find_files(ff_opts)
 end
+
 return M

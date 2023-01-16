@@ -6,7 +6,7 @@ vim.g.vimwiki_list = {
         ext = ".md",
     },
     {
-        path = "~/Coding-in-Math-Class",
+        path = "~/coding-in-math-class",
         syntax = "markdown",
         ext = ".md",
     },

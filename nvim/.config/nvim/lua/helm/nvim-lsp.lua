@@ -1,4 +1,4 @@
-vim = vim -- avoid lsp warnings
+vim = vim -- hack to avoid lsp warnings
 
 local s_opts = { silent = true }
 local keymap = vim.keymap.set
