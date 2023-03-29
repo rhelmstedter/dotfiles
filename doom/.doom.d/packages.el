@@ -49,9 +49,6 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-;; (unpin! org-roam company-org-roam)
 (unpin! org-roam)
 (package! org-roam-ui)
-;; (package! consult)
-;; (package! consult-org-roam)
 (package! deadgrep)

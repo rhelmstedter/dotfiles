@@ -14,8 +14,6 @@
 ;; This opens emacs in fullscreen
 (add-to-list 'initial-frame-alist '(fullscreen . fullscreen))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-;; icons in dired
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -49,19 +47,41 @@
 ;; Org Mode ;;
 ;;;;;;;;;;;;;;
 
-(setq org-directory "~/Dropbox/org")
-(setq org-hide-emphasis-markers 't)
-;; (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-(setq org-agenda-files (directory-files-recursively "~/Dropbox/org/" "\\.org$"))
-(setq default-directory "~/")
-(setq org-roam-directory "~/roam")
+;; (setq default-directory "~/")
 (after! org
-  (setq org-agenda-skip-scheduled-if-done t
+    (setq org-directory "~/Dropbox/org")
+    (setq org-agenda-files (directory-files-recursively "~/Dropbox/org/" "\\.org$"))
+    (setq org-log-done 'time)
+    (setq org-ellipsis " ▾ ")
+    (setq
+         org-agenda-skip-scheduled-if-done t
          org-agenda-skip-deadline-if-done t
-         org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "NEXT(n)" "|" "DONE(d)" "CANCELED(c)"))
-         org-todo-keywords-for-agenda '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "NEXT(n)"  "|" "DONE(d)" "CANCELED(c)"))
-))
+         org-todo-keywords
+             '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)"))
+         org-todo-keywords-for-agenda
+             '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "NEXT(n)"  "|" "DONE(d)" "CANCELLED(c)")))
+    (setq org-hide-emphasis-markers 't)
+    (setq
+        org-fancy-priorities-list '("🟥" "🟧" "🟨")
+        org-priority-faces
+        '((?A :foreground "#ff6c6b" :weight bold)
+          (?B :foreground "#98be65" :weight bold)
+          (?C :foreground "#c678dd" :weight bold))
+        org-agenda-block-separator 8411)
+    (setq org-agenda-custom-commands
+        '(("n" "A better agenda view"
+         ((tags "PRIORITY=\"A\""
+                ((org-agenda-overriding-header "High-priority tasks:")))
+          (tags "PRIORITY=\"B\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo '("TODO")))
+                (org-agenda-overriding-header "Medium-priority tasks:")))
+          (tags "PRIORITY=\"C\""
+                ((org-agenda-overriding-header "Low-priority tasks:")))
+          (tags "IDEA"
+                ((org-agenda-overriding-header "IDEA Academy tasks:")))
 
+          (agenda "")
+          (alltodo ""))))))
 (setq org-cycle-emulate-tab 'white)
 
 ;; This creates some nice headlines
@@ -90,6 +110,21 @@
                        'org-export-filter-timestamp-functions
                        'org-export-filter-timestamp-remove-brackets))
 
+(after! org
+  (set-face-attribute 'org-level-1 nil
+                      :height 1.1
+                      :weight 'bold)
+  (set-face-attribute 'org-level-2 nil
+                      :height 1.05
+                      :weight 'bold)
+  (set-face-attribute 'org-level-3 nil
+                      :height 1.025
+                      :weight 'bold)
+  (set-face-attribute 'org-document-title nil
+                      :height 1.25
+                      :weight 'bold))
+
+(setq org-roam-directory "~/roam")
 ;; Roam Graph
 (use-package! websocket
     :after org-roam)
@@ -104,6 +139,7 @@
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start nil))
+
 ;; (org-roam-capture-templates
 ;;  '(("d" "default" plain
 ;;     "%?"
