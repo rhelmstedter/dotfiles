@@ -5,7 +5,7 @@ local s_opts = { silent = true }
 -- set python location for nvim --
 ----------------------------------
 
-vim.g.python3_host_prog = "/opt/homebrew/bin/python3" -- for mac-mini
+-- vim.g.python3_host_prog = "/Users/russell/.pyenv/shims/python3" -- for mac-mini
 -- vim.g.python3_host_prog= '/usr/bin/python3' -- for WSL on work comp
 -- vim.g.python3_host_prog = "/usr/local/bin/python3" -- for mbp 2015
 
