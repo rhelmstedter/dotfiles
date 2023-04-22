@@ -156,7 +156,9 @@
         +dragndrop
         +pandoc              ; organize your plain life in plain text
         +present
-        +pomodoro)
+        +pomodoro
+        +jupyter)
+
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
