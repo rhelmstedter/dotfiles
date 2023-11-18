@@ -12,4 +12,6 @@ keymap("n", "<leader>hh", "<cmd>lua require('harpoon.ui').nav_file(1)<CR>", s_op
 keymap("n", "<leader>hj", "<cmd>lua require('harpoon.ui').nav_file(2)<CR>", s_opts)
 keymap("n", "<leader>hk", "<cmd>lua require('harpoon.ui').nav_file(3)<CR>", s_opts)
 keymap("n", "<leader>hl", "<cmd>lua require('harpoon.ui').nav_file(4)<CR>", s_opts)
-keymap("n", "<leader>h;", "<cmd>lua require('harpoon.ui').nav_file(5)<CR>", s_opts)
+keymap("n", "<leader>hf", "<cmd>lua require('harpoon.ui').nav_file(5)<CR>", s_opts)
+keymap("n", "<leader>hd", "<cmd>lua require('harpoon.ui').nav_file(6)<CR>", s_opts)
+keymap("n", "<leader>hs", "<cmd>lua require('harpoon.ui').nav_file(7)<CR>", s_opts)

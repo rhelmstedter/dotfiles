@@ -1,5 +1,5 @@
 require("helm/keymaps")
-require("helm/packer")
+require("helm/lazy")
 require("helm/IDE")
 require("helm/cmp")
 require("helm/lualine")

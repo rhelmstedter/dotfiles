@@ -6,6 +6,7 @@ local s_opts = { silent = true }
 ----------------------------------
 
 -- vim.g.python3_host_prog = "/Users/russell/.pyenv/shims/python3" -- for mac-mini
+vim.g.python3_host_prog = "/Users/russell/coding-class/coding-projects/.venv/bin/python3" -- for turtle
 -- vim.g.python3_host_prog= '/usr/bin/python3' -- for WSL on work comp
 -- vim.g.python3_host_prog = "/usr/local/bin/python3" -- for mbp 2015
 
@@ -14,12 +15,13 @@ local s_opts = { silent = true }
 ---------------------
 
 -- format code
-keymap("n", "<leader>b", "<cmd>Black<CR><cmd>Isort<CR>", s_opts)
+vim.g.isort_command = "isort"
+keymap("n", "<leader>b", "<cmd>Black<CR>", s_opts)
 keymap("n", "<leader>i", "<cmd>Isort<CR>", s_opts)
 -- make it an f-string
-keymap("n", "<leader>fs", 'maF"if<esc>`al', s_opts)
+-- keymap("n", "<leader>fs", 'maF"if<esc>`al', s_opts)
 --docstrings
-vim.g.python_style = "rest"
+-- vim.g.python_style = "rest"
 
 ------------------------------------
 -- ipython-shell for data science --
@@ -131,6 +133,37 @@ keymap("n", "<C-t>", function()
         pytest_runner = Terminal:new {
             dir = expand("%:p:h"),
             cmd = "python3 -m pytest",
+            hidden = true,
+            direction = "vertical",
+            on_exit = function()
+                pytest_runner = nil
+            end,
+        }
+    end
+
+    pytest_runner:toggle()
+end)
+
+keymap("n", "<leader>pt", function()
+    if pytest_runner == nil then
+        local expand = vim.fn.expand
+        local errmsg
+
+        vim.api.nvim_command('write')
+        if vim.bo.buftype ~= "" then
+            errmsg = "Can't run python file on terminal"
+        elseif expand("%") == "" then
+            errmsg = "Can't run python on unnamed file"
+        end
+
+        if errmsg ~= nil then
+            vim.notify(errmsg, vim.log.levels.WARN, { title = "toggleterm" })
+            return
+        end
+
+        pytest_runner = Terminal:new {
+            dir = vim.fn.getcwd(),
+            cmd = "poetry run pytest",
             hidden = true,
             direction = "vertical",
             on_exit = function()

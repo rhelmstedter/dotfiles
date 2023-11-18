@@ -1,11 +1,10 @@
 require("nvim-treesitter.configs").setup {
-    ensure_installed = { "python", "lua", "bash", "vim", "org" },
+    ensure_installed = { "python", "lua", "bash", "vim"},
     highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { "org" },
     },
     pyfold = {
-        enable = true,
+        enable = false,
         custom_foldtext = true,
     },
     playground = {

@@ -2,7 +2,8 @@ vim = vim -- hack to avoid lsp warnings
 
 local s_opts = { silent = true }
 local keymap = vim.keymap.set
-local refs = "<cmd>lua require'telescope.builtin'.lsp_references(require('telescope.themes').get_dropdown({layout = 'vertical', layout_config= {height = 0.4, width = 0.8 }}))<cr>"
+local refs =
+"<cmd>lua require'telescope.builtin'.lsp_references(require('telescope.themes').get_dropdown({layout = 'vertical', layout_config= {height = 0.4, width = 0.8 }}))<cr>"
 
 require("mason").setup({
     automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
@@ -16,10 +17,10 @@ require("mason").setup({
 })
 
 -- Diagnostic Mappings
-keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", s_opts)
-keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", s_opts)
-keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", s_opts)
-keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", s_opts)
+keymap("n", "<leader>e", vim.diagnostic.open_float, s_opts)
+keymap("n", "[d", vim.diagnostic.goto_prev, s_opts)
+keymap("n", "]d", vim.diagnostic.goto_next, s_opts)
+keymap("n", "<leader>q", vim.diagnostic.setloclist, s_opts)
 -- LSP Mappings.
 keymap("n", "gD", vim.lsp.buf.declaration, s_opts)
 keymap("n", "gd", vim.lsp.buf.definition, s_opts)
@@ -32,7 +33,7 @@ keymap("n", "<leader>D", vim.lsp.buf.type_definition, s_opts)
 keymap("n", "<leader>rn", vim.lsp.buf.rename, s_opts)
 keymap("n", "<leader>ca", vim.lsp.buf.code_action, s_opts)
 keymap("n", "gr", refs, s_opts)
-keymap("n", "<leader>f", vim.lsp.buf.format, s_opts)
+keymap("n", "<leader>f", vim.lsp.buf.format, {})
 keymap(
     "n",
     "<leader>wl",
@@ -45,8 +46,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(
     vim.lsp.protocol.make_client_capabilities()
 )
 local servers = {
-    "pylsp",
-    "sumneko_lua",
+    "lua_ls",
     "tailwindcss",
     "bashls",
 }
@@ -54,12 +54,32 @@ local servers = {
 for _, lsp in pairs(servers) do
     require("lspconfig")[lsp].setup {
         capabilities = capabilities,
-        flags = {
-            debounce_text_changes = 150,
-        },
+        flags = {},
         no_wait = true,
     }
 end
+
+require('lspconfig').pylsp.setup {
+    flags = {},
+    settings = {
+        -- configure plugins in pylsp
+        pylsp = {
+            plugins = {
+                pyflakes = { enabled = false },
+                pylint = { enabled = false },
+                rope_autoimport = { enabled = false },
+            },
+        },
+    },
+}
+require 'lspconfig'.ruff_lsp.setup {
+    init_options = {
+        settings = {
+            -- Any extra CLI arguments for `ruff` go here.
+            args = {},
+        }
+    }
+}
 
 -- -- pyright is only used for auto import; turned off everything else
 -- require("lspconfig")["pyright"].setup {
