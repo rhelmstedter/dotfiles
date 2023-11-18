@@ -52,3 +52,4 @@
 (unpin! org-roam)
 (package! org-roam-ui)
 (package! deadgrep)
+(package! toc-org)

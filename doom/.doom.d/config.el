@@ -63,6 +63,7 @@
    org-agenda-files (directory-files-recursively "~/Dropbox/org/" "\\.org$")
    org-cycle-emulate-tab '(white)
    org-directory "~/Dropbox/org"
+   org-mobile-directory "~/Dropbox/Apps/MobileOrg"
    org-ellipsis " ▾ "
    org-hide-emphasis-markers 't
    org-log-done 'time
@@ -120,7 +121,7 @@
 
 (after! org
   (set-face-attribute 'org-level-1 nil
-                      :height 1.1
+                      :height 1.07
                       :weight 'bold)
   (set-face-attribute 'org-level-2 nil
                       :height 1.05
@@ -129,10 +130,10 @@
                       :height 1.025
                       :weight 'bold)
   (set-face-attribute 'org-document-title nil
-                      :height 1.25
+                      :height 1.10
                       :weight 'bold))
 
-(setq org-roam-directory "~/roam")
+(setq org-roam-directory "~/Dropbox/roam")
 ;; Roam Graph
 (use-package! websocket
   :after org-roam)
@@ -202,3 +203,4 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
