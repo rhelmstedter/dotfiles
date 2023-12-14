@@ -49,6 +49,7 @@ local servers = {
     "lua_ls",
     "tailwindcss",
     "bashls",
+    -- "rust-analyzer",
 }
 
 for _, lsp in pairs(servers) do

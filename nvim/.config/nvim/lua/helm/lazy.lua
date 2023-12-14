@@ -21,6 +21,8 @@ local plugins = {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
     "hrsh7th/nvim-cmp",
+    "hrsh7th/vim-vsnip",
+    'hrsh7th/cmp-nvim-lsp-signature-help',
 
     -- lsp
     "williamboman/mason.nvim",
@@ -38,10 +40,20 @@ local plugins = {
     "tpope/vim-fugitive",
     "tpope/vim-repeat",
     "kylechui/nvim-surround",
-    "jose-elias-alvarez/null-ls.nvim",
+    "mbbill/undotree",
+    --  "kevinhwang91/nvim-ufo",
     --  "ggandor/lightspeed.nvim",
     "ggandor/leap.nvim",
-    --  "kevinhwang91/nvim-ufo",
+    {
+        "ThePrimeagen/refactoring.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        config = function()
+            require("refactoring").setup()
+        end,
+    },
 
     -- telescope
     "nvim-telescope/telescope.nvim",
@@ -55,30 +67,29 @@ local plugins = {
     -- display
     "folke/zen-mode.nvim",
     "kyazdani42/nvim-web-devicons",
-    -- "ntbbloodbath/doom-one.nvim",
     "NTBBloodbath/doom-one.nvim",
     "nvim-lualine/lualine.nvim",
-    "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" ,
-    --  "nvim-treesitter/nvim-treesitter-context",
+    "nvim-treesitter/nvim-treesitter",
+    'm-demare/hlargs.nvim',
+    build = ":TSUpdate",
     "onsails/lspkind-nvim",
 
     -- orgmode
-    --  "akinsho/org-bullets.nvim",
     "dhruvasagar/vim-table-mode",
     "simrat39/symbols-outline.nvim",
     "nvim-orgmode/orgmode",
 
     -- python
-    --  "eddiebergman/nvim-treesitter-pyfold",
     "greghor/vim-pyshell",
     "julienr/vim-cellmode",
     "lervag/vimtex",
     "preservim/vimux",
-    -- "python/black",
-    -- { "averms/black-nvim", run = ":UpdateRemotePlugins" },
     "shime/vim-livedown",
     "brentyi/isort.vim",
     "pixelneo/vim-python-docstring",
+
+    -- rust
+    'simrat39/rust-tools.nvim',
 
     -- zettelkasten
     "junegunn/fzf",

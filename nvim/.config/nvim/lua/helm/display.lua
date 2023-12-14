@@ -1,3 +1,5 @@
+require('hlargs').setup()
+
 -- Add color to cursor
 vim.g.doom_one_cursor_coloring = true
 -- terminal colors
