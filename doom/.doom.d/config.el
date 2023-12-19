@@ -19,8 +19,8 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq
- display-line-numbers-type 'nil
- visual-line-mode 't
+ ;; display-line-numbers-type 'nil
+ ;; visual-line-mode 't
  evil-shift-width 4
  global-hl-line-modes 'nil)
 
@@ -59,6 +59,11 @@
 
 ;; (setq default-directory "~/")
 (after! org
+  (setq
+   display-line-numbers-type 'nil
+   visual-line-mode 't
+   evil-shift-width 5
+   global-hl-line-modes 'nil)
   (setq
    org-agenda-files (directory-files-recursively "~/Dropbox/org/" "\\.org$")
    org-cycle-emulate-tab '(white)
