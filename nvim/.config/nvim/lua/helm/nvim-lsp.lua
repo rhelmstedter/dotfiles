@@ -66,7 +66,7 @@ require('lspconfig').pylsp.setup {
         -- configure plugins in pylsp
         pylsp = {
             plugins = {
-                pyflakes = { enabled = false },
+                pyflakes = { enabled = true },
                 pylint = { enabled = false },
                 rope_autoimport = { enabled = false },
             },
