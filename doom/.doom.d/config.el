@@ -106,7 +106,7 @@
 ;; function with hook on export
 (defun my-org-export-ensure-custom-times (backend)
   (setq-local org-display-custom-times t))
-(add-hook 'org-export-before-processing-hook 'my-org-export-ensure-custom-times)
+(add-hook 'org-export-before-processing-functions 'my-org-export-ensure-custom-times)
 ;; remove brackets on export
 (defun org-export-filter-timestamp-remove-brackets (timestamp backend info)
   "removes relevant brackets from a timestamp"
@@ -150,17 +150,17 @@
 
 ;; Latex
 (with-eval-after-load 'ox-latex
-(add-to-list 'org-latex-classes
-             '("org-plain-latex"
-               "\\documentclass{article}
+  (add-to-list 'org-latex-classes
+               '("org-plain-latex"
+                 "\\documentclass{article}
            [NO-DEFAULT-PACKAGES]
            [PACKAGES]
            [EXTRA]"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 ;; custom time stamp heading
 ;; ====================
@@ -185,12 +185,11 @@ Note the weekly scope of the command's precision.")
 ;;        )
 
 (defun insert-current-time ()
-  "insert the current time (1-week scope) into the current buffer."
-       (interactive)
-       (insert "**** ")
-       (insert (format-time-string current-time-format (current-time)))
-       (insert "\n")
-       )
+  (interactive)
+  (insert "**** ")
+  (insert (format-time-string current-time-format (current-time)))
+  (insert "\n")
+  )
 
 (global-set-key "\C-c\C-d" 'insert-current-date-time)
 (global-set-key (kbd "\C-c t") 'insert-current-time)
@@ -209,22 +208,49 @@ Note the weekly scope of the command's precision.")
 ;; Python ;;
 ;;;;;;;;;;;;
 
+(pyenv-mode)
 (use-package! python-pytest)
 (use-package! pyimport)
-(use-package! jupyter
-  :commands (jupyter-run-server-repl
-             jupyter-run-repl
-             jupyter-server-list-kernels)
-  :init (eval-after-load 'jupyter-org-extensions ; conflicts with my helm config, I use <f2 #>
-          '(unbind-key "C-c h" jupyter-org-interaction-mode-map)))
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (jupyter .t )))
-(setq org-babel-default-header-args:jupyter-python '((:async . "yes")
-                                                                 (:session . "py")
-                                                                 (:kernel . "sagemath")))
+;; (use-package! jupyter
+;;   :commands (jupyter-run-server-repl
+;;              jupyter-run-repl
+;;              jupyter-server-list-kernels)
+;;   :init (eval-after-load 'jupyter-org-extensions ; conflicts with my helm config, I use <f2 #>
+;;           '(unbind-key "C-c h" jupyter-org-interaction-mode-map)))
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((python . t)
+;;    (jupyter .t )))
+;; (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
+;;                                                      (:session . "py")
+;;                                                      (:kernel . "sagemath")))
+;; Use IPython for REPL
+(setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+(add-to-list 'python-shell-completion-native-disabled-interpreters
+             "jupyter")
 
+;;;;;;;;;;;;;
+;; Harpoon ;;
+;;;;;;;;;;;;;
+
+;; You can use this hydra menu that have all the commands
+(map! :n "C-SPC" 'harpoon-quick-menu-hydra)
+(map! :n "C-s" 'harpoon-add-file)
+
+;; And the vanilla commands
+(map! :leader "j c" 'harpoon-clear)
+(map! :leader "j f" 'harpoon-toggle-file)
+(map! :leader "1" 'harpoon-go-to-1)
+(map! :leader "2" 'harpoon-go-to-2)
+(map! :leader "3" 'harpoon-go-to-3)
+(map! :leader "4" 'harpoon-go-to-4)
+(map! :leader "5" 'harpoon-go-to-5)
+(map! :leader "6" 'harpoon-go-to-6)
+(map! :leader "7" 'harpoon-go-to-7)
+(map! :leader "8" 'harpoon-go-to-8)
+(map! :leader "9" 'harpoon-go-to-9)
 ;;;;;;;;;;;;;;;;;;
 ;; Fuzzy Finder ;;
 ;;;;;;;;;;;;;;;;;;
@@ -249,4 +275,3 @@ Note the weekly scope of the command's precision.")
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
