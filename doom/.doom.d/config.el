@@ -1,8 +1,8 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 (setq
- user-full-name "Russell Helmstedter"
- user-mail-address "rhelmstedter@gmail.com")
+  user-full-name "Russell Helmstedter"
+  user-mail-address "rhelmstedter@gmail.com")
 
 (add-to-list 'initial-frame-alist '(fullscreen . fullscreen))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -10,19 +10,13 @@
 (setq doom-theme 'doom-one )
 
 (setq
- evil-shift-width 2
- global-hl-line-modes 'nil)
-
-(add-hook 'elisp-byte-code-mode
-  (setq
-   display-line-numbers-type 't
-   evil-shift-width 2
-   global-hl-line-modes 'nil))
+   evil-shift-width 4
+   global-hl-line-modes 'nil)
 
 (setq
-  doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
-  doom-variable-pitch-font (font-spec :family "Source Serif Pro" :size 15)
-  doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 36))
+    doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
+    doom-variable-pitch-font (font-spec :family "Source Serif Pro" :size 15)
+    doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 36))
 (setq +zen-text-scale 1)
 
 (after! org
@@ -30,8 +24,7 @@
    display-line-numbers-type 'nil
    visual-line-mode 't
    evil-shift-width 5
-   global-hl-line-modes 'nil)
-  (setq
+   global-hl-line-modes 'nil
    org-agenda-files (directory-files-recursively "~/Dropbox/org/" "\\.org$")
    org-cycle-emulate-tab '(white)
    org-directory "~/Dropbox/org"
@@ -39,14 +32,15 @@
    org-ellipsis " ▾ "
    org-hide-emphasis-markers 't
    org-log-done 'time
-   org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○"))
-  (setq
+   org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○")
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
    org-todo-keywords
-   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)"))
+   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "|" "DONE(d)" "CANCELLED(c)"))
    org-todo-keywords-for-agenda
-   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "NEXT(n)"  "|" "DONE(d)" "CANCELLED(c)")))
+   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "|" "DONE(d)" "CANCELLED(c)")))
+  (setq org-todo-keyword-faces
+      '(("TODO" . org-warning)))
   (setq
    org-fancy-priorities-list '("🟥" "🟧" "🟨")
    org-priority-faces
@@ -143,17 +137,13 @@ Note the weekly scope of the command's precision.")
 (use-package! websocket
   :after org-roam)
 (use-package! org-roam-ui
-  :after org-roam ;; or :after org
-  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-  ;;         a hookable mode anymore, you're advised to pick something yourself
-  ;;         if you don't care about startup time, use
+  :after org-roam
   :hook (after-init . org-roam-ui-mode)
   :config
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start nil))
-
 
 ;; (org-roam-capture-templates
 ;;  '(("d" "default" plain
