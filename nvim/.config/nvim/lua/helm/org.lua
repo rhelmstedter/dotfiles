@@ -30,8 +30,8 @@ require("orgmode").setup {
     },
 }
 
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
+-- local augroup = vim.api.nvim_create_augroup
+-- local autocmd = vim.api.nvim_create_autocmd
 -- local org_settings = augroup("org_settings", { clear = true })
 --
 -- autocmd("Filetype", {
