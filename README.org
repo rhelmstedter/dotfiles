@@ -1,3 +1,13 @@
-# dotfiles
+#+TITLE:     dotfiles
+#+AUTHOR:    Russell Helmstedter
+#+EMAIL:     rhelmstedter@gmail.com
 
-A collection of my configurations for various software. These are symlinked to my home directory using stow.
+
+A collection of my configurations. I use stow to symbolically link to my home directory.
+
+- [[file:doom/.doom.d/README.org][doom]]
+- [[file:kitty/.config/kitty/kitty.conf][kitty]]
+- [[file:nvim/.config/nvim/init.lua][nvim]]
+- [[file:python/.pythonrc][python]]
+- [[file:tmux/.tmux.conf][tmux]]
+- [[file:vim/.vimrc][vim]]
