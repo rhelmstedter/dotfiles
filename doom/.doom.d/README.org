@@ -13,6 +13,7 @@
   - [[#font][Font]]
 - [[#org-mode][Org Mode]]
   - [[#general][General]]
+  - [[#babel][Babel]]
   - [[#agenda][Agenda]]
   - [[#remove-angle-brackets-in-timestamps][Remove Angle Brackets in Timestamps]]
   - [[#headings][Headings]]
@@ -104,6 +105,13 @@ This is my attempt at using tangle for my doom configuration.
    org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○")))
 
 (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+#+end_src
+** Babel
+#+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (emacs-lisp . t)))
 #+end_src
 
 ** Agenda
@@ -220,8 +228,8 @@ Note the weekly scope of the command's precision.")
 
 ** Debugging
 #+begin_src elisp
-(setq org-element--cache-self-verify 'backtrace)
-(setq org-element--cache-self-verify-frequency 1.0)
+;; (setq org-element--cache-self-verify 'backtrace)
+;; (setq org-element--cache-self-verify-frequency 1.0)
 
 #+end_src
 
@@ -244,8 +252,6 @@ This keybinding allows me to move back through links in org mode.
       :n "SPC d" #'ispell-change-dictionary)
 
 #+end_src
-
-#+RESULTS:
 
 ** Org Roam
 #+begin_src elisp

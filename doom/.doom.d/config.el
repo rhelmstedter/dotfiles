@@ -44,6 +44,11 @@
 
 (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (emacs-lisp . t)))
+
 (after! org
    (setq
    org-agenda-skip-scheduled-if-done t
@@ -143,8 +148,8 @@ Note the weekly scope of the command's precision.")
 ;; (global-set-key "\C-c\C-d" 'insert-current-date-time)
 (global-set-key (kbd "\C-c t") 'insert-current-time)
 
-(setq org-element--cache-self-verify 'backtrace)
-(setq org-element--cache-self-verify-frequency 1.0)
+;; (setq org-element--cache-self-verify 'backtrace)
+;; (setq org-element--cache-self-verify-frequency 1.0)
 
 (map! :after org
       :map org-mode-map
