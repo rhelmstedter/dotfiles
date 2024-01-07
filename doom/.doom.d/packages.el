@@ -55,4 +55,7 @@
 (package! toc-org)
 (package! harpoon)
 (package! pyenv-mode)
-;; (package! ruff-lsp)
+(package! tree-sitter)
+(package! tree-sitter-langs)
+(package! adaptive-wrap)
+(package! org-auto-tangle)

@@ -1,17 +1,28 @@
 #+TITLE: Doom Configuration
+#+auto_tangle: t
 #+PROPERTY: header-args :tangle ./config.el
 
 * Table Of Contents :toc:
 - [[#doom-configuration][Doom Configuration]]
 - [[#user][User]]
 - [[#display][Display]]
-  - [[#fullscreen][Fullscreen]]
+  - [[#full-screen][Full Screen]]
   - [[#theme][Theme]]
   - [[#shift-and-highlight-line][Shift and Highlight Line]]
+  - [[#tree-sitter][Tree-sitter]]
   - [[#font][Font]]
 - [[#org-mode][Org Mode]]
+  - [[#general][General]]
+  - [[#agenda][Agenda]]
+  - [[#remove-angle-brackets-in-timestamps][Remove Angle Brackets in Timestamps]]
+  - [[#headings][Headings]]
+  - [[#time-stamps][Time Stamps]]
+  - [[#debugging][Debugging]]
+  - [[#travel-back-through-links][Travel back through links]]
+  - [[#change-dictionary][Change Dictionary]]
   - [[#org-roam][Org Roam]]
   - [[#org-export-to-latex][Org Export to Latex]]
+  - [[#auto-tangle][Auto Tangle]]
 - [[#projectile][Projectile]]
 - [[#python][Python]]
 - [[#harpoon][Harpoon]]
@@ -25,13 +36,14 @@ This is my attempt at using tangle for my doom configuration.
 #+begin_src elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+
 (setq
   user-full-name "Russell Helmstedter"
   user-mail-address "rhelmstedter@gmail.com")
 #+end_src
 
 * Display
-** Fullscreen
+** Full Screen
 #+begin_src elisp
 (add-to-list 'initial-frame-alist '(fullscreen . fullscreen))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -50,17 +62,31 @@ This is my attempt at using tangle for my doom configuration.
 
 #+end_src
 
+** Tree-sitter
+#+begin_src elisp
+(use-package! tree-sitter
+  :config
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+#+end_src
+
 ** Font
 #+begin_src elisp
+
 (setq
     doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
     doom-variable-pitch-font (font-spec :family "Source Serif Pro" :size 15)
     doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 36))
 (setq +zen-text-scale 1)
+(setq-default fill-column 100)
+
 
 #+end_src
 
 * Org Mode
+** General
 #+begin_src elisp
 (after! org
   (setq
@@ -75,7 +101,15 @@ This is my attempt at using tangle for my doom configuration.
    org-ellipsis " ▾ "
    org-hide-emphasis-markers 't
    org-log-done 'time
-   org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○")
+   org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○")))
+
+(add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+#+end_src
+
+** Agenda
+#+begin_src elisp
+(after! org
+   (setq
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
    org-todo-keywords
@@ -105,6 +139,10 @@ This is my attempt at using tangle for my doom configuration.
 
             (agenda "")
             (alltodo ""))))))
+#+end_src
+
+** Remove Angle Brackets in Timestamps
+#+begin_src elisp
 
 ;; org-export timestamps
 (custom-theme-set-faces
@@ -127,6 +165,10 @@ This is my attempt at using tangle for my doom configuration.
 (eval-after-load 'ox '(add-to-list
                        'org-export-filter-timestamp-functions
                        'org-export-filter-timestamp-remove-brackets))
+#+end_src
+
+** Headings
+#+begin_src elisp
 (after! org
   (set-face-attribute 'org-level-1 nil
                       :height 1.07
@@ -141,6 +183,9 @@ This is my attempt at using tangle for my doom configuration.
                       :height 1.10
                       :weight 'bold))
 
+#+end_src
+** Time Stamps
+#+begin_src elisp
 ;; custom time stamp heading
 ;; ====================
 ;; insert date and time
@@ -171,11 +216,36 @@ Note the weekly scope of the command's precision.")
   )
 ;; (global-set-key "\C-c\C-d" 'insert-current-date-time)
 (global-set-key (kbd "\C-c t") 'insert-current-time)
+#+end_src
+
+** Debugging
+#+begin_src elisp
+(setq org-element--cache-self-verify 'backtrace)
+(setq org-element--cache-self-verify-frequency 1.0)
+
+#+end_src
+
+#+RESULTS:
+
+** Travel back through links
+This keybinding allows me to move back through links in org mode.
+#+begin_src elisp
+
 (map! :after org
       :map org-mode-map
       :n "<backspace>" #'org-mark-ring-goto)
 
 #+end_src
+
+** Change Dictionary
+#+begin_src elisp
+(map! :after org
+      :map org-mode-map
+      :n "SPC d" #'ispell-change-dictionary)
+
+#+end_src
+
+#+RESULTS:
 
 ** Org Roam
 #+begin_src elisp
@@ -225,15 +295,23 @@ Note the weekly scope of the command's precision.")
 
 #+end_src
 
+** Auto Tangle
+#+begin_src elisp
+
+(require 'org-auto-tangle)
+(add-hook 'org-mode-hook 'org-auto-tangle-mode)
+
+#+end_src
+
 * Projectile
 #+begin_src elisp
-(setq projectile-project-search-path '("~/code"))
+(setq projectile-project-search-path '("~/code" "~/Dropbox/org/roam"))
 
 #+end_src
 
 * Python
 #+begin_src elisp
-(pyenv-mode)
+;; (pyenv-mode)
 (use-package! python-pytest)
 (use-package! pyimport)
 
@@ -243,11 +321,11 @@ Note the weekly scope of the command's precision.")
                  (format "python %s" (file-name-nondirectory buffer-file-name)))))
 
 ;; Use IPython for REPL
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
-      python-shell-prompt-detect-failure-warning nil)
-(add-to-list 'python-shell-completion-native-disabled-interpreters
-             "jupyter")
+;; (setq python-shell-interpreter "jupyter"
+;;       python-shell-interpreter-args "console --simple-prompt"
+;;       python-shell-prompt-detect-failure-warning nil)
+;; (add-to-list 'python-shell-completion-native-disabled-interpreters
+;;              "jupyter")
 
 #+end_src
 

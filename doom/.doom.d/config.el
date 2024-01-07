@@ -1,5 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+
 (setq
   user-full-name "Russell Helmstedter"
   user-mail-address "rhelmstedter@gmail.com")
@@ -13,11 +14,18 @@
    evil-shift-width 4
    global-hl-line-modes 'nil)
 
+(use-package! tree-sitter
+  :config
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
 (setq
     doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
     doom-variable-pitch-font (font-spec :family "Source Serif Pro" :size 15)
     doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 36))
 (setq +zen-text-scale 1)
+(setq-default fill-column 100)
 
 (after! org
   (setq
@@ -32,7 +40,12 @@
    org-ellipsis " ▾ "
    org-hide-emphasis-markers 't
    org-log-done 'time
-   org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○")
+   org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○")))
+
+(add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+
+(after! org
+   (setq
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
    org-todo-keywords
@@ -84,6 +97,7 @@
 (eval-after-load 'ox '(add-to-list
                        'org-export-filter-timestamp-functions
                        'org-export-filter-timestamp-remove-brackets))
+
 (after! org
   (set-face-attribute 'org-level-1 nil
                       :height 1.07
@@ -128,9 +142,17 @@ Note the weekly scope of the command's precision.")
   )
 ;; (global-set-key "\C-c\C-d" 'insert-current-date-time)
 (global-set-key (kbd "\C-c t") 'insert-current-time)
+
+(setq org-element--cache-self-verify 'backtrace)
+(setq org-element--cache-self-verify-frequency 1.0)
+
 (map! :after org
       :map org-mode-map
       :n "<backspace>" #'org-mark-ring-goto)
+
+(map! :after org
+      :map org-mode-map
+      :n "SPC d" #'ispell-change-dictionary)
 
 (setq org-roam-directory "~/Dropbox/org/roam")
 ;; Roam Graph
@@ -171,9 +193,12 @@ Note the weekly scope of the command's precision.")
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-(setq projectile-project-search-path '("~/code"))
+(require 'org-auto-tangle)
+(add-hook 'org-mode-hook 'org-auto-tangle-mode)
 
-(pyenv-mode)
+(setq projectile-project-search-path '("~/code" "~/Dropbox/org/roam"))
+
+;; (pyenv-mode)
 (use-package! python-pytest)
 (use-package! pyimport)
 
@@ -183,11 +208,11 @@ Note the weekly scope of the command's precision.")
                  (format "python %s" (file-name-nondirectory buffer-file-name)))))
 
 ;; Use IPython for REPL
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
-      python-shell-prompt-detect-failure-warning nil)
-(add-to-list 'python-shell-completion-native-disabled-interpreters
-             "jupyter")
+;; (setq python-shell-interpreter "jupyter"
+;;       python-shell-interpreter-args "console --simple-prompt"
+;;       python-shell-prompt-detect-failure-warning nil)
+;; (add-to-list 'python-shell-completion-native-disabled-interpreters
+;;              "jupyter")
 
 ;; You can use this hydra menu that have all the commands
 (map! :n "C-SPC" 'harpoon-quick-menu-hydra)
