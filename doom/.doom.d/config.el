@@ -1,6 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-
 (setq
   user-full-name "Russell Helmstedter"
   user-mail-address "rhelmstedter@gmail.com")
@@ -50,15 +49,16 @@
    (emacs-lisp . t)))
 
 (after! org
-   (setq
+  (setq
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
    org-todo-keywords
-   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "|" "DONE(d)" "CANCELLED(c)"))
+   '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)"))
    org-todo-keywords-for-agenda
-   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "|" "DONE(d)" "CANCELLED(c)")))
+   '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)")))
   (setq org-todo-keyword-faces
-      '(("TODO" . org-warning)))
+      '(("TODO" . org-warning)
+        ("WAIT" . (:foreground "#e45649" :weight bold))))
   (setq
    org-fancy-priorities-list '("🟥" "🟧" "🟨")
    org-priority-faces
@@ -183,8 +183,7 @@ Note the weekly scope of the command's precision.")
 ;;   :unnarrowed t))))
 
 (setq org-refile-targets
-      '(("~/Dropbox/org/archive.org" :maxlevel . 1)))
-
+      '(("~/Dropbox/org/archive.org" :maxlevel . 2)))
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
 (with-eval-after-load 'ox-latex

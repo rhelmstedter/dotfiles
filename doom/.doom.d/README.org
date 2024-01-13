@@ -38,7 +38,6 @@ This is my attempt at using tangle for my doom configuration.
 #+begin_src elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-
 (setq
   user-full-name "Russell Helmstedter"
   user-mail-address "rhelmstedter@gmail.com")
@@ -61,7 +60,6 @@ This is my attempt at using tangle for my doom configuration.
 (setq
    evil-shift-width 4
    global-hl-line-modes 'nil)
-
 #+end_src
 
 ** Tree-sitter
@@ -71,20 +69,16 @@ This is my attempt at using tangle for my doom configuration.
   (require 'tree-sitter-langs)
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-
 #+end_src
 
 ** Font
 #+begin_src elisp
-
 (setq
     doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
     doom-variable-pitch-font (font-spec :family "Source Serif Pro" :size 15)
     doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 36))
 (setq +zen-text-scale 1)
 (setq-default fill-column 100)
-
-
 #+end_src
 
 * Org Mode
@@ -122,9 +116,9 @@ This is my attempt at using tangle for my doom configuration.
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
    org-todo-keywords
-   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "|" "DONE(d)" "CANCELLED(c)"))
+   '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)"))
    org-todo-keywords-for-agenda
-   '((sequence "TODO(t)" "WAIT(w)" "STRT(s)" "|" "DONE(d)" "CANCELLED(c)")))
+   '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)")))
   (setq org-todo-keyword-faces
       '(("TODO" . org-warning)
         ("WAIT" . (:foreground "#e45649" :weight bold))))
@@ -240,11 +234,9 @@ Note the weekly scope of the command's precision.")
 ** Travel back through links
 This keybinding allows me to move back through links in org mode.
 #+begin_src elisp
-
 (map! :after org
       :map org-mode-map
       :n "<backspace>" #'org-mark-ring-goto)
-
 #+end_src
 
 ** Change Dictionary
@@ -286,10 +278,10 @@ This keybinding allows me to move back through links in org mode.
 ** Refiling
 #+begin_src emacs-lisp
 (setq org-refile-targets
-      '(("~/Dropbox/org/archive.org" :maxlevel . 1)))
-
+      '(("~/Dropbox/org/archive.org" :maxlevel . 2)))
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 #+end_src
+
 ** Org Export to Latex
 #+begin_src elisp
 (with-eval-after-load 'ox-latex
