@@ -22,6 +22,7 @@
   - [[#travel-back-through-links][Travel back through links]]
   - [[#change-dictionary][Change Dictionary]]
   - [[#org-roam][Org Roam]]
+  - [[#refiling][Refiling]]
   - [[#org-export-to-latex][Org Export to Latex]]
   - [[#auto-tangle][Auto Tangle]]
 - [[#projectile][Projectile]]
@@ -97,7 +98,7 @@ This is my attempt at using tangle for my doom configuration.
    global-hl-line-modes 'nil
    org-agenda-files (directory-files-recursively "~/Dropbox/org/" "\\.org$")
    org-cycle-emulate-tab '(white)
-   org-directory "~/Dropbox/org"
+   org-directory "~/Dropbox/org/"
    org-mobile-directory "~/Dropbox/Apps/MobileOrg"
    org-ellipsis " ▾ "
    org-hide-emphasis-markers 't
@@ -256,7 +257,7 @@ This keybinding allows me to move back through links in org mode.
 ** Org Roam
 #+begin_src elisp
 
-(setq org-roam-directory "~/Dropbox/org/roam")
+(setq org-roam-directory "~/Dropbox/roam")
 ;; Roam Graph
 (use-package! websocket
   :after org-roam)
@@ -281,6 +282,13 @@ This keybinding allows me to move back through links in org mode.
 
 #+end_src
 
+** Refiling
+#+begin_src emacs-lisp
+(setq org-refile-targets
+      '(("~/Dropbox/org/archive.org" :maxlevel . 1)))
+
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+end_src
 ** Org Export to Latex
 #+begin_src elisp
 (with-eval-after-load 'ox-latex

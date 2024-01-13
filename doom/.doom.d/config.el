@@ -35,7 +35,7 @@
    global-hl-line-modes 'nil
    org-agenda-files (directory-files-recursively "~/Dropbox/org/" "\\.org$")
    org-cycle-emulate-tab '(white)
-   org-directory "~/Dropbox/org"
+   org-directory "~/Dropbox/org/"
    org-mobile-directory "~/Dropbox/Apps/MobileOrg"
    org-ellipsis " ▾ "
    org-hide-emphasis-markers 't
@@ -159,7 +159,7 @@ Note the weekly scope of the command's precision.")
       :map org-mode-map
       :n "SPC d" #'ispell-change-dictionary)
 
-(setq org-roam-directory "~/Dropbox/org/roam")
+(setq org-roam-directory "~/Dropbox/roam")
 ;; Roam Graph
 (use-package! websocket
   :after org-roam)
@@ -181,6 +181,11 @@ Note the weekly scope of the command's precision.")
 ;;   "%?\n#+BEGIN_SRC python\n\n\n#+END_SRC"
 ;;   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
 ;;   :unnarrowed t))))
+
+(setq org-refile-targets
+      '(("~/Dropbox/org/archive.org" :maxlevel . 1)))
+
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
 
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
