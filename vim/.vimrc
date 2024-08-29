@@ -52,10 +52,10 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <C-s> :w<cr>
 
 "navigating windows
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
+nnoremap <leader>wh <C-w>h
+nnoremap <leader>wj <C-w>j
+nnoremap <leader>wk <C-w>k
+nnoremap <leader>wl <C-w>l
 
 "change directory to current file
 nnoremap <leader>cd :cd %:p:h<CR>
@@ -70,9 +70,6 @@ vnoremap <leader>d "_d
 
 "make Y behave
 nnoremap Y yg_
-
-"copy link to mark.show presentation
-nnoremap <leader>ms :!curl -F file=@% https://mark.show\|pbcopy<cr>
 
 "insert datetime
 nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
