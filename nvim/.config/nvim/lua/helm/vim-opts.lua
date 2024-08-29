@@ -2,6 +2,7 @@ local options = {
     backup = false,                                  -- creates a backup file
     cmdheight = 2,                                   -- more space in the neovim command line for displaying messages
     colorcolumn = { 120 },                           -- highlight preferred line length
+    -- columns = 120,
     completeopt = { "menu", "menuone", "noselect" }, -- need for cmp
     expandtab = true,                                -- convert tabs to spaces
     fileencoding = "utf-8",                          -- the encoding written to a file
@@ -31,6 +32,7 @@ local options = {
     updatetime = 300,                                -- faster completion (4000ms default)
     wrap = false,                                    -- display lines as one long line
     writebackup = false,                             -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
+
 }
 vim.opt.shortmess:append "c"
 for option, value in pairs(options) do
@@ -55,7 +57,7 @@ autocmd("FileType", {
 })
 autocmd("FileType", {
     pattern = { "markdown", "vimwiki" },
-    command = "set tabstop=5| set shiftwidth=5| set noexpandtab| set noautoindent",
+    command = "set tabstop=4| set shiftwidth=4| set noexpandtab| set noautoindent| set wrap",
     group = tabs,
 })
 autocmd("FileType", {

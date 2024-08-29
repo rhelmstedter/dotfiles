@@ -29,7 +29,15 @@ local plugins = {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
 
+    -- copilot
+    -- "github/copilot.vim",
     -- IDE
+    {
+        'stevearc/oil.nvim',
+        opts = {},
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
     "akinsho/toggleterm.nvim",
     "markonm/traces.vim",
     "mhartington/formatter.nvim",
@@ -97,6 +105,12 @@ local plugins = {
     "michal-h21/vim-zettel",
     "preservim/vim-pencil",
     "vimwiki/vimwiki",
+    {
+        "andrewferrier/wrapping.nvim",
+        config = function()
+            require("wrapping").setup()
+        end
+    }
 }
 
 require("lazy").setup(plugins, {})

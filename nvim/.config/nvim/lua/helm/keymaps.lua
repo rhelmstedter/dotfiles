@@ -9,7 +9,7 @@ vim.g.mapleader = " "
 -- escape
 keymap("i", "jk", "<esc>", s_opts)
 -- write file
-keymap("n", "<leader>w", "<cmd>w<CR>", opts)
+keymap("n", "<leader>bs", "<cmd>w<CR>", opts)
 -- source files
 keymap("n", "<leader><leader>l", ":luafile %<cr>", opts)
 keymap("n", "<leader><leader>s", ":so %<cr>", opts)
@@ -37,4 +37,4 @@ keymap("v", "K", ":m '<-2<CR>gv=gv", s_opts)
 -- open html file
 keymap("n", "<leader>o", ":w<CR>:!open " .. vim.fn.expand "%" .. "<CR>", s_opts)
 -- Explore File
-keymap("n", "<leader>n", ":Ex<CR>", s_opts)
+keymap("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })

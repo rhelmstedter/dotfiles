@@ -6,14 +6,14 @@ local refs =
 "<cmd>lua require'telescope.builtin'.lsp_references(require('telescope.themes').get_dropdown({layout = 'vertical', layout_config= {height = 0.4, width = 0.8 }}))<cr>"
 
 require("mason").setup({
-    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
-        }
-    }
+	automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+	ui = {
+		icons = {
+			server_installed = "✓",
+			server_pending = "➜",
+			server_uninstalled = "✗"
+		}
+	}
 })
 
 -- Diagnostic Mappings
@@ -35,53 +35,76 @@ keymap("n", "<leader>ca", vim.lsp.buf.code_action, s_opts)
 keymap("n", "gr", refs, s_opts)
 keymap("n", "<leader>f", vim.lsp.buf.format, {})
 keymap(
-    "n",
-    "<leader>wl",
-    "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-    {}
+	"n",
+	"<leader>wl",
+	"<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
+	{}
 )
 
 -- Setup lspconfig for autocompletion.
 local capabilities = require("cmp_nvim_lsp").default_capabilities(
-    vim.lsp.protocol.make_client_capabilities()
+	vim.lsp.protocol.make_client_capabilities()
 )
 local servers = {
-    "lua_ls",
-    "tailwindcss",
-    "bashls",
-    -- "rust-analyzer",
+	"lua_ls",
+	"tailwindcss",
+	"bashls",
+	-- "rust-analyzer",
 }
 
 for _, lsp in pairs(servers) do
-    require("lspconfig")[lsp].setup {
-        capabilities = capabilities,
-        flags = {},
-        no_wait = true,
-    }
+	require("lspconfig")[lsp].setup {
+		capabilities = capabilities,
+		flags = {},
+		no_wait = true,
+	}
 end
 
 require('lspconfig').pylsp.setup {
-    flags = {},
-    settings = {
-        -- configure plugins in pylsp
-        pylsp = {
-            plugins = {
-                pyflakes = { enabled = true },
-                pylint = { enabled = false },
-                rope_autoimport = { enabled = false },
-            },
-        },
-    },
-}
-require 'lspconfig'.ruff_lsp.setup {
-    init_options = {
-        settings = {
-            -- Any extra CLI arguments for `ruff` go here.
-            args = {},
-        }
-    }
+	flags = {},
+	settings = {
+		-- configure plugins in pylsp
+		pylsp = {
+			plugins = {
+				pyflakes = { enabled = true },
+				pylint = { enabled = false },
+				rope_autoimport = { enabled = false },
+			},
+		},
+	},
 }
 
+-- Configure `ruff-lsp`.
+local configs = require 'lspconfig.configs'
+if not configs.ruff_lsp then
+	configs.ruff_lsp = {
+		default_config = {
+			cmd = { 'ruff-lsp' },
+			filetypes = { 'python' },
+			root_dir = require('lspconfig').util.find_git_ancestor,
+			init_options = {
+				settings = {
+					args = {}
+				}
+			}
+		}
+	}
+end
+
+require('lspconfig').ruff_lsp.setup {
+	on_attach = on_attach,
+}
+
+require("lspconfig").ltex.setup({
+	settings = {
+		ltex = {
+			language = "en",
+			additionalRules = {
+				languageModel = "~/models/ngrams/",
+			},
+		},
+	},
+})
 -- -- pyright is only used for auto import; turned off everything else
 -- require("lspconfig")["pyright"].setup {
 --     capabilities = capabilities,
@@ -107,10 +130,10 @@ require 'lspconfig'.ruff_lsp.setup {
 -- }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
-    {
-        virtual_text = false,
-        underline = false,
-        signs = true,
-    }
+	vim.lsp.diagnostic.on_publish_diagnostics,
+	{
+		virtual_text = false,
+		underline = false,
+		signs = true,
+	}
 )

@@ -1,4 +1,4 @@
-require("orgmode").setup_ts_grammar()
+-- require("orgmode").setup_ts_grammar()
 
 -- require("org-bullets").setup {
 --     symbols = {

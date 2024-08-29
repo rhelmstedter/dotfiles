@@ -59,3 +59,7 @@
 (package! tree-sitter-langs)
 (package! adaptive-wrap)
 (package! org-auto-tangle)
+(package! org-fancy-priorities)
+(package! ox-epub)
+(package! org2blog)
+(package! flycheck-languagetool)
