@@ -41,6 +41,7 @@
    org-superstar-headline-bullets-list '("⁖" "◈" "◇" "◉" "○"))
   (setq-default indent-tabs-mode nil))
 (setq ispell-personal-dictionary "~/.emacs.d/.local/etc/ispell/.pws")
+(setq ispell-program-name "/opt/homebrew/bin/aspell")
 (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
 
 (after! org
@@ -254,9 +255,14 @@ Note the weekly scope of the command's precision.")
 (setq python-flymake-command '("ruff" "--quiet" "--stdin-filename=stdin" "-"))
 (use-package! python-pytest)
 (use-package! pyimport)
-
 (setq python-indent-offset 0)
 (setq org-edit-src-content-indentation 0)
+
+;; Replace default (black) to use ruff for sorting import and formatting.
+;; (setf (alist-get 'python-mode apheleia-mode-alist)
+;;       '(ruff-isort ruff))
+;; (setf (alist-get 'python-ts-mode apheleia-mode-alist)
+;;       '(ruff-isort ruff))
 
 ;; clear code results
 (map! :after org
