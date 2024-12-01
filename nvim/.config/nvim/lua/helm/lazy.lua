@@ -23,15 +23,23 @@ local plugins = {
     "hrsh7th/nvim-cmp",
     "hrsh7th/vim-vsnip",
     'hrsh7th/cmp-nvim-lsp-signature-help',
+    "nvim-lua/plenary.nvim",
 
     -- lsp
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
 
-    -- copilot
-    -- "github/copilot.vim",
+    -- codeium
+    {
+        "Exafunction/codeium.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+        },
+    },
     -- IDE
+    "AckslD/nvim-neoclip.lua",
     {
         'stevearc/oil.nvim',
         opts = {},
@@ -42,15 +50,12 @@ local plugins = {
     "markonm/traces.vim",
     "mhartington/formatter.nvim",
     "numtostr/comment.nvim",
-    "nvim-lua/plenary.nvim",
     "nvim-lua/popup.nvim",
     "ThePrimeagen/harpoon",
     "tpope/vim-fugitive",
     "tpope/vim-repeat",
     "kylechui/nvim-surround",
     "mbbill/undotree",
-    --  "kevinhwang91/nvim-ufo",
-    --  "ggandor/lightspeed.nvim",
     "ggandor/leap.nvim",
     {
         "ThePrimeagen/refactoring.nvim",
@@ -94,17 +99,20 @@ local plugins = {
     "preservim/vimux",
     "shime/vim-livedown",
     "brentyi/isort.vim",
-    "pixelneo/vim-python-docstring",
 
     -- rust
-    'simrat39/rust-tools.nvim',
-
+    'rust-lang/rust.vim' ,
+    {
+        'mrcjkb/rustaceanvim',
+        version = '^3',
+        ft = { 'rust' },
+    },
     -- zettelkasten
     "junegunn/fzf",
     "junegunn/fzf.vim",
     "michal-h21/vim-zettel",
     "preservim/vim-pencil",
-    "vimwiki/vimwiki",
+    -- "vimwiki/vimwiki",
     {
         "andrewferrier/wrapping.nvim",
         config = function()

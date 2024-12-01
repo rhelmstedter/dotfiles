@@ -1,27 +1,27 @@
 vim.g.zettel_format = "%Y%m%d%H%M"
-vim.g.vimwiki_list = {
-    {
-        path = "~/Zettelkasten/zettel",
-        syntax = "markdown",
-        ext = ".md",
-    },
-    {
-        path = "~/coding-in-math-class",
-        syntax = "markdown",
-        ext = ".md",
-    },
-    {
-        path = "~/coding-class",
-        syntax = "markdown",
-        ext = ".md",
-    },
-}
-vim.g.nv_search_paths = "~/Zettelkasten"
-vim.g.vimwiki_ext2syntax = {
-    [".md"] = "markdown",
-    [".markdown"] = "markdown",
-    [".mdown"] = "markdown",
-}
+-- vim.g.vimwiki_list = {
+--     {
+--         path = "~/Zettelkasten/zettel",
+--         syntax = "markdown",
+--         ext = ".md",
+--     },
+--     {
+--         path = "~/coding-in-math-class",
+--         syntax = "markdown",
+--         ext = ".md",
+--     },
+--     {
+--         path = "~/coding-class",
+--         syntax = "markdown",
+--         ext = ".md",
+--     },
+-- }
+-- vim.g.nv_search_paths = "~/Zettelkasten"
+-- vim.g.vimwiki_ext2syntax = {
+--     [".md"] = "markdown",
+--     [".markdown"] = "markdown",
+--     [".mdown"] = "markdown",
+-- }
 -- I prefer telescope, but use this for inserting a note with [[
 vim.g.zettel_fzf_command =
     "rg --column --line-number --smart-case --no-heading --color=always"
@@ -29,8 +29,8 @@ vim.g.zettel_fzf_command =
 vim.cmd [[
     let g:zettel_options = [{"front_matter": {"tags": "", "citation": ""}}]
 ]]
-vim.g.vimwiki_markdown_link_ext = 1
-vim.g.vimwiki_global_ext = 0
+-- vim.g.vimwiki_markdown_link_ext = 1
+-- vim.g.vimwiki_global_ext = 0
 vim.g.markdown_fenced_languages = { "html", "python", "ruby", "vim", "lua" }
 vim.cmd [[
     let g:pencil#wrapModeDefault = 'soft'
@@ -43,14 +43,14 @@ local s_opts = { noremap = true, silent = true }
 keymap("n", "gm", ":LivedownToggle<CR>", s_opts)
 -- toggle file type between md and vimwiki filetypes
 keymap("n", "<leader>md", ":set filetype=markdown<CR>", s_opts)
-keymap("n", "<leader>vw", ":set filetype=vimwiki<CR>", s_opts)
+-- keymap("n", "<leader>vw", ":set filetype=vimwiki<CR>", s_opts)
 -- open zettelkasten to search notes while working in vim
-keymap(
-    "n",
-    "<leader>zk",
-    ":vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>",
-    s_opts
-)
+-- keymap(
+--     "n",
+--     "<leader>zk",
+--     ":vsplit ~/Zettelkasten/zettel/index.md<cr> :cd %:p:h<cr>",
+--     s_opts
+-- )
 -- Fix last spelling error
 keymap("n", "<leader>sc", 'mm[s1z=`m"', s_opts)
 
@@ -59,7 +59,7 @@ local autocmd = vim.api.nvim_create_autocmd
 local zettelkasten = augroup("zettelkasten", { clear = true })
 
 autocmd("FileType", {
-    pattern = {"markdown"},
+    pattern = {"markdown", "md"},
     callback = "pencil#init",
     group = zettelkasten,
 })

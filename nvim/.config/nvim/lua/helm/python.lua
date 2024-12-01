@@ -5,7 +5,9 @@ local s_opts = { silent = true }
 -- set python location for nvim --
 ----------------------------------
 
-vim.g.python3_host_prog = "/Users/russell/.pyenv/shims/python3" -- for mac-mini
+vim.g.python3_host_prog = "/Users/russell/.local/share/uv/python" -- for mac-mini
+
+
 -- vim.g.python3_host_prog = "/Users/russell/coding-class/coding-projects/.venv/bin/python3" -- for turtle
 -- vim.g.python3_host_prog= '/usr/bin/python3' -- for WSL on work comp
 -- vim.g.python3_host_prog = "/usr/local/bin/python3" -- for mbp 2015
@@ -15,9 +17,6 @@ vim.g.python3_host_prog = "/Users/russell/.pyenv/shims/python3" -- for mac-mini
 ---------------------
 
 -- format code
-vim.g.isort_command = "isort"
-keymap("n", "<leader>b", "<cmd>Black<CR>", s_opts)
-keymap("n", "<leader>i", "<cmd>Isort<CR>", s_opts)
 -- make it an f-string
 -- keymap("n", "<leader>fs", 'maF"if<esc>`al', s_opts)
 --docstrings
@@ -144,7 +143,7 @@ keymap("n", "<C-t>", function()
     pytest_runner:toggle()
 end)
 
-keymap("n", "<leader>pt", function()
+keymap("n", "<leader>ut", function()
     if pytest_runner == nil then
         local expand = vim.fn.expand
         local errmsg
@@ -163,7 +162,7 @@ keymap("n", "<leader>pt", function()
 
         pytest_runner = Terminal:new {
             dir = vim.fn.getcwd(),
-            cmd = "poetry run pytest",
+            cmd = "uv run pytest",
             hidden = true,
             direction = "vertical",
             on_exit = function()

@@ -17,7 +17,7 @@ require("telescope").setup {
         mappings = {
             i = {
                 ["<C-x>"] = false,
-                ["<C-q>"] = actions.send_to_qflist,
+                ["<C-q>"] = actions.smart_send_to_qflist,
                 ["<C-j>"] = actions.move_selection_next,
                 ["<C-k>"] = actions.move_selection_previous,
             },
@@ -36,6 +36,7 @@ local keymap = vim.keymap.set
 local builtin = require "telescope.builtin"
 
 keymap("n", "<Leader>ff", builtin.find_files, opts)
+keymap("n", "<Leader>fq", builtin.quickfix, opts)
 keymap("n", "<Leader>fg", builtin.live_grep, opts)
 keymap("n", "<Leader>fb", builtin.buffers, opts)
 keymap("n", "<Leader>fc", builtin.command_history, opts)
@@ -51,6 +52,7 @@ end, opts)
 keymap("n", "<Leader>nc", function()
     require'helm.telescope'.search_vimrc()
 end, opts)
+keymap("n", "<Leader>fr", "<cmd>Telescope neoclip<cr>", opts)
 
 local themes = require "telescope.themes"
 local should_reload = true

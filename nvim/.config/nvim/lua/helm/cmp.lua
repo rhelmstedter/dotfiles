@@ -39,11 +39,12 @@ cmp.setup {
             },
         },
     },
-    sources = cmp.config.sources {
-        { name = "luasnip" }, -- For luasnip users.
-        { name = "nvim_lua" },
+    sources =  {
         { name = "nvim_lsp" },
+        { name = "codeium" },
         { name = "orgmode" },
+        { name = "nvim_lua" },
+        { name = "luasnip" }, -- For luasnip users.
         { name = "path" },
         { name = "buffer", keyword_length = 3 },
     },

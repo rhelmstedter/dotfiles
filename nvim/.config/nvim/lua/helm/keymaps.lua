@@ -18,6 +18,11 @@ keymap("n", "<leader>wh", "<C-w>h", s_opts)
 keymap("n", "<leader>wj", "<C-w>j", s_opts)
 keymap("n", "<leader>wk", "<C-w>k", s_opts)
 keymap("n", "<leader>wl", "<C-w>l", s_opts)
+-- move between buffers
+keymap("n", "<leader>bn", ":bnext<CR>", s_opts)
+keymap("n", "<leader>bp", ":bprev<CR>", s_opts)
+keymap("n", "<leader>bi", ":ls<CR>", s_opts)
+--
 -- change directory to current file
 keymap("n", "<leader>cd", ":cd %:p:h<CR>", s_opts)
 -- copy to clipboard
@@ -38,3 +43,6 @@ keymap("v", "K", ":m '<-2<CR>gv=gv", s_opts)
 keymap("n", "<leader>o", ":w<CR>:!open " .. vim.fn.expand "%" .. "<CR>", s_opts)
 -- Explore File
 keymap("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+-- Codeium Chat
+keymap("n", "<leader>cc", "<CMD>Codeium Chat<CR>", { desc = "Codeium Chat" })
+
