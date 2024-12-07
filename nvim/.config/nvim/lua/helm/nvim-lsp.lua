@@ -62,7 +62,7 @@ for _, lsp in pairs(servers) do
         no_wait = true,
     }
 end
-
+require'lspconfig'.lua_ls.setup{}
 require('lspconfig').pylsp.setup {
     flags = {},
     settings = {
