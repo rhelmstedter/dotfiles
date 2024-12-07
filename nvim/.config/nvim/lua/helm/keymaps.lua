@@ -11,8 +11,9 @@ keymap("i", "jk", "<esc>", s_opts)
 -- write file
 keymap("n", "<leader>bs", "<cmd>w<CR>", opts)
 -- source files
-keymap("n", "<leader><leader>l", ":luafile %<cr>", opts)
-keymap("n", "<leader><leader>s", ":so %<cr>", opts)
+keymap("n", "<leader><leader>l", "<cmd>luafile %<cr>", opts)
+keymap("n", "<leader><leader>x", "<cmd>source %<cr>", opts)
+keymap("n", "<leader>x", "<cmd>.lua <cr>", opts)
 -- move between windows (splits)
 keymap("n", "<leader>wh", "<C-w>h", s_opts)
 keymap("n", "<leader>wj", "<C-w>j", s_opts)
@@ -22,7 +23,6 @@ keymap("n", "<leader>wl", "<C-w>l", s_opts)
 keymap("n", "<leader>bn", ":bnext<CR>", s_opts)
 keymap("n", "<leader>bp", ":bprev<CR>", s_opts)
 keymap("n", "<leader>bi", ":ls<CR>", s_opts)
---
 -- change directory to current file
 keymap("n", "<leader>cd", ":cd %:p:h<CR>", s_opts)
 -- copy to clipboard
