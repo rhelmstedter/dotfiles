@@ -15,7 +15,7 @@ vim.g.mapleader = " "
 
 local plugins = {
 
-    -- auto complete
+    -- auto complete and lsp
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-cmdline",
     "hrsh7th/cmp-nvim-lsp",
@@ -24,8 +24,6 @@ local plugins = {
     "hrsh7th/vim-vsnip",
     'hrsh7th/cmp-nvim-lsp-signature-help',
     "nvim-lua/plenary.nvim",
-
-    -- lsp
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
@@ -38,6 +36,7 @@ local plugins = {
             "hrsh7th/nvim-cmp",
         },
     },
+
     -- IDE
     "AckslD/nvim-neoclip.lua",
     {
@@ -47,7 +46,7 @@ local plugins = {
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
     "akinsho/toggleterm.nvim",
-    "markonm/traces.vim",
+    -- "markonm/traces.vim",
     "mhartington/formatter.nvim",
     "numtostr/comment.nvim",
     "nvim-lua/popup.nvim",
@@ -67,13 +66,14 @@ local plugins = {
             require("refactoring").setup()
         end,
     },
+    "dhruvasagar/vim-table-mode",
 
     -- telescope
     "nvim-telescope/telescope.nvim",
     "nvim-telescope/telescope-fzy-native.nvim",
 
     -- snippets
-    "l3mon4d3/luasnip",
+    { "L3MON4D3/LuaSnip", run = "make install_jsregexp" },
     "rafamadriz/friendly-snippets",
     "saadparwaiz1/cmp_luasnip",
 
@@ -81,6 +81,14 @@ local plugins = {
     "folke/zen-mode.nvim",
     "kyazdani42/nvim-web-devicons",
     "NTBBloodbath/doom-one.nvim",
+    {
+        'AlexvZyl/nordic.nvim',
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require('nordic').load()
+        end
+    },
     "nvim-lualine/lualine.nvim",
     "nvim-treesitter/nvim-treesitter",
     'm-demare/hlargs.nvim',
@@ -88,8 +96,6 @@ local plugins = {
     "onsails/lspkind-nvim",
 
     -- orgmode
-    "dhruvasagar/vim-table-mode",
-    "simrat39/symbols-outline.nvim",
     "nvim-orgmode/orgmode",
 
     -- python
@@ -98,7 +104,6 @@ local plugins = {
     "lervag/vimtex",
     "preservim/vimux",
     "shime/vim-livedown",
-    "brentyi/isort.vim",
 
     -- rust
     'rust-lang/rust.vim' ,
@@ -112,7 +117,6 @@ local plugins = {
     "junegunn/fzf.vim",
     "michal-h21/vim-zettel",
     "preservim/vim-pencil",
-    -- "vimwiki/vimwiki",
     {
         "andrewferrier/wrapping.nvim",
         config = function()
