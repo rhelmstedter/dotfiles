@@ -4,7 +4,9 @@
 -- local action_state = require "telescope.actions.state"
 -- local conf = require("telescope.config").values
 
+local themes = require "telescope.themes"
 local actions = require "telescope.actions"
+
 require("telescope").load_extension "fzy_native"
 require("telescope").setup {
     defaults = {
@@ -42,19 +44,22 @@ keymap("n", "<Leader>fb", builtin.buffers, opts)
 keymap("n", "<Leader>fc", builtin.command_history, opts)
 keymap("n", "<Leader>fd", builtin.diagnostics, opts)
 keymap("n", "<Leader>fs", builtin.lsp_document_symbols, opts)
+keymap("n", "<Leader>fr", builtin.lsp_references, opts)
 keymap("n", "<C-p>", builtin.git_files, opts)
+-- keymap("n", "<Leader>f", "<cmd>Telescope neoclip<cr>", opts)
+
 keymap("n", "<Leader>fh", function()
-    builtin.help_tags(require("telescope.themes").get_dropdown { previewer = false })
+    builtin.help_tags(themes.get_ivy())
 end, opts)
+
 keymap("n", "<leader>ps", function()
     builtin.grep_string { search = vim.fn.input "Grep > " }
 end, opts)
-keymap("n", "<Leader>nc", function()
-    require'helm.telescope'.search_vimrc()
-end, opts)
-keymap("n", "<Leader>fr", "<cmd>Telescope neoclip<cr>", opts)
 
-local themes = require "telescope.themes"
+keymap("n", "<Leader>nc", function()
+    require 'helm.telescope'.search_vimrc()
+end, opts)
+
 local should_reload = true
 local reloader = function()
     if should_reload then

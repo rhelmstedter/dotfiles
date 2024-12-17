@@ -26,7 +26,7 @@ keymap("n", "gD", vim.lsp.buf.declaration, s_opts)
 keymap("n", "gd", vim.lsp.buf.definition, s_opts)
 keymap("n", "K", vim.lsp.buf.hover, s_opts)
 keymap("n", "gi", vim.lsp.buf.implementation, s_opts)
-keymap("n", "<C-k>", vim.lsp.buf.signature_help, s_opts)
+keymap("i", "<C-h>", vim.lsp.buf.signature_help, s_opts)
 keymap("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, s_opts)
 keymap("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, s_opts)
 keymap("n", "<leader>D", vim.lsp.buf.type_definition, s_opts)
@@ -41,18 +41,16 @@ keymap(
     {}
 )
 
-keymap("n", "<leader>fm", function() 
-   require("telescope.builtin").lsp_document_symbols({symbols={"method","function"}}) 
-end, opts)
+keymap("n", "<leader>fm", function()
+    require("telescope.builtin").lsp_document_symbols({ symbols = { "method", "function" } })
+end, {})
 -- Setup lspconfig for autocompletion.
 local capabilities = require("cmp_nvim_lsp").default_capabilities(
     vim.lsp.protocol.make_client_capabilities()
 )
 local servers = {
-    -- "lua-language-server",
     "tailwindcss",
     "bashls",
-    -- "rust-analyzer",
 }
 
 for _, lsp in pairs(servers) do
@@ -62,7 +60,7 @@ for _, lsp in pairs(servers) do
         no_wait = true,
     }
 end
-require'lspconfig'.lua_ls.setup{}
+require 'lspconfig'.lua_ls.setup {}
 require('lspconfig').pylsp.setup {
     flags = {},
     settings = {
@@ -94,9 +92,7 @@ if not configs.ruff_lsp then
     }
 end
 
-require('lspconfig').ruff_lsp.setup {
-    on_attach = on_attach,
-}
+require('lspconfig').ruff_lsp.setup {}
 
 require("lspconfig").ltex.setup({
     settings = {

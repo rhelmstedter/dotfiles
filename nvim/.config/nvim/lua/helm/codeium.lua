@@ -1,6 +1,6 @@
 require("codeium").setup({
     -- Optionally disable cmp source if using virtual text only
-    enable_cmp_source = false,
+    enable_cmp_source = true,
     virtual_text = {
         enabled = true,
 
@@ -32,11 +32,11 @@ require("codeium").setup({
             -- Accept the next line.
             accept_line = false,
             -- Clear the virtual text.
-            clear = false,
+            clear = "<C-x>",
             -- Cycle to the next completion.
-            next = "<M-]>",
+            next = "<C-]>",
             -- Cycle to the previous completion.
-            prev = "<M-[>",
+            prev = "<C-[>",
         }
     }
 })

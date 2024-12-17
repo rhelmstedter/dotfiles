@@ -27,7 +27,7 @@ local keymap = vim.keymap.set
 
 keymap(
     "i",
-    "<c-f>",
+    "<c-k>",
     "<cmd>lua require'helm.luasnip'.forward_trigger()<CR>",
     { silent = true }
 )

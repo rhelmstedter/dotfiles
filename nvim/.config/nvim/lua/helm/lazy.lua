@@ -5,7 +5,7 @@ if not vim.loop.fs_stat(lazypath) then
         "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
+        "--branch=stable",         -- latest stable release
         lazypath,
     })
 end
@@ -14,13 +14,12 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 
 local plugins = {
-
     -- auto complete and lsp
+    "hrsh7th/nvim-cmp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-cmdline",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
-    "hrsh7th/nvim-cmp",
     "hrsh7th/vim-vsnip",
     'hrsh7th/cmp-nvim-lsp-signature-help',
     "nvim-lua/plenary.nvim",
@@ -47,39 +46,33 @@ local plugins = {
     },
     "akinsho/toggleterm.nvim",
     -- "markonm/traces.vim",
-    "mhartington/formatter.nvim",
     "numtostr/comment.nvim",
     "nvim-lua/popup.nvim",
     "ThePrimeagen/harpoon",
     "tpope/vim-fugitive",
+    {
+        "lewis6991/gitsigns.nvim",
+        config = function()
+            require('gitsigns').setup()
+        end
+    },
     "tpope/vim-repeat",
     "kylechui/nvim-surround",
     "mbbill/undotree",
     "ggandor/leap.nvim",
-    {
-        "ThePrimeagen/refactoring.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
-        },
-        config = function()
-            require("refactoring").setup()
-        end,
-    },
+    "ThePrimeagen/refactoring.nvim",
     "dhruvasagar/vim-table-mode",
 
     -- telescope
     "nvim-telescope/telescope.nvim",
-    "nvim-telescope/telescope-fzy-native.nvim",
+    {"nvim-telescope/telescope-fzy-native.nvim", build = "make" },
 
     -- snippets
     { "L3MON4D3/LuaSnip", run = "make install_jsregexp" },
     "rafamadriz/friendly-snippets",
     "saadparwaiz1/cmp_luasnip",
 
-    -- display
-    "folke/zen-mode.nvim",
-    "kyazdani42/nvim-web-devicons",
+    -- themes
     "NTBBloodbath/doom-one.nvim",
     {
         'AlexvZyl/nordic.nvim',
@@ -89,16 +82,19 @@ local plugins = {
             require('nordic').load()
         end
     },
+
+    -- display
+    "folke/zen-mode.nvim",
+    "kyazdani42/nvim-web-devicons",
     "nvim-lualine/lualine.nvim",
     "nvim-treesitter/nvim-treesitter",
-    'm-demare/hlargs.nvim',
-    build = ":TSUpdate",
+    -- 'm-demare/hlargs.nvim',
     "onsails/lspkind-nvim",
 
     -- orgmode
     "nvim-orgmode/orgmode",
 
-    -- python
+    -- data science in python
     "greghor/vim-pyshell",
     "julienr/vim-cellmode",
     "lervag/vimtex",
@@ -106,7 +102,7 @@ local plugins = {
     "shime/vim-livedown",
 
     -- rust
-    'rust-lang/rust.vim' ,
+    'rust-lang/rust.vim',
     {
         'mrcjkb/rustaceanvim',
         version = '^3',

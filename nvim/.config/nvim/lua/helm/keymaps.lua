@@ -45,4 +45,7 @@ keymap("n", "<leader>o", ":w<CR>:!open " .. vim.fn.expand "%" .. "<CR>", s_opts)
 keymap("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 -- Codeium Chat
 keymap("n", "<leader>cc", "<CMD>Codeium Chat<CR>", { desc = "Codeium Chat" })
+--Quickfix Navigation
+keymap("n", "<M-k>", "<cmd>cprevious<CR>", s_opts)
+keymap("n", "<M-j>", "<cmd>cnext<CR>", s_opts)
 
