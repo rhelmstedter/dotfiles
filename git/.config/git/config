@@ -1,0 +1,7 @@
+[init]
+	defaultBranch = main
+[user]
+	email = rhelmstedter@gmail.com
+	name = Russell Helmstedter
+[diff]
+	algorithm = histogram
