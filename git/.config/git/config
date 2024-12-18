@@ -1,10 +1,10 @@
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [user]
-	email = rhelmstedter@gmail.com
-	name = Russell Helmstedter
+    email = rhelmstedter@gmail.com
+    name = Russell Helmstedter
 [diff]
-	algorithm = histogram
+    algorithm = histogram
 
 [color "branch"]
     current = yellow reverse
@@ -22,3 +22,6 @@
     added = yellow
     changed = green
     untracked = cyan
+
+[help]
+	autoCorrect = immediate
