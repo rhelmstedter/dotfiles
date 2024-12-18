@@ -1,3 +1,7 @@
+
+vim.o.background = "dark"
+vim.cmd("colorscheme gruvbox")
+
 local options = {
     backup = false,                                  -- creates a backup file
     cmdheight = 2,                                   -- more space in the neovim command line for displaying messages

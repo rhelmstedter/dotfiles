@@ -74,15 +74,16 @@ local plugins = {
 
     -- themes
     "NTBBloodbath/doom-one.nvim",
-    {
-        'AlexvZyl/nordic.nvim',
-        lazy = false,
-        priority = 1000,
-        config = function()
-            require('nordic').load()
-        end
-    },
+    -- {
+    --     'AlexvZyl/nordic.nvim',
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         require('nordic').load()
+    --     end
+    -- },
 
+    { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
     -- display
     "folke/zen-mode.nvim",
     "kyazdani42/nvim-web-devicons",
