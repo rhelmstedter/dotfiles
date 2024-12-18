@@ -60,7 +60,7 @@ keymap("n", "<F5>", function()
         vim.api.nvim_command('write')
         if vim.bo.buftype ~= "" then
             errmsg = "Can't run python debugger on terminal"
-        elseif expand("%")== "" then
+        elseif expand("%") == "" then
             errmsg = "Can't run python debugger on unnamed file"
         end
 
@@ -163,6 +163,37 @@ keymap("n", "<leader>ut", function()
         pytest_runner = Terminal:new {
             dir = vim.fn.getcwd(),
             cmd = "uv run pytest",
+            hidden = true,
+            direction = "vertical",
+            on_exit = function()
+                pytest_runner = nil
+            end,
+        }
+    end
+
+    pytest_runner:toggle()
+end)
+
+keymap("n", "<leader>vt", function()
+    if pytest_runner == nil then
+        local expand = vim.fn.expand
+        local errmsg
+
+        vim.api.nvim_command('write')
+        if vim.bo.buftype ~= "" then
+            errmsg = "Can't run python file on terminal"
+        elseif expand("%") == "" then
+            errmsg = "Can't run python on unnamed file"
+        end
+
+        if errmsg ~= nil then
+            vim.notify(errmsg, vim.log.levels.WARN, { title = "toggleterm" })
+            return
+        end
+
+        pytest_runner = Terminal:new {
+            dir = vim.fn.getcwd(),
+            cmd = "uv run pytest -svv",
             hidden = true,
             direction = "vertical",
             on_exit = function()
